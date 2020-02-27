@@ -2,6 +2,7 @@
 
 ### Project setup
 1. Create a virtual environment
+
 - Install Python 3.7.3
 `pip install pipenv`
 `pipenv --python 3.7.3`
@@ -16,4 +17,5 @@
 ### Database Setup
 
 - Install Docker and Docker-compose
+
 `docker-compose up`
