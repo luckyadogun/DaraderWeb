@@ -1,16 +1,14 @@
-version: '3.5'
-
+version: "3.1"
 services:
-  postgres:
-    container_image: postgres_container
-    image: postgres
+  db:
+    image: postgres:9.6.9-alpine
     environment:
-      POSTGRES_USER: rentalapp
-      POSTGRES_DB: rentalapp
+      POSTGRES_USER: tmb
+      POSTGRES_PASSWORD: tmb
+      POSTGRES_DB: tmb
     ports:
       - "5432:5432"
     volumes:
-      - postgres:/data/postgres
-
+      - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:
