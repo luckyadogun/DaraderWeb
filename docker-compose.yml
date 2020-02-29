@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_image: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: rentalapp
+      POSTGRES_DB: rentalapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+
+volumes:
+  pgdata:
