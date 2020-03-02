@@ -3,9 +3,9 @@ services:
   db:
     image: postgres:9.6.9-alpine
     environment:
-      POSTGRES_USER: tmb
-      POSTGRES_PASSWORD: tmb
-      POSTGRES_DB: tmb
+      POSTGRES_USER: rentalapp
+      POSTGRES_PASSWORD: rentalapp
+      POSTGRES_DB: rentalapp
     ports:
       - "5432:5432"
     volumes:
