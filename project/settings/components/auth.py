@@ -1,4 +1,4 @@
 AUTHENTICATION_BACKENDS = (
-    'user.auth.EmailAuthBackend',
+    'users.auth.EmailAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
