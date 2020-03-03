@@ -24,10 +24,14 @@ class User(AbstractUser):
         return self.username
 
 
+def agent_image_path(instance, filename):
+    return f"agent/{instance.id}/images/{filename}"
+
+
 class Agent(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     fullname = models.CharField(
-        _("fullname or company name"), max_length=200)
+        _("fullname"), max_length=200)
     company_name = models.CharField(
         _("company name"), max_length=200, unique=True)
     phone_regex = RegexValidator(
@@ -37,9 +41,10 @@ class Agent(TimeStampedModel):
     office_phone = models.CharField(validators=[phone_regex], max_length=17)
     mobile_phone = models.CharField(validators=[phone_regex], max_length=17)
     about_me = models.TextField(_("about"), blank=True, null=True)
+    image = models.ImageField(_("image"), upload_to=agent_image_path, default='')
 
     def _get_agent(self):
-        return "{0} {1}".format(self.fullname, self.company_name)
+        return f"{self.fullname} {self.company_name}"
 
     def __str__(self):
         return self._get_agent()
