@@ -12,11 +12,21 @@
   - If you use a Unix OS, from terminal run: `export ENVIRONMENT=local`
   - If you use a Windows OS, from Powershell run: `[Environment]::SetEnvironmentVariable('ENVIRONMENT',
     'local', 'User')` # 'User' is for the current user account. Replace with 'Machine' for machine-wide effect 
+  - If in a production environment: `export ENVIRONMENT=prod`
+  - If in a staging environment: `export ENVIRONMENT=staging`
+ 
 3. Install dependencies
 - `pipenv install -r requirements.txt`
+- If in production or staging environment, run: `pipenv install -r requirements-prod.txt` 
 
 
 ### Database Setup
 
 - Install Docker and Docker-compose
 - `docker-compose up`
+
+### Up and Running
+- `python manage.py makemigrations`
+- `python manage.py migrate`
+- should you experience a PostgresDB bug do:
+   https://github.com/Radu-Raicea/Dockerized-Flask/wiki/%5BDocker%5D-Remove-all-Docker-volumes-to-delete-the-database
