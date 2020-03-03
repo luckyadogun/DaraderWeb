@@ -22,31 +22,52 @@ class State(models.Model):
 
 
 class Property(TimeStampedModel):
-    PROPERTY_STATUS = (
-        ("sale", "sale"),
-        ("rent", "rent"),
-        ("lease", "lease"),
+    SALE = "sale"
+    RENT = "rent"
+    LEASE = "lease"
+
+    ALL = "all"
+    FLAT = "flat"
+    HOUSE = "house"
+    LAND = "land"
+    COMMERCIAL = "commercial"
+    EVENT_CENTRE = "event centre"
+
+    PROPERTY_STATUS_CHOICES = (
+        (SALE, "sale"),
+        (RENT, "rent"),
+        (LEASE, "lease"),
     )
 
-    PROPERTY_TYPE = (
-        ("all", "all"),
-        ("flat", "flat"),
-        ("house", "house"),
-        ("land", "land"),
-        ("commercial", "commercial"),
-        ("event centre", "event centre"),
+    PROPERTY_TYPE_CHOICES = (
+        (ALL, "all"),
+        (FLAT, "flat"),
+        (HOUSE, "house"),
+        (LAND, "land"),
+        (COMMERCIAL, "commercial"),
+        (EVENT_CENTRE, "event centre"),
     )
 
     property_id = models.CharField(max_length=7, unique=True)
     title = models.CharField(_("title"), max_length=200)
     address = models.CharField(_("address"), max_length=200)
-    neighborhood = models.CharField(_("neighborhood"), max_length=200, blank=True, null=True)
+    neighborhood = models.CharField(
+        _("neighborhood"), max_length=200, 
+        blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
-    zipcode = models.CharField(_("zipcode or postal code"), max_length=20, blank=True, null=True)
-    property_status = models.CharField(_("status"), max_length=20, default="rent")
-    property_type = models.CharField(_("type"), max_length=20, default="all")
-    price = models.DecimalField(_("property price"), max_digits=20, decimal_places=2)
+    zipcode = models.CharField(
+        _("zipcode or postal code"), 
+        max_length=20, blank=True, null=True)
+    property_status = models.CharField(
+        _("status"), max_length=20, 
+        choices=PROPERTY_STATUS_CHOICES)
+    property_type = models.CharField(
+        _("type"), max_length=20, 
+        choices=PROPERTY_TYPE_CHOICES)
+    price = models.DecimalField(
+        _("property price"), 
+        max_digits=20, decimal_places=2)
     agent = models.ForeignKey(Agent, on_delete=models.CASCADE)
     description = models.TextField(_("description"))
 
