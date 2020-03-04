@@ -1,12 +1,13 @@
+from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
-    '''
+    """
     Custom user model managers where email is the unique identifiers
     for authentication instead of username
-    '''
+    """
     def create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError(_('The email must be set'))
