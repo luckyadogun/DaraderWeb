@@ -1,10 +1,15 @@
-    {% extends "base/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-    {% block title %} Find amazing properties {% endblock title %}
-    
+{% block title %} Find amazing properties in Nigeria {% endblock title %}
+
+    {% block header %}
+        {% include "components/header__v1.html" %}
+    {% endblock %}
+
     {% block content %}
     <!--Hero section starts-->
-    <div class="hero-parallax bg-fixed" style="background-image: url({% static 'assets/images/header/header_11.jpg' %})">
+    <div class="hero-parallax bg-fixed" style="background-image: url('{% static 'assets/images/header/header_11.jpg' %}')">
         <div class="overlay op-1"></div>
         <div class="container">
             <div class="row">
@@ -103,7 +108,7 @@
                                 <div class="col-xl-4 col-md-6 col-sm-12">
                                     <div class="single-property-box">
                                         <div class="property-item">
-                                            <a class="property-img" href="single-listing-two.html"><img src="{% static 'assets/images/property/property_1.jpg' %}' %}" alt="#">
+                                            <a class="property-img" href="single-listing-two.html"><img src="{% static 'assets/images/property/property_1.jpg' %}" alt="#">
                                             </a>
                                             <ul class="feature_text">
                                                 <li class="feature_cb"><span> Featured</span></li>
@@ -111,7 +116,7 @@
                                             </ul>
                                             <div class="property-author-wrap">
                                                 <a href="#" class="property-author">
-                                                    <img src="{% static 'assets/images/agents/agent_min_1.jpg' %}' %}" alt="...">
+                                                    <img src="{% static 'assets/images/agents/agent_min_1.jpg' %}" alt="...">
                                                     <span>Tony Stark</span>
                                                 </a>
                                                 <ul class="save-btn">
@@ -1569,7 +1574,7 @@
                     <div class="promo-content-wrap">
                         <div class="row promo-content">
                             <div class="col-md-2">
-                                <img src="{% static 'assets/images/category/property_listing.png" alt="...">
+                                <img src="{% static 'assets/images/category/property_listing.png' %}" alt="...">
                             </div>
                             <div class="col-md-10">
                                 <div class="promo-text">
@@ -1580,7 +1585,7 @@
                         </div>
                         <div class="row promo-content">
                             <div class="col-md-2">
-                                <img src="{% static 'assets/images/category/rent.png" alt="...">
+                                <img src="{% static 'assets/images/category/rent.png' %}" alt="...">
                             </div>
                             <div class="col-md-10">
                                 <div class="promo-text">
@@ -1591,7 +1596,7 @@
                         </div>
                         <div class="row promo-content">
                             <div class="col-md-2">
-                                <img src="{% static 'assets/images/category/customer_support.png" alt="...">
+                                <img src="{% static 'assets/images/category/customer_support.png' %}" alt="...">
                             </div>
                             <div class="col-md-10">
                                 <div class="promo-text">
@@ -1602,7 +1607,7 @@
                         </div>
                         <div class="row promo-content">
                             <div class="col-md-2">
-                                <img src="{% static 'assets/images/category/deal_1.png" alt="...">
+                                <img src="{% static 'assets/images/category/deal_1.png' %}" alt="...">
                             </div>
                             <div class="col-md-10">
                                 <div class="promo-text">
@@ -2083,5 +2088,12 @@
 
     <!--Blog section starts-->
     <!--Blog section ends-->
+    {% endblock %}
 
-    {% endblock content %}
+    {% block chatbox %}
+        {% include "components/chatbox__home.html" %}
+    {% endblock %}
+
+    {% block footer %}
+        {% include "components/footer__v1.html" %}
+    {% endblock %}

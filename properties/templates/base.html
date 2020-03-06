@@ -15,7 +15,7 @@
     <!-- Plugins CSS -->
     <link href="{% static 'assets/css/plugin.css' %}" rel="stylesheet" />
     <!-- style CSS -->
-    <link href="{% static 'assets/css/style.css' %" rel="stylesheet" />
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
 
     <!-- Document Title -->
     <title>{% block title %} {% endblock title %}</title>
@@ -34,14 +34,14 @@
         <!-- Header starts -->
         {% block header %}
 
-        {% endblock header %}
+        {% endblock %}
         <!-- Header Ends -->
 
 
         <!-- content starts -->
         {% block content %}
 
-        {% endblock content %}
+        {% endblock %}
         <!-- content ends -->
 
 
@@ -53,17 +53,17 @@
         <!--Agent Chat box starts-->
         {% block chatbox %}
 
-        {% enblock chatbpx %}
+        {% endblock %}
         <!--Agent Chat box ends-->
     </div>
     <!-- Footer Begins -->
     {% block footer %}
 
-    {% endblock footer %}
+    {% endblock %}
     <!-- Footer Ends -->
 
     <!--login Modal starts-->
-        {% if {{ user }} %} {% include "/components/modal.html" %} {% else %} <div></div>
+        {% if not user.is_authenticated %} {% include "components/modal.html" %} {% else %} <div></div> {% endif %}
     <!--login Modal ends-->
 
     <!--Scripts starts-->
