@@ -2,7 +2,7 @@
                         Preloader
     ------------------------------------------*/
      $('.js-preloader').preloadinator({
-         minTime: 2000,
+         minTime: 1000,
          scroll: false
 
      });

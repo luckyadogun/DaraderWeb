@@ -25,16 +25,17 @@
                             </div>
                             <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-12">
                                 <div class="hero-slider-info">
-                                    <form class="hero__form v3 filter listing-filter">
+                                    <form class="hero__form v3 filter listing-filter" action="." method="POST">                                        
+                                        {% csrf_token %}
                                         <h4>Find your dream home</h4>
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <div class="input-search">
-                                                    <input type="text" name="place-event" id="place-event" placeholder="Enter Property, Location, Landmark ...">
+                                                    <input type="text" name="location" id="place-event" placeholder="Enter Property, Location, Landmark ...">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select">
+                                                <select class="hero__form-input  form-control custom-select" name="property-status">
                                                     <option>Property Status</option>
                                                     <option>Any</option>
                                                     <option>For Rent</option>
@@ -42,7 +43,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select">
+                                                <select class="hero__form-input  form-control custom-select" name="property-type">
                                                     <option>Property Type</option>
                                                     <option>Residential</option>
                                                     <option>Commercial</option>
@@ -50,7 +51,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select">
+                                                <select class="hero__form-input  form-control custom-select" name="bedrooms">
                                                     <option>Bed</option>
                                                     <option>4</option>
                                                     <option>3</option>
@@ -58,7 +59,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select">
+                                                <select class="hero__form-input  form-control custom-select" name="bathrooms">
                                                     <option>Bath</option>
                                                     <option>4</option>
                                                     <option>3</option>
@@ -68,7 +69,7 @@
                                             <div class="col-lg-12 col-md-8 col-sm-12">
                                                 <div class="filter-sub-area style1">
                                                     <div class="filter-title mb-10">
-                                                        <p>Price : <span><input type="text" id="amount_two"></span></p>
+                                                        <p>Budget ₦: <span><input type="text" id="amount_two" name="budget"></span></p>
                                                     </div>
                                                     <div id="slider-range_two" class="price-range mb-20">
                                                     </div>
@@ -76,7 +77,7 @@
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="search_btn">
-                                                    <a href="grid-left-sidebar.html">Search Property</a>
+                                                    <input type="submit" value="Search Property">                                            
                                                 </div>
                                             </div>
                                         </div>

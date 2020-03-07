@@ -6590,16 +6590,19 @@ ul.icon li::before {
     visibility: visible;
 }
 
-.hero__form.v3 .search_btn a {
+.hero__form.v3 .search_btn input {
     display: block;
     background: #6449E7;
     color: #fff;
-    padding: 15px 0;
-    border-radius: 3px;
+    width: 100%;
+    padding: 15px 15px;
+    border: none;
+    border-radius: 10px;
     text-align: center;
     font-weight: 400;
     font-size: 15px;
     letter-spacing: 0.01rem;
+    cursor: pointer;
 }
 
 .dropdown-filter {
