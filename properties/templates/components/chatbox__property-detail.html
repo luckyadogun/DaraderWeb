@@ -1,0 +1,45 @@
+{% load static %}
+
+<div class="chatbox-wrapper">
+    <div class="chat-popup chat-bounce" data-toggle="tooltip" title="Have any query? Ask Me !" data-placement="top">
+        <i class="fas fa-comment-alt"></i>
+    </div>
+    <div class="agent-chat-form v1">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <img class="agency-chat-img" src="{% static 'assets/images/agents/agent_min_1.jpg' %}" alt="...">
+                </div>
+                <div class="col-8 pl-0">
+                    <ul class="agent-chat-info">
+                        <li><i class="fas fa-user"></i>Tony Stark</li>
+                        <li><i class="fas fa-phone-alt"></i>+440 3456 345</li>
+                        <li><a href="single-agent.html">View Listings</a></li>
+                    </ul>
+                    <span class="chat-close"><i class="lnr lnr-cross"></i></span>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <form action="#" method="POST">
+                        <div class="chat-group mt-1">
+                            <input class="chat-field" type="text" name="chat-name" id="chat-name" placeholder="Your name">
+                        </div>
+                        <div class="chat-group mt-1">
+                            <input class="chat-field" type="text" name="chat-phone" id="chat-phone" placeholder="Phone">
+                        </div>
+                        <div class="chat-group mt-1">
+                            <input class="chat-field" type="text" name="chat-email" id="chat-email" placeholder="Email">
+                        </div>
+                        <div class="chat-group mt-1">
+                            <textarea class="form-control chat-msg" name="message" rows="4" placeholder="Description">Hello, I am interested in [Luxury apartment bay view]</textarea>
+                        </div>
+                        <div class="chat-button mt-3">
+                            <a class="chat-btn" data-toggle="modal" data-target="#mortgage_result">Send Message</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

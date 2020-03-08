@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+    <!-- Metas -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Lucky Adogun" />
+    <!-- Links -->
+    <link rel="icon" type="image/png" href="#" />
+    <!-- google fonts-->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"> -->
+    <!-- Plugins CSS -->
+    <link href="{% static 'assets/css/plugin.css' %}" rel="stylesheet" />
+    <!-- style CSS -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
+
+    <!-- Document Title -->
+    <title>{% block title %} {% endblock title %}</title>
+</head>
+
+<body>
+    <!--Preloader starts-->
+    <div class="preloader js-preloader">
+        <img src="{% static 'assets/images/preloader.gif' %}" alt="...">
+    </div>
+    <!--Preloader ends-->
+
+    <!--Page Wrapper starts-->
+    <div class="page-wrapper">
+
+        <!-- Header starts -->
+        {% block header %}
+
+        {% endblock %}
+        <!-- Header Ends -->
+
+
+        <!-- content starts -->
+        {% block content %}
+
+        {% endblock %}
+        <!-- content ends -->
+
+
+        <!-- Scroll to top starts-->
+        <span class="scrolltotop"><i class="lnr lnr-arrow-up"></i></span>
+        <!-- Scroll to top ends-->
+
+
+        <!--Agent Chat box starts-->
+        {% block chatbox %}
+
+        {% endblock %}
+        <!--Agent Chat box ends-->
+    </div>
+    <!-- Footer Begins -->
+    {% block footer %}
+
+    {% endblock %}
+    <!-- Footer Ends -->
+
+    <!--login Modal starts-->
+        {% if not user.is_authenticated %} {% include "components/modal.html" %} {% else %} <div></div> {% endif %}
+    <!--login Modal ends-->
+
+    <!--Scripts starts-->
+    <!--plugin js-->
+    <script src="{% static 'assets/js/plugin.js' %}"></script>
+    <!--google maps-->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script> -->
+    <!--Main js-->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <!--Scripts ends-->
+</body>
+
+</html>
