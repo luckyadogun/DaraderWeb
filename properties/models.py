@@ -31,10 +31,16 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "countries"
+
 
 class State(models.Model):
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     name = models.CharField(_("state"), max_length=200)
+    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 def company_logo_image_path(instance, filename):
@@ -51,29 +57,38 @@ class Company(TimeStampedModel):
     )
 
     is_approved = models.BooleanField(
-        _("approved companies"), 
+        _("approve company"), 
         help_text="click here to approve or disapprove this company", 
         default=False)
     is_featured = models.BooleanField(
-        _("featured companies"), 
+        _("feature company"), 
         help_text="click here if this company made payment to be featured", 
         default=False)
-    is_featured_expires = models.DateField(null=True)
-    manager = models.ForeignKey(User, on_delete=models.PROTECT)
+    is_featured_expires = models.DateField(
+        null=True, verbose_name="feature expiry date", blank=True)
+    manager = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="company")
     name = models.CharField(
         _("company name"), max_length=200, unique=True)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$', 
         message="Phone number must be entered in the "
                 "format: '+999999999'. Up to 15 digits allowed.")
-    office_phone = models.CharField(validators=[phone_regex], max_length=17)
-    mobile_phone = models.CharField(validators=[phone_regex], max_length=17)
+    office_phone = models.CharField(
+        validators=[phone_regex], max_length=17, 
+        null=True, blank=True)
+    mobile_phone = models.CharField(
+        validators=[phone_regex], max_length=17,
+        null=True, blank=True)
+    address = models.CharField(_("address"), max_length=200, null=True)
     about = models.TextField(_("about"), blank=True, null=True)
     logo = models.ImageField(
-        _("logo"), upload_to=company_logo_image_path, default='')
+        _("logo"), upload_to=company_logo_image_path, 
+        default='', null=True, blank=True)
     account_type = models.CharField(
         _("account type"), max_length=20, choices=ACCOUNT_TYPE_CHOICES)
 
+    objects = models.Manager()
     agents = ApprovedAgentManager()
     developers = ApprovedDeveloperManager()
     featured = FeaturedCompaniesManager()
@@ -85,6 +100,9 @@ class Company(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "companies"
 
 
 class Property(TimeStampedModel):
@@ -123,11 +141,12 @@ class Property(TimeStampedModel):
     )
 
     property_id = models.CharField(
-        max_length=8, unique=True, default=uuid.uuid4().hex[8:16])
+        _("Property ID"), max_length=8, unique=True, 
+        default=uuid.uuid4().hex[8:16])
     title = models.CharField(_("title"), max_length=200)
     address = models.CharField(_("address"), max_length=200)
-    neighborhood = models.CharField(
-        _("neighborhood"), max_length=200, 
+    area = models.CharField(
+        _("area"), max_length=200, 
         blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
@@ -146,8 +165,9 @@ class Property(TimeStampedModel):
     price = models.DecimalField(
         _("price"), 
         max_digits=20, decimal_places=2)
-    owner = models.ForeignKey(Company, on_delete=models.CASCADE)
-    description = models.TextField(_("description"))
+    owner = models.ForeignKey(
+        Company, on_delete=models.CASCADE, related_name="property")
+    description = models.TextField(_("description"), null=True, blank=True)
 
     objects = models.Manager()
     forsale = PropertyForSaleManager()
@@ -158,6 +178,7 @@ class Property(TimeStampedModel):
         return f"#{self.property_id} - {self.title}"
 
     class Meta:
+        verbose_name_plural = "properties"
         get_latest_by = ["created"]
 
 
@@ -168,8 +189,12 @@ def property_images_directory_path(instance, filename):
 class Gallery(models.Model):
     image = models.ImageField(
         _("image"), upload_to=property_images_directory_path)
-    video_link = models.URLField(max_length=255)
-    property_obj = models.ForeignKey(Property, on_delete=models.CASCADE)
+    video_link = models.URLField(max_length=255, null=True, blank=True)
+    property_obj = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="gallery")
+
+    class Meta:
+        verbose_name_plural = "gallery"
 
 
 class PropertyDetails(models.Model):
@@ -181,11 +206,33 @@ class PropertyDetails(models.Model):
     covered_area = models.PositiveSmallIntegerField(blank=True, null=True)
     toilets = models.PositiveSmallIntegerField(blank=True, null=True)
     has_basketball_court = models.BooleanField(
-        _("basketball court"), blank=True, null=True)
+        _("basketball court"), default=False)
     has_gym = models.BooleanField(
-        _("gym"), blank=True, null=True)
+        _("gym"), default=False)
     is_wheelchair_friendly = models.BooleanField(
-        _("wheelchair friendly"), blank=True, null=True)
+        _("wheelchair friendly"), default=False)
     has_swimming_pool = models.BooleanField(
-        _("swimming pool"), blank=True, null=True)
-    property_obj = models.ForeignKey(Property, on_delete=models.CASCADE)
+        _("swimming pool"), default=False)
+    property_obj = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="property_details")
+
+    class Meta:
+        verbose_name_plural = "Property Details"
+
+
+class Client(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    favorite_properties = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="client")
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+
+class SocialMediaURL(TimeStampedModel):
+    client = models.OneToOneField(
+        Client, on_delete=models.CASCADE, 
+        related_name="socialmedia", null=True)
+    facebook = models.URLField(max_length=255)
+    twitter = models.URLField(max_length=255)
+    instagram = models.URLField(max_length=255)
