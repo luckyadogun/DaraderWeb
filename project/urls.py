@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+admin.site.site_header = "Darader Admin Portal"
+admin.site.site_title = "Darader Admin Portal"
+admin.site.index_title = "Welcome to Darader Admin Portal"
+
 urlpatterns = [
     path('secret-saucer/', admin.site.urls),
     path('', include('properties.urls'), name='properties'),
