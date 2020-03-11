@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block title %} Find amazing properties in Nigeria {% endblock title %}
 
@@ -97,8 +98,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="section-title v1">
-                        <p>Find rental properties anywhere</p>
-                        <h2>Discover Popular Properties</h2>
+                        <p>Find awesome rental propertie</p>
+                        <h2>Discover Rental Properties</h2>
                     </div>
                 </div>
             </div>
@@ -106,56 +107,61 @@
                     <div class="tab-content mt-30">
                         <div class="tab-pane fade show active" id="all_property">
                             <div class="row">
+                                {% for property in for_rent %}
                                 <div class="col-xl-4 col-md-6 col-sm-12">
-                                    <div class="single-property-box">
+                                    <div class="single-property-box">                                        
                                         <div class="property-item">
-                                            <a class="property-img" href="single-listing-two.html"><img src="{% static 'assets/images/property/property_1.jpg' %}" alt="#">
+                                            {% for img in property.gallery.all %}                                                                                                              
+                                            <a class="property-img" href="single-listing-two.html">
+                                                {% if forloop.first %}
+                                                    <img src="{{ img.image.url }}" alt="#">
+                                                {% endif %}
                                             </a>
+                                            {% endfor %}
                                             <ul class="feature_text">
-                                                <li class="feature_cb"><span> Featured</span></li>
-                                                <li class="feature_or"><span>For Sale</span></li>
+                                                {% if property.owner.is_featured %}
+                                                    <li class="feature_cb"><span> Featured</span></li>
+                                                {% endif %}
+                                                <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
                                             </ul>
                                             <div class="property-author-wrap">
                                                 <a href="#" class="property-author">
-                                                    <img src="{% static 'assets/images/agents/agent_min_1.jpg' %}" alt="...">
-                                                    <span>Tony Stark</span>
+                                                    <img src="{{ property.owner.logo.url }}" alt="...">
+                                                    <span>{{ property.owner }}</span>
                                                 </a>
                                                 <ul class="save-btn">
                                                     <li data-toggle="tooltip" data-placement="top" title="Photos"><a href=".photo-gallery" class="btn-gallery"><i class="lnr lnr-camera"></i></a></li>
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Add to Compare"><a href="#"><i class="fas fa-arrows-alt-h"></i></a></li>
+                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
                                                 </ul>
+                                                {% for img in property.gallery.all %}                                              
                                                 <div class="hidden photo-gallery">
-                                                    <a href="{% static 'assets/images/single-listing/property_view_1.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_2.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_3.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_4.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_5.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_6.jpg' %}"></a>
-                                                    <a href="{% static 'assets/images/single-listing/property_view_7.jpg' %}"></a>
+                                                    <a href="{{ img.image.url }}"></a>                                                
                                                 </div>
-                                            </div>
-                                        </div>
+                                                {% endfor %}
+                                            </div>                                                                                        
+                                        </div>                                        
                                         <div class="property-title-box">
-                                            <h4><a href="single-listing-one.html">Villa on Hartford</a></h4>
+                                            <h4><a href="single-listing-one.html">{{ property.title }}</a></h4>
                                             <div class="property-location">
                                                 <i class="fa fa-map-marker-alt"></i>
-                                                <p>2854 Meadow View Drive, Hartford, USA</p>
+                                                <p>{{ property.address }}</p>
                                             </div>
+                                            {% for p in property.property_details.all %}
                                             <ul class="property-feature">
                                                 <li> <i class="fas fa-bed"></i>
-                                                    <span>4 Bedrooms</span>
+                                                    <span>{{ p.bedrooms }} Bedrooms</span>
                                                 </li>
                                                 <li> <i class="fas fa-bath"></i>
-                                                    <span>3 Bath</span>
+                                                    <span>{{ p.bathrooms }} Bath</span>
                                                 </li>
                                                 <li> <i class="fas fa-arrows-alt"></i>
-                                                    <span>2142 sq ft</span>
+                                                    <span>{{ p.total_area }} sq ft</span>
                                                 </li>
                                                 <li> <i class="fas fa-car"></i>
-                                                    <span>2 Garage</span>
+                                                    <span>{{ p.parking_spaces }} Garage</span>
                                                 </li>
                                             </ul>
+                                            {% endfor %}
                                             <div class="trending-bottom">
                                                 <div class="trend-left float-left">
                                                     <ul class="product-rating">
@@ -168,130 +174,14 @@
                                                 </div>
                                                 <a class="trend-right float-right">
                                                     <div class="trend-open">
-                                                        <p><span class="per_sale">starts from</span>$25000</p>
+                                                        <p><span class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
                                                     </div>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6 col-sm-12">
-                                    <div class="single-property-box">
-                                        <div class="property-item">
-                                            <a class="property-img" href="single-listing-two.html"><img src="{% static 'assets/images/property/property_3.jpg' %}" alt="#"></a>
-                                            <ul class="feature_text">
-                                                <li class="feature_or"><span>For Rent</span></li>
-                                            </ul>
-                                            <div class="property-author-wrap">
-                                                <a href="#" class="property-author">
-                                                    <img src="{% static 'assets/images/agents/agency_2.jpg' %}" alt="...">
-                                                    <span>Zilion Properties</span>
-                                                </a>
-                                                <ul class="save-btn">
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Add to Compare"><a href="#"><i class="fas fa-arrows-alt-h"></i></a></li>
-                                                </ul>
-                                            </div>
-
-                                        </div>
-                                        <div class="property-title-box">
-                                            <h4><a href="single-listing-one.html">Family home in Glasgow</a></h4>
-                                            <div class="property-location">
-                                                <i class="fa fa-map-marker-alt"></i>
-                                                <p>60 High St, Glasgow, London</p>
-                                            </div>
-                                            <ul class="property-feature">
-                                                <li> <i class="fas fa-bed"></i>
-                                                    <span>3 Bedrooms</span>
-                                                </li>
-                                                <li> <i class="fas fa-bath"></i>
-                                                    <span>3 Bath</span>
-                                                </li>
-                                                <li> <i class="fas fa-arrows-alt"></i>
-                                                    <span>1982 sq ft</span>
-                                                </li>
-                                                <li> <i class="fas fa-car"></i>
-                                                    <span>1 Garage</span>
-                                                </li>
-                                            </ul>
-                                            <div class="trending-bottom">
-                                                <div class="trend-left float-left">
-                                                    <ul class="product-rating">
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <a class="trend-right float-right">
-                                                    <div class="trend-open">
-                                                        <p>$7500<span class="per_month">month</span> </p>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-md-6 col-sm-12">
-                                    <div class="single-property-box">
-                                        <div class="property-item">
-                                            <a class="property-img" href="single-listing-two.html"><img src="{% static 'assets/images/property/property_6.jpg' %}" alt="#"></a>
-                                            <ul class="feature_text">
-                                                <li class="feature_cb"><span> New</span></li>
-                                                <li class="feature_or"><span>For Sale</span></li>
-                                            </ul>
-                                            <div class="property-author-wrap">
-                                                <a href="#" class="property-author">
-                                                    <img src="{% static 'assets/images/agents/agent_min_2.jpg' %}" alt="...">
-                                                    <span>Bob Haris</span>
-                                                </a>
-                                                <ul class="save-btn">
-                                                    <li data-toggle="tooltip" data-placement="top" title="Video"><a href="https://www.youtube.com/watch?v=v_ATnE02qFs" class="property-yt"><i class="fas fa-play"></i></a></li>
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Add to Compare"><a href="#"><i class="fas fa-arrows-alt-h"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="property-title-box">
-                                            <h4><a href="single-listing-one.html">Apartment in Cecil Lake</a></h4>
-                                            <div class="property-location">
-                                                <i class="fa fa-map-marker-alt"></i>
-                                                <p>131 midlas , Cecil Lake, BC</p>
-                                            </div>
-                                            <ul class="property-feature">
-                                                <li> <i class="fas fa-bed"></i>
-                                                    <span>3 Bedrooms</span>
-                                                </li>
-                                                <li> <i class="fas fa-bath"></i>
-                                                    <span>2 Bath</span>
-                                                </li>
-                                                <li> <i class="fas fa-arrows-alt"></i>
-                                                    <span>1600 sq ft</span>
-                                                </li>
-                                                <li> <i class="fas fa-car"></i>
-                                                    <span>1 Garage</span>
-                                                </li>
-                                            </ul>
-                                            <div class="trending-bottom">
-                                                <div class="trend-left float-left">
-                                                    <ul class="product-rating">
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <a class="trend-right float-right">
-                                                    <div class="trend-open">
-                                                        <p><span class="per_sale">starts from</span>$9000</p>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}                          
                             </div>
                         </div>
                         <div class="tab-pane fade" id="for_sale">

@@ -1,4 +1,5 @@
 import uuid
+from PIL import Image
 
 from django.db import models
 from django.urls import reverse
@@ -44,7 +45,7 @@ class State(models.Model):
 
 
 def company_logo_image_path(instance, filename):
-    return f"companies/{instance.id}/images/{filename}"
+    return f"companies/{instance.name}/images/{filename}"
 
 
 class Company(TimeStampedModel):
@@ -57,12 +58,12 @@ class Company(TimeStampedModel):
     )
 
     is_approved = models.BooleanField(
-        _("approve company"), 
+        _("approve company"),
         help_text="click here to approve or disapprove this company", 
         default=False)
     is_featured = models.BooleanField(
-        _("feature company"), 
-        help_text="click here if this company made payment to be featured", 
+        _("feature company"),
+        help_text="click here if this company made payment to be featured",
         default=False)
     is_featured_expires = models.DateField(
         null=True, verbose_name="feature expiry date", blank=True)
@@ -75,7 +76,7 @@ class Company(TimeStampedModel):
         message="Phone number must be entered in the "
                 "format: '+999999999'. Up to 15 digits allowed.")
     office_phone = models.CharField(
-        validators=[phone_regex], max_length=17, 
+        validators=[phone_regex], max_length=17,
         null=True, blank=True)
     mobile_phone = models.CharField(
         validators=[phone_regex], max_length=17,
@@ -83,7 +84,7 @@ class Company(TimeStampedModel):
     address = models.CharField(_("address"), max_length=200, null=True)
     about = models.TextField(_("about"), blank=True, null=True)
     logo = models.ImageField(
-        _("logo"), upload_to=company_logo_image_path, 
+        _("logo"), upload_to=company_logo_image_path,
         default='', null=True, blank=True)
     account_type = models.CharField(
         _("account type"), max_length=20, choices=ACCOUNT_TYPE_CHOICES)
@@ -183,7 +184,7 @@ class Property(TimeStampedModel):
 
 
 def property_images_directory_path(instance, filename):
-    return f"property/{instance.property_id}/images/{filename}"
+    return f"property/{instance.property_obj.property_id}/images/{filename}"
 
 
 class Gallery(models.Model):
