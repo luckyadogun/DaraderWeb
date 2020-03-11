@@ -11,7 +11,7 @@ class PropertyDetailsInline(admin.StackedInline):
     max_num = 1
 
 
-class PropertyImageInline(admin.StackedInline):
+class PropertyImageInline(admin.TabularInline):
     model = Gallery
     extra = 0
 

@@ -75,5 +75,5 @@ class PropertyForLeaseManager(models.Manager):
     """
     def get_queryset(self):
         return super().get_queryset().filter(
-            property_status="lease"
+            property_category="lease"
         )
