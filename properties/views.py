@@ -17,9 +17,10 @@ class HomePageView(TemplateView):
         # - add properties to context
         # - edit html code with for-loop
         context = super().get_context_data(**kwargs)
-        context['for_sale'] = Property.forsale.order_by('created')[:5]
-        context['for_rent'] = Property.forrent.order_by('created')[:5]
-        context['for_lease'] = Property.forlease.order_by('created')[:5]
+        context['for_sale'] = Property.forsale.order_by('created')[:3]
+        context['for_rent'] = Property.forrent.order_by('created')[:3]
+        context['for_lease'] = Property.forlease.order_by('created')[:3]
+        context['recent_properties'] = Property.objects.order_by('created')[:7]
         context['featured'] = get_currently_featured()
 
         return context

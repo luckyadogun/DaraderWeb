@@ -1,5 +1,5 @@
 import uuid
-from PIL import Image
+import random
 
 from django.db import models
 from django.urls import reverse
@@ -106,6 +106,14 @@ class Company(TimeStampedModel):
         verbose_name_plural = "companies"
 
 
+def generate_property_id():
+    """
+    Generate a hardened unique property ID
+    with little possibility of collision
+    """
+    return uuid.uuid4().hex[8:16] + str(random.random())[20:]
+
+
 class Property(TimeStampedModel):
     SALE = "sale"
     RENT = "rent"
@@ -142,8 +150,8 @@ class Property(TimeStampedModel):
     )
 
     property_id = models.CharField(
-        _("Property ID"), max_length=8, unique=True, 
-        default=uuid.uuid4().hex[8:16])
+        _("Property ID"), max_length=40, unique=True, 
+        default=uuid.uuid4())
     title = models.CharField(_("title"), max_length=200)
     address = models.CharField(_("address"), max_length=200)
     area = models.CharField(
