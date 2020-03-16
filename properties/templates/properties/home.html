@@ -36,35 +36,39 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="property-status">
-                                                    <option>Property Status</option>
-                                                    <option>Any</option>
+                                                <select class="hero__form-input  form-control custom-select" name="property-category">
+                                                    <option selected disabled>Property Category</option>
                                                     <option>For Rent</option>
                                                     <option>For Sale</option>
+                                                    <option>For Lease</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="property-type">
-                                                    <option>Property Type</option>
-                                                    <option>Residential</option>
-                                                    <option>Commercial</option>
+                                                <select class="hero__form-input  form-control custom-select" name="property-type">                                                    
+                                                    <option selected disabled>Property Type</option>
+                                                    <option>Flat</option>
+                                                    <option>House</option>                                                    
                                                     <option>Land</option>
+                                                    <option>Commercial</option>
+                                                    <option>Even Centre</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
                                                 <select class="hero__form-input  form-control custom-select" name="bedrooms">
-                                                    <option>Bed</option>
+                                                    <option selected disabled>Bedrooms</option>
                                                     <option>4</option>
                                                     <option>3</option>
                                                     <option>2</option>
+                                                    <option>1</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
                                                 <select class="hero__form-input  form-control custom-select" name="bathrooms">
-                                                    <option>Bath</option>
+                                                    <option selected disabled>Bathrooms</option>
                                                     <option>4</option>
                                                     <option>3</option>
                                                     <option>2</option>
+                                                    <option>1</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-12 col-md-8 col-sm-12">
@@ -443,10 +447,6 @@
 
     {% endblock %}
 
-
-    {% block chatbox %}
-        {% include "components/chatbox__home.html" %}
-    {% endblock %}
 
     {% block footer %}
         {% include "components/footer__v1.html" %}
