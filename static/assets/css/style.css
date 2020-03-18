@@ -7159,8 +7159,10 @@ ul.icon li::before {
 }
 
 .recent-list .entry-img img {
-    width: 100%;
     border-radius: 2px;
+    width: 370px;
+    height: 110px;
+    object-fit: cover;
 }
 
 .recent-list .entry-title {

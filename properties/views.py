@@ -1,7 +1,7 @@
 from itertools import chain
 
 from django.urls import reverse
-from django.core import serializers
+from django.core.cache import cache
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
@@ -16,11 +16,11 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['for_sale'] = Property.forsale.order_by('created')[:3]
-        context['for_rent'] = Property.forrent.order_by('created')[:3]
-        context['for_lease'] = Property.forlease.order_by('created')[:3]
-        context['recent_properties'] = Property.objects.order_by('created')[:7]
-        context['featured'] = get_currently_featured()
+        context["for_sale"] = Property.forsale.order_by("created")[:3]
+        context["for_rent"] = Property.forrent.order_by("created")[:3]
+        context["for_lease"] = Property.forlease.order_by("created")[:3]
+        context["recent_properties"] = Property.objects.order_by("created")[:7]
+        context["featured"] = get_currently_featured()
 
         return context
 
@@ -37,7 +37,7 @@ class HomePageView(TemplateView):
         property_category = self.request.POST.get("property-category", "")
         bedrooms = self.request.POST.get("bedrooms", 1)
         bathrooms = self.request.POST.get("bathrooms", 1)
-        budget = self.request.POST.get("budget").split('-')
+        budget = self.request.POST.get("budget").split("-")
 
         q1 = PropertyDetails.objects.filter(
             property_obj__title__icontains=search_title)
@@ -51,11 +51,10 @@ class HomePageView(TemplateView):
             property_obj__price__range=(
                 int(budget[0]), int(budget[1])))
 
-        query = list(set(chain(q1, q2, q3, q4, q5)))
-        data = serializers.serialize("json", query)
-        self.request.session['query'] = data
+        query = list(set(chain(q1, q2, q3, q4, q5, q6)))
+        cache.set("query", query, timeout=300)
 
-        return HttpResponseRedirect('/search/')
+        return HttpResponseRedirect(reverse("search"))
 
 
 class SearchResultView(TemplateView):
@@ -64,8 +63,17 @@ class SearchResultView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        if 'query' in self.request.session:
-            print(self.request.session['query'])
-
+        context["query"] = cache.get("query")
+        context["recent_properties"] = Property.objects.order_by("created")[:5]
+        context["total_properties"] = Property.objects.count()
+        context["total_flats"] = Property.objects.filter(
+                                    property_type="flat").count()
+        context["total_houses"] = Property.objects.filter(
+                                    property_type="house").count()
+        context["total_lands"] = Property.objects.filter(
+                                    property_type="land").count()
+        context["total_commercials"] = Property.objects.filter(
+                                    property_type="commercial").count()
+        context["total_event_centres"] = Property.objects.filter(
+                                    property_type="event centre").count()
         return context
