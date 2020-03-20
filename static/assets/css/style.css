@@ -6406,7 +6406,7 @@ ul.icon li::before {
     font-size: 16px;
     color: #444;
     font-weight: 500;
-    line-height: 1;
+    line-height: 2;
 }
 
 .filter-checkbox ul {
