@@ -1,8 +1,8 @@
 from django.db.models import Q
 from django.urls import reverse
-from django.core.paginator import Paginator
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect
 
 from .models import Property, PropertyDetails
@@ -92,4 +92,14 @@ class SearchResultView(ListView):
                                     property_type="commercial").count()
         context["total_event_centres"] = Property.objects.filter(
                                     property_type="event centre").count()
+        return context
+
+
+class PropertyDetailView(DetailView):
+    context_object_name = "property"
+    template_name = "properties/single-property.html"
+    model = PropertyDetails
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         return context

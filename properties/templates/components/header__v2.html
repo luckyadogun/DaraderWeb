@@ -8,14 +8,14 @@
                 <div class="site-navbar">
                     <div class="row align-items-center">
                         <div class="col-lg-2 col-md-6 col-9 order-2 order-xl-1 order-lg-1 order-md-1">
-                            <a class="navbar-brand" href="index.html"><img src="{% static 'assets/images/logo-blue.png' %}" alt="logo" class="img-fluid"></a>
+                            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'assets/images/logo-blue.png' %}" alt="logo" class="img-fluid"></a>
                         </div>
                         <div class="col-lg-6 col-md-1 col-3  order-3 order-xl-2 order-lg-2 order-md-3 pl-xs-0">
                             <nav class="site-navigation text-right">
                                 <div class="container">
                                     <ul class="site-menu js-clone-nav d-none d-lg-block"> 
                                         <li>
-                                            <a href="index.html">Home</a>                                                
+                                            <a href="{% url 'home' %}">Home</a>                                                 
                                         </li>
                                         <li>
                                             <a href="forrent.html">For Rent</a>                                                
@@ -50,14 +50,25 @@
                         <div class="col-lg-4 col-md-5 col-12 order-1 order-xl-3 order-lg-3 order-md-2 text-right pr-xs-0">
                             <div class="menu-btn">
                                 <ul class="user-btn">
-                                    <li><a href="#"><i class="fas fa-arrows-alt-h"></i></a>
-                                        <span>3</span>
-                                    </li>
-                                    <li><a href="#"><i class="lnr lnr-heart"></i></a>
-                                        <span>0</span>
-                                    </li>
-                                    <li><a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-user"></i></a>
-                                    </li>
+                                    {% if user.is_authenticated %}                               
+                                        <li><a href="#"><i class="lnr lnr-heart"></i></a>
+                                            <span>0</span>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if user.is_authenticated and user.company.exists %}
+                                        <div class="add-list float-right ml-3">
+                                            <a class="btn v6" href="add-listing.html"><i class="lnr lnr-home"></i>Add Listing </a>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if not user.is_authenticated %}
+                                        <li><a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-heart"></i></a>
+                                            <span>0</span>
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-user"></i></a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                                 <div class="add-list float-right ml-3">
                                     <a class="btn v6" href="add-listing.html"><i class="lnr lnr-home"></i>Add Listing </a>

@@ -60,7 +60,7 @@
                                         <div class="single-property-box">
                                             <div class="property-item">
                                                 {% for img in property.property_obj.gallery.all %}
-                                                <a class="property-img" href="single-listing-two.html">
+                                                <a class="property-img" href="{{ property.property_obj.get_absolute_url }}">
                                                     {% if forloop.first %}
                                                         <img src="{{ img.image.url }}" alt="#">
                                                     {% endif %}
@@ -83,7 +83,7 @@
                                                 </div>
                                             </div>
                                             <div class="property-title-box">
-                                                <h4><a href="single-listing-one.html">{{ property.property_obj.title }}</a></h4>
+                                                <h4><a href="{{ property.property_obj.get_absolute_url }}">{{ property.property_obj.title }}</a></h4>
                                                 <div class="property-location">
                                                     <i class="fa fa-map-marker-alt"></i>
                                                     <p>{{ property.property_obj.address }}</p>
@@ -133,7 +133,7 @@
                                         <div class="col-md-6 col-sm-12">
                                             <div class="property-item">
                                                 {% for img in property.property_obj.gallery.all %}
-                                                <a class="property-img" href="single-listing-two.html">
+                                                <a class="property-img" href="{{ property.property_obj.get_absolute_url }}">
                                                     {% if forloop.first %}
                                                         <img src="{{ img.image.url }}" alt="#">
                                                     {% endif %}
@@ -158,7 +158,7 @@
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="property-title-box">
-                                                <h4><a href="single-listing-one.html">{{ property.property_obj.title }}</a></h4>
+                                                <h4><a href="{{ property.property_obj.get_absolute_url }}">{{ property.property_obj.title }}</a></h4>
                                                 <div class="property-location">
                                                     <i class="fa fa-map-marker-alt"></i>
                                                     <p>{{ property.property_obj.address }}</p>
@@ -373,7 +373,7 @@
                             </div>
                             <div class="col-lg-7 col-8 no-pad-left">
                                 <div class="entry-text">
-                                    <h4 class="entry-title"><a href="single-news-one.html">{{ recent.title }}</a></h4>
+                                    <h4 class="entry-title"><a href="{{ recent.get_absolute_url }}">{{ recent.title }}</a></h4>
                                     <div class="property-location">
                                         <i class="fa fa-map-marker-alt"></i>
                                         <p>{{ recent.address|truncatewords:3 }}</p>
