@@ -205,8 +205,7 @@ def property_images_directory_path(instance, filename):
 
 class Gallery(models.Model):
     image = models.ImageField(
-        _("image"), upload_to=property_images_directory_path)
-    video_link = models.URLField(max_length=255, null=True, blank=True)
+        _("image"), upload_to=property_images_directory_path)    
     property_obj = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name="gallery")
 

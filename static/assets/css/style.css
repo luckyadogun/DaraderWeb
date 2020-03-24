@@ -8852,6 +8852,9 @@ ul.listing-features {
 
 .list-gallery-thumb img {
     cursor: pointer;
+    width: 140px;
+    height: 69px;
+    object-fit: cover;
 }
 
 .single-property-header.property-carousel .carousel-indicators img {

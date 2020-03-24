@@ -102,4 +102,7 @@ class PropertyDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["recent_properties"] = Property.objects.order_by("created")[:3]
+        context["featured"] = get_currently_featured()
+        
         return context

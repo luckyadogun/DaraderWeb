@@ -1,6 +1,6 @@
 import random
 
-from .models import Company
+from .models import Company, Property
 
 
 def get_currently_featured():
@@ -18,4 +18,4 @@ def get_currently_featured():
             random.randrange(0, total_featured_companies)]
         return currently_featured.property.all()[:5]
     except ValueError:
-        return Company.objects.filter(is_approved=True)[:5]
+        return Property.objects.all()[:5]
