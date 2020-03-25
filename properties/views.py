@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.urls import reverse
+from django.contrib import messages
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -96,7 +97,6 @@ class SearchResultView(ListView):
 
 
 class PropertyDetailView(DetailView):
-    context_object_name = "property"
     template_name = "properties/single-property.html"
     model = PropertyDetails
 
@@ -104,5 +104,30 @@ class PropertyDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["recent_properties"] = Property.objects.order_by("created")[:3]
         context["featured"] = get_currently_featured()
-        
+        context["images"] = [x.image.url for x in self.object.property_obj.gallery.all()]
+
+        obj = self.get_object()
+        context["similar"] = PropertyDetails.objects.filter(
+            Q(property_obj__title__icontains=obj.property_obj.title) | 
+            Q(property_obj__property_type=obj.property_obj.property_type) |
+            Q(property_obj__area=obj.property_obj.area) |
+            Q(property_obj__owner=obj.property_obj.owner)
+        )
+
         return context
+
+    def post(self, *args, **kwargs):
+        tour_date = self.request.POST.get("tour-date")
+        tour_time = self.request.POST.get("tour-time")        
+        inquirer_name = self.request.POST.get("inquirer-name")
+        inquirer_phone = self.request.POST.get("inquirer-phone")
+        inquirer_email = self.request.POST.get("inquirer-email")
+        comment = self.request.POST.get("comment")
+
+        if inquirer_name and inquirer_email and inquirer_phone:
+            # send email
+            self.object = self.get_object()
+            context = self.get_context_data()
+            
+            messages.success(self.request, "Successfully Booked!")
+            return self.render_to_response(context=context)

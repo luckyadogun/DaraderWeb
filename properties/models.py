@@ -153,7 +153,7 @@ class Property(TimeStampedModel):
         _("Property ID"), max_length=40, unique=True, 
         default=uuid.uuid4())
     title = models.CharField(_("title"), max_length=200)
-    slug = models.SlugField(_("slug"), max_length=255, default=title)
+    slug = models.SlugField(_("slug"), max_length=400, blank=True)
     address = models.CharField(_("address"), max_length=200)
     area = models.CharField(
         _("area"), max_length=200, 

@@ -132,13 +132,9 @@
                                     <div class="row">                                        
                                         <div class="col-md-6 col-sm-12">
                                             <div class="property-item">
-                                                {% for img in property.property_obj.gallery.all %}
                                                 <a class="property-img" href="{{ property.property_obj.get_absolute_url }}">
-                                                    {% if forloop.first %}
-                                                        <img src="{{ img.image.url }}" alt="#">
-                                                    {% endif %}
+                                                    <img src="{{ property.property_obj.gallery.first.image.url }}" alt="#">
                                                 </a> 
-                                                {% endfor %}
                                                 <ul class="feature_text">
                                                     {% if property.property_obj.owner.is_featured %}
                                                         <li class="feature_cb"><span> Featured</span></li>
@@ -189,7 +185,7 @@
                                                     </div>
                                                     <a class="trend-right float-right">
                                                         <div class="trend-open">
-                                                            <p><span class="per_sale">Price:</span>₦{{ property.property_obj.price|floatformat|intcomma }}</p>
+                                                            <p><span>Price:</span>₦{{ property.property_obj.price|floatformat|intcomma }}</p>
                                                         </div>
                                                     </a>
                                                 </div>
