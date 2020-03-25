@@ -47,6 +47,9 @@
     32 Responsive
 -------------------------------------------------------------*/
 
+/* ----------------
+   Custom Styles 
+-------------------*/
 
 /*-----------------------------------------------------------
             General Styles 
@@ -6406,7 +6409,7 @@ ul.icon li::before {
     font-size: 16px;
     color: #444;
     font-weight: 500;
-    line-height: 1;
+    line-height: 2;
 }
 
 .filter-checkbox ul {
@@ -7159,8 +7162,10 @@ ul.icon li::before {
 }
 
 .recent-list .entry-img img {
-    width: 100%;
     border-radius: 2px;
+    width: 370px;
+    height: 110px;
+    object-fit: cover;
 }
 
 .recent-list .entry-title {
@@ -8850,6 +8855,9 @@ ul.listing-features {
 
 .list-gallery-thumb img {
     cursor: pointer;
+    width: 140px;
+    height: 69px;
+    object-fit: cover;
 }
 
 .single-property-header.property-carousel .carousel-indicators img {

@@ -385,11 +385,11 @@
             max: 100000,
             values: [0, 5600],
             slide: function (event, ui) {
-                $("#amount_two").val(ui.values[0] + " - ₦" + ui.values[1]);
+                $("#amount_two").val(ui.values[0] + " - " + ui.values[1]);
             }
         });
         $(" #amount_two").val($("#slider-range_two").slider("values", 0) +
-            " - ₦" + $("#slider-range_two").slider("values", 1));
+            " - " + $("#slider-range_two").slider("values", 1));
         /* -------------------------------------
                  Category menu Activation
         -------------------------------------- */

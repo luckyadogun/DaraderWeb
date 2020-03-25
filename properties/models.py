@@ -3,6 +3,7 @@ import random
 
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from django.core.validators import RegexValidator
 
@@ -96,8 +97,7 @@ class Company(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse(
-            f"company-detail/{self.account_type.lower()}", 
-            kwargs={'id': self.pk})
+            f"companies/{self.account_type.lower()}/{self.name}/")
 
     def __str__(self):
         return self.name
@@ -153,6 +153,7 @@ class Property(TimeStampedModel):
         _("Property ID"), max_length=40, unique=True, 
         default=uuid.uuid4())
     title = models.CharField(_("title"), max_length=200)
+    slug = models.SlugField(_("slug"), max_length=400, blank=True)
     address = models.CharField(_("address"), max_length=200)
     area = models.CharField(
         _("area"), max_length=200, 
@@ -183,6 +184,13 @@ class Property(TimeStampedModel):
     forrent = PropertyForRentManager()
     forlease = PropertyForLeaseManager()
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Property, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return f"/property/{self.pk}/{self.slug}/"
+
     def __str__(self):
         return f"#{self.property_id} - {self.title}"
 
@@ -197,8 +205,7 @@ def property_images_directory_path(instance, filename):
 
 class Gallery(models.Model):
     image = models.ImageField(
-        _("image"), upload_to=property_images_directory_path)
-    video_link = models.URLField(max_length=255, null=True, blank=True)
+        _("image"), upload_to=property_images_directory_path)    
     property_obj = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name="gallery")
 
