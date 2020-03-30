@@ -1,0 +1,32 @@
+{% extends "property_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock title %}
+
+    {% block header %}
+        {% include "properties_components/header__v2.html" %}
+    {% endblock %}
+    
+    {% block content %}
+    <!--error  start-->
+    <div class="error-section mt-150 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3  error-text text-center">
+                    <div class="error-content">
+                        <img src="{% static 'assets/images/others/404.png' %}" alt="404 not found"/>
+                        <h4>Ohh! Page Not Found</h4>
+                        <p>Click here to go back to <a href="{% url 'properties:home' %}">Homepage</a> </p>
+                    </div>                               
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--error ends-->
+    {% endblock %}
+
+
+{% block footer %}
+    {% include "properties_components/footer__v1.html" %}
+{% endblock %}

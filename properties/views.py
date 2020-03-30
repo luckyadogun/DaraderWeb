@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 
 from .models import Property, PropertyDetails
 from .utils import get_currently_featured
@@ -41,7 +42,7 @@ class HomePageView(TemplateView):
             )
 
         self.request.session["query"] = list(set([qs.pk for qs in query]))
-        return HttpResponseRedirect(reverse("search"))
+        return HttpResponseRedirect(reverse("properties:search"))
 
 
 class SearchResultView(ListView):
@@ -63,6 +64,8 @@ class SearchResultView(ListView):
         gym = self.request.GET.get("gym")
         wheelchair = self.request.GET.get("wheelchair")
 
+        submit_action = self.request.GET.get("submit")
+
         new_query = PropertyDetails.objects.filter(
             Q(property_obj__title__icontains=search_title) |
             Q(property_obj__property_type=property_type) |
@@ -73,10 +76,42 @@ class SearchResultView(ListView):
             Q(has_swimming_pool=bool(swimming_pool)) | Q(has_gym=bool(gym)) |
             Q(is_wheelchair_friendly=bool(wheelchair))
             )
-        if len(new_query) != 0:
-            return new_query
-        else:
-            return [PropertyDetails.objects.get(pk=qs) for qs in self.request.session["query"]]
+
+        category_param = ["rent", "sale", "lease", ]
+
+        type_param = [
+            "flat", "land",
+            "house", "commercial",
+            "event centre", ]
+
+        if self.kwargs["queryset"] == "search":
+            if submit_action:
+                return new_query
+            else:
+                try:
+                    return [PropertyDetails.objects.get(pk=qs) for qs in self.request.session["query"]]
+                except KeyError:
+                    return ""
+
+        if self.kwargs["queryset"] in category_param:
+            if submit_action:
+                return new_query
+            else:
+                return PropertyDetails.objects.filter(
+                    property_obj__property_category=self.kwargs["queryset"])
+
+        if self.kwargs["queryset"] in type_param:
+            if submit_action:
+                return new_query
+            else:
+                return PropertyDetails.objects.filter(
+                    property_obj__property_type=self.kwargs["queryset"])
+
+        if self.kwargs["queryset"] == "all":
+            if submit_action:
+                return new_query
+            else:
+                return PropertyDetails.objects.all()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -128,6 +163,12 @@ class PropertyDetailView(DetailView):
             # send email
             self.object = self.get_object()
             context = self.get_context_data()
-            
             messages.success(self.request, "Successfully Booked!")
             return self.render_to_response(context=context)
+
+
+def handler404(request, exception, template_name="properties/404.html"):
+    response = render_to_response(
+        template_name)
+    response.status = 404
+    return response

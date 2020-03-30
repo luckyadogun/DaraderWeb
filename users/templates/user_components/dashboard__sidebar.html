@@ -1,0 +1,58 @@
+{% load static %} 
+
+    <aside class="menu-sidebar js-right-sidebar d-block">
+        <div class="logo">
+            <a href="{% url 'properties:home' %}">
+                <img src="{% static 'assets/images/logo-blue.png' %}" alt="SarchHolm" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar2">
+            <nav class="navbar-sidebar2">
+                <ul class="list-unstyled navbar__list">
+                    <li>
+                        <a class="active" href="{% url 'users:dashboard' %}">
+                            <i class="ion-ios-gear-outline"></i>Dashboard
+                        </a>
+                    </li>
+                    {% if not user.company.exists %}         
+                        <li>
+                            <a href="{% url 'users:bookmarked' %}">
+                                <i class="ion-ios-heart-outline"></i>Favourites</a>
+                        </li>
+                    {% else %}
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="ion-social-buffer-outline"></i>My Properties
+                            </a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="{% url 'users:active-properties' %}">Active</a>
+                                    <span class="inbox-num active">4</span>
+                                </li>
+                                <li>
+                                    <a href="{% url 'users:inactive-properties' %}">Pending</a>
+                                    <span class="inbox-num pending">1</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:my-bookings' %}">
+                                <i class="ion-ios-copy-outline"></i>Booking Request</a>
+                        </li>                                        
+                        <li>
+                            <a href="{% url 'users:add-property' %}">
+                                <i class="ion-ios-plus-outline"></i>Add Property</a>
+                        </li>                        
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'users:account' %}">
+                            <i class="ion-ios-person-outline"></i>My profile</a>
+                    </li>                    
+                    <li>
+                        <a href="#">
+                            <i class="ion-ios-upload-outline"></i>Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
