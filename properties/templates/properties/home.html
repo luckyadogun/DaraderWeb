@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "property_base.html" %}
 {% load static %}
 {% load humanize %}
 
 {% block title %} Find amazing properties in Nigeria {% endblock title %}
 
     {% block header %}
-        {% include "components/header__v1.html" %}
+        {% include "properties_components/header__v1.html" %}
     {% endblock %}
 
     {% block content %}
@@ -117,7 +117,7 @@
                                     <div class="single-property-box">                                        
                                         <div class="property-item">
                                             {% for img in property.gallery.all %}                                                                                                              
-                                            <a class="property-img" href="single-listing-two.html">
+                                            <a class="property-img" href="{{ property.get_absolute_url }}">
                                                 {% if forloop.first %}
                                                     <img src="{{ img.image.url }}" alt="#">
                                                 {% endif %}
@@ -135,12 +135,12 @@
                                                     <span>{{ property.owner }}</span>
                                                 </a>
                                                 <ul class="save-btn">                                                    
-                                                    <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
+                                                    <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
                                                 </ul>                                                
                                             </div>                                                                                        
                                         </div>                                        
                                         <div class="property-title-box">
-                                            <h4><a href="single-listing-one.html">{{ property.title }}</a></h4>
+                                            <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
                                             <div class="property-location">
                                                 <i class="fa fa-map-marker-alt"></i>
                                                 <p>{{ property.address }}</p>
@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 text-center mt-1">
-                    <a href="tab-fullwidth.html" class="btn v9">Browse More</a>
+                    <a href="{% url 'properties:rent' %}" class="btn v9">Browse More</a>
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@
                                 <div class="single-property-box">                                        
                                     <div class="property-item">
                                         {% for img in property.gallery.all %}                                                                                                              
-                                        <a class="property-img" href="single-listing-two.html">
+                                        <a class="property-img" href="{{ property.get_absolute_url }}">
                                             {% if forloop.first %}
                                                 <img src="{{ img.image.url }}" alt="#">
                                             {% endif %}
@@ -231,12 +231,12 @@
                                                 <span>{{ property.owner }}</span>
                                             </a>
                                             <ul class="save-btn">                                                    
-                                                <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
+                                                <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
                                             </ul>                                                
                                         </div>                                                                                        
                                     </div>                                        
                                     <div class="property-title-box">
-                                        <h4><a href="single-listing-one.html">{{ property.title }}</a></h4>
+                                        <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
                                         <div class="property-location">
                                             <i class="fa fa-map-marker-alt"></i>
                                             <p>{{ property.address }}</p>
@@ -281,7 +281,7 @@
                     </div>                
                 </div>
                 <div class="col-md-12 text-center mt-1">
-                    <a href="tab-fullwidth.html" class="btn v9">Browse More</a>
+                    <a href="{% url 'properties:sale' %}" class="btn v9">Browse More</a>
                 </div>
             </div>
         </div>
@@ -306,7 +306,7 @@
                             <div class="swiper-slide single-property-box">
                                 <div class="property-item">
                                     {% for img in property.gallery.all %}
-                                    <a class="property-img" href="single-listing-two.html">
+                                    <a class="property-img" href="{{ property.get_absolute_url }}">
                                         {% if forloop.first %}
                                             <img src="{{ img.image.url }}" alt="#">
                                         {% endif %}
@@ -374,7 +374,7 @@
                             <div class="single-property-box">                                
                                 <div class="property-item">
                                     {% for img in property.gallery.all %}
-                                    <a class="property-img" href="single-listing-two.html">
+                                    <a class="property-img" href="{{ property.get_absolute_url }}">
                                         {% if forloop.first %}
                                             <img src="{{ img.image.url }}" alt="#">
                                         {% endif %}
@@ -391,12 +391,12 @@
                                             <span>{{ property.owner }}</span>
                                         </a>
                                         <ul class="save-btn">                                            
-                                            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                            
+                                            <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                            
                                         </ul>                                        
                                     </div>
                                 </div>
                                 <div class="property-title-box">
-                                    <h4><a href="single-listing-one.html">{{ property.title }}</a></h4>
+                                    <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
                                     <div class="property-location">
                                         <i class="fa fa-map-marker-alt"></i>
                                         <p>{{ property.address }}</p>
@@ -449,5 +449,5 @@
 
 
     {% block footer %}
-        {% include "components/footer__v1.html" %}
+        {% include "properties_components/footer__v1.html" %}
     {% endblock %}

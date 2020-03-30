@@ -25,7 +25,8 @@
                                             <div class="tab-pane fade show active" id="login" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <form id="login-form" action="#" method="post">
+                                                        <form id="login-form" action="#" method="POST">
+                                                            {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="email" value="" required="">
                                                             </div>
@@ -46,17 +47,17 @@
                                                                 </div>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
-                                                                <button type="submit" class="btn v8"><span class="lnr lnr-exit"></span> Log In</button>
+                                                                <button type="submit" onclick="test();" class="btn v8"><span class="lnr lnr-exit"></span> Log In</button>
                                                             </div>
                                                         </form>
-                                                        <div class="social-profile-login  text-left mt-20">
+                                                        <!-- <div class="social-profile-login  text-left mt-20">
                                                             <h5>or Login with</h5>
                                                             <ul class="social-btn">
                                                                 <li class="bg-fb"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                                                 <li class="bg-tt"><a href="#"><i class="fab fa-twitter"></i></a></li>
                                                                 <li class="bg-ig"><a href="#"><i class="fab fa-instagram"></i></a></li>
                                                             </ul>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="signup-wrapper">
@@ -69,7 +70,8 @@
                                             <div class="tab-pane fade" id="register" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <form id="register-form" action="#" method="post">
+                                                        <form id="register-form" action="{% url 'properties:home' %}" method="POST">
+                                                            {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="user_name" id="user_name" tabindex="1" class="form-control" placeholder="Username" value="">
                                                             </div>
@@ -87,17 +89,17 @@
                                                                 <label for="remember">I've read and accept terms &amp; conditions</label>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
-                                                                <button type="submit" class="btn v8"><i class="lnr lnr-enter"></i>Sign Up</button>
+                                                                <button type="submit" onclick="test();" class="btn v8"><i class="lnr lnr-enter"></i>Sign Up</button>
                                                             </div>
                                                         </form>
-                                                        <div class="social-profile-login  text-left mt-20">
+                                                        <!-- <div class="social-profile-login  text-left mt-20">
                                                             <h5>or Sign Up with</h5>
                                                             <ul class="social-btn">
                                                                 <li class="bg-fb"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                                                 <li class="bg-tt"><a href="#"><i class="fab fa-twitter"></i></a></li>
                                                                 <li class="bg-ig"><a href="#"><i class="fab fa-instagram"></i></a></li>
                                                             </ul>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="signup-wrapper">
@@ -118,3 +120,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function test(){
+            console.log("Hello World");
+        };
+    </script>

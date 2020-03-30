@@ -7,7 +7,7 @@
             <div class="row nav-folderized">
                 <div class="col-lg-4 col-md-12">
                     <div class="footer-logo">
-                        <a href="index.html"> <img src="{% static 'assets/images/logo-white.png' %}" alt="logo"></a>
+                        <a href="{% url 'properties:home' %}"> <img src="{% static 'assets/images/logo-white.png' %}" alt="logo"></a>
                         <div class="company-desc">
                             <p>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio excepturi nam totam sequi, ipsam consequatur repudiandae libero illum.
@@ -45,11 +45,9 @@
                     <div class="footer-content nav">
                         <h2 class="title">Popular Searches</h2>
                         <ul class="list res-list">
-                            <li><a class="link-hov style2" href="#">Property for Rent</a></li>
-                            <li><a class="link-hov style2" href="#">Property for Sale</a></li>
-                            <li><a class="link-hov style2" href="#">Condominium for Sale</a></li>
-                            <li><a class="link-hov style2" href="#">Resale Properties</a></li>
-                            <li><a class="link-hov style2" href="#">Recent Properties</a></li>
+                            <li><a class="link-hov style2" href="{% url 'properties:rent' %}">Property for Rent</a></li>
+                            <li><a class="link-hov style2" href="{% url 'properties:sale' %}">Property for Sale</a></li>                        
+                            <li><a class="link-hov style2" href="{% url 'properties:all' %}">Recent Properties</a></li>
                         </ul>
                     </div>
                 </div>

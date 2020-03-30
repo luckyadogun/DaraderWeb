@@ -1,0 +1,99 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock %}
+
+    <div class="page-wrapper">
+        <!--Sidebar Menu Starts-->
+        {% block sidebar %}
+            {% include "user_components/dashboard__sidebar.html" %}
+        {% endblock %}
+        <!--Sidebar Menu ends-->
+
+        {% block content %}
+        <!--Dashboard content Wrapper starts-->
+        <div class="dash-content-wrap">
+            <!-- Top header starts-->
+            {% include "user_components/dashboard__header.html" %}
+            <!-- Top header ends-->
+            <!--Dashboard content starts-->
+            <div class="dash-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="recent-activity">
+                                <div class="act-title">
+                                    <h5>Profile Details</h5>
+                                </div>
+                                <div class="profile-wrap">
+                                    <div class="row mb-50">
+                                        <div class="col-lg-5 col-md-6 col-sm-5">
+                                            <img src="{% static 'assets/images/agents/agent_1.jpg' %}" alt="..." class="img-responsive">
+                                        </div>
+                                        <div class="col-lg-7 col-md-6 col-sm-7">
+                                            <div class="agent-details">
+                                                <h3>Tony Stark</h3>
+                                                <ul class="address-list">
+                                                    <li>
+                                                        <span>
+                                                            Company:
+                                                        </span>
+                                                        Zillion Properties.
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            Title:
+                                                        </span>
+                                                        Real estate Agent
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            Office:
+                                                        </span>
+                                                        +55 425-634-7071
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            Mobile:
+                                                        </span>
+                                                        +55 255-634-7071
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            Email:
+                                                        </span>
+                                                        tony_stark@sarchholm.com
+                                                    </li>
+                                                    <li>
+                                                        <span>
+                                                            Skype:
+                                                        </span>
+                                                        tony_stark
+                                                    </li>
+                                                </ul>
+                                                <ul class="social-buttons style1">
+                                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                                    <li><a href="#"><i class="fab fa-pinterest-p"></i></a></li>
+                                                    <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                                    <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+                                                </ul>
+                                                <a href="{% url 'users:update-account' %}" class="btn v3 mt-50">Edit profile</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Dashboard content ends-->
+            <!--Dashboard footer starts-->
+            {% include "user_components/dashboard__footer.html" %}
+            <!--Dashboard footer ends-->
+        </div>
+        <!--Dashboard content Wrapper ends-->
+    </div>
+    {% endblock %}

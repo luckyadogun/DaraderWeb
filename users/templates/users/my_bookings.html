@@ -1,0 +1,253 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock %}
+
+    <div class="page-wrapper">
+        <!--Sidebar Menu Starts-->
+        {% block sidebar %}
+            {% include "user_components/dashboard__sidebar.html" %}
+        {% endblock %}
+        <!--Sidebar Menu ends-->
+
+        {% block content %}        
+        <!--Dashboard content Wrapper starts-->
+        <div class="dash-content-wrap">
+            <!-- Top header starts-->
+            {% include "user_components/dashboard__header.html" %}
+            <!-- Top header ends-->
+            <!--Dashboard content starts-->
+            <div class="dash-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="dash-bookings">
+                                <div class="act-title">
+                                    <h5>Bookings</h5>
+                                </div>
+                                <div class="db-booking-wrap table-content table-responsive">
+               
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Date/Time</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Property</th>
+                                                <th scope="col">User Info</th>
+                                                <th scope="col">Exception</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-white">
+                                                <th scope="row">#203</th>
+                                                <td>21/10/19</td>
+                                                <td>Sara conor</td>
+                                                <td>
+                                                    <div class="property-title-box">
+                                                        <h4><a href="single-listing-one.html">Family home in Glasgow</a></h4>
+                                                        <div class="property-location">
+                                                            <i class="fa fa-map-marker-alt"></i>
+                                                            <p>60 High St, Glasgow, London</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="list">
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="tel:44078767595">+44 078 767 595</a></div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="#">sarah@mail.com</a></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <div class="listing-button">
+                                                        <a href="#" class="btn v3">Cancel</a>
+                                                        <a href="#" class="btn v4">Approve</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">#207</th>
+                                                <td>15/10/19</td>
+                                                <td>Jhon edge</td>
+                                                <td>
+                                                    <div class="property-title-box">
+                                                        <h4><a href="single-listing-one.html">Villa on Hartford</a></h4>
+                                                        <div class="property-location">
+                                                            <i class="fa fa-map-marker-alt"></i>
+                                                            <p>2854 Meadow View Drive, Hartford, USA</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="list">
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="tel:44078767595">+44 078 767 595</a></div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="#">edge@mail.com</a></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <div class="listing-button">
+                                                        <a href="#" class="btn v3">Cancel</a>
+                                                        <a href="#" class="btn v4">Approve</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <th scope="row">#305</th>
+                                                <td>3/10/19</td>
+                                                <td>Sarah williamson</td>
+                                                <td>
+                                                    <div class="property-title-box">
+                                                        <h4><a href="single-listing-one.html">Bay view Apartment</a></h4>
+                                                        <div class="property-location">
+                                                            <i class="fa fa-map-marker-alt"></i>
+                                                            <p>1797 Hillcrest Lane, Boulevard, CA</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="list">
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="tel:44078767595">+88 765 767 595</a></div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="#">sarah@mail.com</a></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <div class="listing-button">
+                                                        <a href="#" class="btn v3">Cancel</a>
+                                                        <a href="#" class="btn v4">Approve</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">#102</th>
+                                                <td>23/9/19</td>
+                                                <td>Jhon Conor</td>
+                                                <td>
+                                                    <div class="property-title-box">
+                                                        <h4><a href="single-listing-one.html">Office Space in Thatcham</a></h4>
+                                                        <div class="property-location">
+                                                            <i class="fa fa-map-marker-alt"></i>
+                                                            <p>Colthrop Lane, Thatcham, London</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="list">
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="tel:44078767595">+44 234 767 595</a></div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="#">jhon@mail.com</a></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <div class="listing-button">
+                                                        <a href="#" class="btn v3">Cancel</a>
+                                                        <a href="#" class="btn v4">Approve</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <th scope="row">#313</th>
+                                                <td>25/9/19</td>
+                                                <td>Makato hiasho</td>
+                                                <td>
+                                                    <div class="property-title-box">
+                                                        <h4><a href="single-listing-one.html">Luxury Villa in Birmingham</a></h4>
+                                                        <div class="property-location">
+                                                            <i class="fa fa-map-marker-alt"></i>
+                                                            <p>159 Dudley Rd, Birmingham, UK</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="list">
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="tel:44078767595">+99 034 444 666</a></div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="contact-info">
+                                                                <div class="text"><a href="#">makato@mail.com</a></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <div class="listing-button">
+                                                        <a href="#" class="btn v3">Cancel</a>
+                                                        <a href="#" class="btn v4">Approve</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                    
+                                </div>
+                                <!--pagination starts-->
+                                {% if is_paginated %}
+                                <div class="post-nav nav-res pt-50  ">
+                                    <div class="row">
+                                        <div class="col-md-8 offset-md-2  col-xs-12 ">
+                                            <div class="page-num text-center">                                                                                                                                        
+                                                <ul>
+                                                    {% for i in paginator.page_range %}                                       
+                                                        {% if page_obj.number == i %}
+                                                            <li class="active"><a href="?{{ qs }}&page={{ page_obj.page_number }}">{{ i }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="?{{ qs }}&page={{ i }}">{{ i }}</a></li>
+                                                        {% endif %}                                                        
+                                                    {% endfor %}
+                                                    
+                                                    {% if page_obj.has_next %}
+                                                        <li><a href="?{{ qs }}&page={{ page_obj.next_page_number }}"><i class="lnr lnr-chevron-right"></i></a></li>
+                                                    {% endif %}
+                                                </ul>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <!--pagination ends-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Dashboard content ends-->
+            <!--Dashboard footer starts-->
+            {% include "user_components/dashboard__footer.html" %}
+            <!--Dashboard footer ends-->
+        </div>
+        <!--Dashboard content Wrapper ends-->
+    </div>
+    {% endblock %}

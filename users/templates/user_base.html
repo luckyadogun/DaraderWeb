@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+    <!-- Metas -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Lucky Adogun" />
+    <!-- Links -->
+    <link rel="icon" type="image/png" href="#" />
+    <!-- google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <!-- Plugins CSS -->
+    <link href="{% static 'assets/css/plugin.css' %}" rel="stylesheet" />
+    <!-- Perfect scrollbar CSS-->
+    <link href="{% static 'assets/css/perfect-scrollbar.css' %}" rel="stylesheet">
+    <!-- Dashboard CSS -->
+    <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+    <!-- style CSS -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
+
+    <!-- Document Title -->
+    <title>{% block title %} {% endblock %}</title>
+</head>
+
+<body>
+
+        <!-- Header starts -->
+        {% block sidebar %}
+
+        {% endblock %}
+        <!-- Sidebar Ends -->
+
+
+        <!--Dashboard content starts-->
+        {% block content %}
+        
+        {% endblock %}
+        <!--Dashboard content ends-->
+
+
+    <!--Scripts starts-->
+    <!-- Plugin JS-->
+    <script src="{% static 'assets/js/plugin.js' %}"></script>
+    <!--Perfect Scrollbar JS-->
+    <script src="{% static 'assets/js/perfect-scrollbar.min.js' %}"></script>
+    <!-- Chart JS -->
+    <script src="{% static 'assets/js/chart.js' %}"></script>
+    <!-- Main JS-->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <!-- Dashboard JS-->
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
+
+</body>
+
+</html>

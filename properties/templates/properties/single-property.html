@@ -1,4 +1,14 @@
-{% extends "base.html" %} {% load static %} {% load humanize %} {% block title %} Find amazing properties in Nigeria {% endblock title %} {% block header %} {% include "components/header__v2.html" %} {% endblock %} {% block content %}
+{% extends "property_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock title %}
+
+    {% block header %}
+        {% include "properties_components/header__v2.html" %}
+    {% endblock %}
+
+        {% block content %}
         <div class="property-details-wrap bg-cb">
             <!--Listing Details Hero starts-->
             <div class="single-property-header v1 bg-h mt-60" style="background-image: url('{{ object.property_obj.gallery.all.first.image.url }}');">
@@ -80,7 +90,7 @@
                                         </div>
                                         <div class="mt-40">
                                             <h4 class="list-subtitle">Location</h4>
-                                            <a target="_blank" href="http://maps.google.com/?q=4936%20N%20Broadway%20St,%20Chicago,%20IL%2060640,%20USA" class="location-map">View Map<i class="fa fa-map-marker-alt"></i></a>
+                                            <a target="_blank" href="http://maps.google.com/?q={{object.property_obj.address}},{{object.property_obj.state.name}},{{object.property_obj.country.name}}" class="location-map">View Map<i class="fa fa-map-marker-alt"></i></a>
                                             <ul class="listing-address">
                                                 <li>Address : <span>{{ object.property_obj.address }}</span></li>
                                                 <li>State : <span>{{ object.property_obj.state.name }}</span></li>
@@ -171,7 +181,7 @@
                                     </div>
                                     
                                     <div id="book_tour" class="list-details-section">
-                                        <h4 class="list-details-title">Schedule for inspection</h4>
+                                        <h4 class="list-details-title">Schedule an inspection</h4>
                                         <form class="tour-form" method="POST" action=".">
                                             {% csrf_token %}
                                             <div class="row">
@@ -358,7 +368,7 @@
                                                         <span>{{ property.property_obj.owner }}</span>
                                                     </a>
                                                     <ul class="save-btn">
-                                                        <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>
+                                                        <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -418,5 +428,5 @@
 
 
         {% block footer %}
-            {% include "components/footer__v1.html" %}
+            {% include "properties_components/footer__v1.html" %}
         {% endblock %}
