@@ -24,9 +24,9 @@
                                         <div class="ui-dash tab-content">
                                             <div class="tab-pane fade show active" id="login" role="tabpanel">
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <form id="login-form" action="#" method="POST">
-                                                            {% csrf_token %}
+                                                    <div class="col-md-6" id="login-modal">
+                                                        <form id="login-form" method="POST"> 
+                                                            {% csrf_token %}                                                          
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="email" value="" required="">
                                                             </div>
@@ -47,7 +47,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
-                                                                <button type="submit" onclick="test();" class="btn v8"><span class="lnr lnr-exit"></span> Log In</button>
+                                                                <button type="submit" class="btn v8"><span class="lnr lnr-exit"></span> Log In</button>
                                                             </div>
                                                         </form>
                                                         <!-- <div class="social-profile-login  text-left mt-20">
@@ -70,7 +70,7 @@
                                             <div class="tab-pane fade" id="register" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <form id="register-form" action="{% url 'properties:home' %}" method="POST">
+                                                        <form id="register-form" method="POST">
                                                             {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="user_name" id="user_name" tabindex="1" class="form-control" placeholder="Username" value="">
@@ -89,7 +89,7 @@
                                                                 <label for="remember">I've read and accept terms &amp; conditions</label>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
-                                                                <button type="submit" onclick="test();" class="btn v8"><i class="lnr lnr-enter"></i>Sign Up</button>
+                                                                <button type="submit" class="btn v8"><i class="lnr lnr-enter"></i>Sign Up</button>
                                                             </div>
                                                         </form>
                                                         <!-- <div class="social-profile-login  text-left mt-20">
@@ -121,8 +121,55 @@
         </div>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        function test(){
-            console.log("Hello World");
-        };
+
+        $(document).ready(function(){
+            $("#login-form").submit(function(e){
+                e.preventDefault();
+                var serializedData = $("#login-form").serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "ajax/login",
+                    dataType: "JSON",
+                    data: serializedData,
+                    success: function(response){
+                        var result = response["result"];
+                        if(result == "Success!"){
+                            $("#user-login-popup").modal("hide");
+                            window.location.href = window.location.href;
+                        }else{
+                            $("#login-modal").prepend(
+                                `
+                                <div class="text-left mt-20">
+                                    <h5 style="color: rgb(187, 26, 26);">
+                                        Ooops! Invalid login credentials.</h5>
+                                </div>`
+                            )
+                            $("#login-form").effect("shake");
+                        }  
+                    },
+                    error: function(response){
+                        alert(response["result"]);
+                    }
+                });
+            });
+        });
+        // function auth(){            
+        //     var serializedData = $("#login-form").serialize();            
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "my/ajax/login",
+        //         dataType: "JSON",
+        //         data: serializedData,
+        //         success: function(response){
+        //             var result = response["result"];
+        //             console.log(result);
+        //         },
+        //         error: function(response){
+        //             alert(response["message"]);
+        //         }
+        //     });
+        // };
     </script>

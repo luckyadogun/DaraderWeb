@@ -1,24 +1,4 @@
-from django.urls import reverse
-from django.views.generic import View
-from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from django.contrib.auth import login, logout, authenticate
-
-
-class LoginView(View):
-    def post(self, request):
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(
-            username=username,
-            password=password
-            )
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect(
-                    reverse("dashboard")
-                )
 
 
 class DashboardView(TemplateView):

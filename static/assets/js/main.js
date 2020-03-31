@@ -793,31 +793,16 @@
               Custom JS
      -------------------------------------*/
     //  Bookmarking
-    var doc = document.getElementById("bookmark-this").querySelector("li a");
-    var totalBookmarked =  document.getElementById("total-bookmarked");
+    // var doc = document.getElementById("bookmark-this").querySelector("li a");
+    // var totalBookmarked =  document.getElementById("total-bookmarked");
 
-    var bookMarked = [];
+    // var bookMarked = [];
 
-    doc.addEventListener("click", function(){
-        if (bookMarked.includes(doc.value)){
-            bookMarked.splice(bookMarked.indexOf(doc.value), 1);
-        }else{
-            bookMarked.push(doc.value);
-            totalBookmarked.innerHTML = bookMarked.length;
-    }});
+    // doc.addEventListener("click", function(){
+    //     if (bookMarked.includes(doc.value)){
+    //         bookMarked.splice(bookMarked.indexOf(doc.value), 1);
+    //     }else{
+    //         bookMarked.push(doc.value);
+    //         totalBookmarked.innerHTML = bookMarked.length;
+    // }});
 
-    // $("bookmark-this.a").on("click", function (e) {
-    //     e.preventDefault();
-
-    // })
-
-    // Login
-    $("login-form").submit(function (e){
-        e.preventDefault();
-    
-        data: {csrftokenmiddleware: '{{ csrf_token }}'}
-        console.log("Hello World");
-    
-        var serializedData = $(this).serialize();
-        console.log(serializedData)
-    });    
