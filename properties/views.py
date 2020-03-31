@@ -4,11 +4,32 @@ from django.contrib import messages
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render_to_response, redirect
+from django.contrib.auth import login, logout, authenticate
 
 from .models import Property, PropertyDetails
 from .utils import get_currently_featured
+
+
+def login_view(request):
+    if request.is_ajax and request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(
+            username=username,
+            password=password
+            )
+        if user is not None and user.is_active:            
+            login(request, user)
+            return JsonResponse({"result": "Success!"})
+        else:
+            return JsonResponse({"result": "Failed!"})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse("properties:home"))
 
 
 class HomePageView(TemplateView):

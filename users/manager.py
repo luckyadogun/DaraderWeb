@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -13,7 +14,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('The email must be set'))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        user.password = make_password(password)
         user.save()
         return user
 
