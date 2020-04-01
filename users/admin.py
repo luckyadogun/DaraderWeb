@@ -1,13 +1,38 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import User
+from .forms import (
+    UserCreationForm,
+    UserChangeForm)
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'date_joined', 'is_active',) 
+class UserAdmin(BaseUserAdmin):
+
+    form = UserChangeForm
+    add_form = UserCreationForm
+
+    list_display = ('username', 'email', 'date_joined', 'is_active') 
     list_filter = ('date_joined',)
-    search_fields = ('username',)
+    readonly_fields = ('password',)
+    fieldsets = (
+        (None, {'fields': ('email', 'username', 'password', 'is_staff', 'is_active')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'email', 'username', 
+                'password1', 'password2',
+                'is_staff')
+        }),
+    )
+
+    search_fields = ('username', 'email',)
+    ordering = ('email',)
+    filter_horizontal = ()
 
 
 admin.site.register(User, UserAdmin)

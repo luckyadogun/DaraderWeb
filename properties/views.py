@@ -8,8 +8,24 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import login, logout, authenticate
 
+from users.forms import UserCreationForm
+
 from .models import Property, PropertyDetails
 from .utils import get_currently_featured
+
+
+def signup_view(request):    
+    if request.is_ajax and request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save
+            # send email and redirect to acct activation
+            # redirect from activation to dashboard
+            return redirect(reverse("users:dashboard"))
+        else:
+            return JsonResponse({"result": "Failed"})
 
 
 def login_view(request):
