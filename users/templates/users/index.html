@@ -19,35 +19,7 @@
             <!-- Top header starts-->
             {% include "user_components/dashboard__header.html" %}
             <!-- Top header ends-->
-            <div class="dash-content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- <div class="recent-activity">
-                                <div class="act-title">
-                                    <h5>Recent Activities</h5>
-                                </div>
-                                <ul class="act-wrap">
-                                    <li class="alert br-o fade show">
-                                        Your Property <span class="review-stat">Villa On Hartford</span> has been approved!
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true"><i class="ion-android-close"></i></span>
-                                        </button>
-                                        <p>30 mins ago</p>
-                                    </li>
-                                    <li class="alert br-o fade show">
-                                        <span class="review-stat">Andrew</span> sends a Booking request for <span class="review-stat">Villa on Sunbury</span> Property!
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true"><i class="ion-android-close"></i></span>
-                                        </button>
-                                        <p>5 hours ago</p>
-                                    </li>
-                                </ul>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <!-- Dashboard Statistics starts-->
             <div class="statistic-wrap mt-60">
                 <div class="container-fluid">
@@ -115,7 +87,7 @@
                                             <div class="most-viewed-img">
                                                 {% for img in recent.gallery.all %}
                                                     {% if forloop.first %}                                                    
-                                                        <a href="#">
+                                                        <a href="{{ property.get_absolute_url }}" target="_blank">
                                                             <img src="{{ img.image.url }}" alt="{{recent.title}}">
                                                         </a>
                                                     {% endif %}

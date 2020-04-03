@@ -13,15 +13,18 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('username', 'email', 'date_joined', 'is_active') 
-    list_filter = ('date_joined',)
+    list_display = ('username', 'email', 'mobile_phone', 'is_account_manager', 'is_staff', 'date_joined', 'is_active') 
+    list_filter = ('date_joined', 'is_active', 'is_staff', 'is_account_manager')
     readonly_fields = ('password',)
     fieldsets = (
         (None, {
             'fields': (
                 'email', 'username', 
+                'first_name', 'last_name',
                 'password', 'is_staff', 
-                'is_active', 'is_account_manager'
+                'is_active', 'is_account_manager',
+                'mobile_phone', 'facebook', 'twitter',
+                'instagram'
             )}
         ),
     )
@@ -30,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': (
-                'email', 'username', 
+                'email', 'username',                 
                 'password1', 'password2',
                 'is_staff', 'is_account_manager')
         }),

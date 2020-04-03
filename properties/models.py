@@ -5,9 +5,9 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
-from django.core.validators import RegexValidator
 
 from users.models import User
+from users.utils import validate_phone
 
 from .managers import PropertyForSaleManager, \
     PropertyForRentManager, PropertyForLeaseManager, \
@@ -71,16 +71,12 @@ class Company(TimeStampedModel):
     manager = models.ForeignKey(
         User, on_delete=models.PROTECT, related_name="company")
     name = models.CharField(
-        _("company name"), max_length=200, unique=True)
-    phone_regex = RegexValidator(
-        regex=r'^\+?1?\d{9,15}$', 
-        message="Phone number must be entered in the "
-                "format: '+999999999'. Up to 15 digits allowed.")
+        _("company name"), max_length=200, unique=True)    
     office_phone = models.CharField(
-        validators=[phone_regex], max_length=17,
+        validators=[validate_phone], max_length=17,
         null=True, blank=True)
     mobile_phone = models.CharField(
-        validators=[phone_regex], max_length=17,
+        validators=[validate_phone], max_length=17,
         null=True, blank=True)
     address = models.CharField(_("address"), max_length=200, null=True)
     about = models.TextField(_("about"), blank=True, null=True)
@@ -234,21 +230,3 @@ class PropertyDetails(models.Model):
 
     class Meta:
         verbose_name_plural = "Property Details"
-
-
-class Client(TimeStampedModel):
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
-    favorite_properties = models.ForeignKey(
-        Property, on_delete=models.CASCADE, related_name="client")
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
-
-
-class SocialMediaURL(TimeStampedModel):
-    client = models.OneToOneField(
-        Client, on_delete=models.CASCADE, 
-        related_name="socialmedia", null=True)
-    facebook = models.URLField(max_length=255)
-    twitter = models.URLField(max_length=255)
-    instagram = models.URLField(max_length=255)

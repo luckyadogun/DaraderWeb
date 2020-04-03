@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from .models import User
+from .utils import validate_phone
 
 
 class UserCreationForm(forms.ModelForm):
@@ -47,6 +48,12 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
+    first_name = forms.CharField(label='First Name', max_length=200)
+    last_name = forms.CharField(label='Last Name', max_length=200)    
+    mobile_phone = forms.CharField(max_length=20, validators=[validate_phone])
+    facebook = forms.URLField(required=False)
+    twitter = forms.URLField(required=False)
+    instagram = forms.URLField(required=False)
     password = ReadOnlyPasswordHashField
     is_staff = forms.BooleanField(
         label="Internal Staff", 
@@ -60,7 +67,11 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'is_active', 'is_staff', 'is_account_manager')
+        fields = (
+            'email', 'username', 'password', 
+            'is_active', 'is_staff', 'first_name',
+            'last_name', 'mobile_phone', 
+            'is_account_manager')
 
     def clean_password(self):
         return self.initial["password"]
