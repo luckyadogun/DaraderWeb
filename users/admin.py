@@ -17,7 +17,13 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('date_joined',)
     readonly_fields = ('password',)
     fieldsets = (
-        (None, {'fields': ('email', 'username', 'password', 'is_staff', 'is_active')}),
+        (None, {
+            'fields': (
+                'email', 'username', 
+                'password', 'is_staff', 
+                'is_active', 'is_account_manager'
+            )}
+        ),
     )
 
     add_fieldsets = (
@@ -26,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': (
                 'email', 'username', 
                 'password1', 'password2',
-                'is_staff')
+                'is_staff', 'is_account_manager')
         }),
     )
 

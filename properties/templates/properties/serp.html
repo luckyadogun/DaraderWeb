@@ -2,6 +2,8 @@
 {% load static %}
 {% load humanize %}
 
+{% load total_properties %}
+
 {% block title %} Find amazing properties in Nigeria {% endblock title %}
 
     {% block header %}
@@ -352,7 +354,7 @@
                         <div class="widget categories">
                             <h3 class="widget-title">Property Type</h3>
                             <ul class="icon">
-                                <li><a href="{% url 'properties:all' %}">All</a><span>({{total_properties}})</span></li>
+                                <li><a href="{% url 'properties:all' %}">All</a><span>({% total_properties %})</span></li>
                                 <li><a href="{% url 'properties:flats' %}">Flats</a><span>({{total_flats}})</span></li>
                                 <li><a href="{% url 'properties:houses' %}">Houses</a> <span>({{total_houses}})</span></li>
                                 <li><a href="{% url 'properties:lands' %}">Land</a><span>({{total_lands}})</span></li>

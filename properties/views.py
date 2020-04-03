@@ -26,6 +26,7 @@ def signup_view(request):
             return redirect(reverse("users:dashboard"))
         else:
             return JsonResponse({"result": "Failed"})
+    return redirect(reverse("properties:home"))
 
 
 def login_view(request):
@@ -41,6 +42,8 @@ def login_view(request):
             return JsonResponse({"result": "Success!"})
         else:
             return JsonResponse({"result": "Failed!"})
+
+    return redirect(reverse("properties:home"))
 
 
 def logout_view(request):
@@ -154,7 +157,6 @@ class SearchResultView(ListView):
         context = super().get_context_data(**kwargs)
         context["qs"] = self.request.META["QUERY_STRING"]
         context["recent_properties"] = Property.objects.order_by("created")[:5]
-        context["total_properties"] = Property.objects.count()
         context["total_flats"] = Property.objects.filter(
                                     property_type="flat").count()
         context["total_houses"] = Property.objects.filter(

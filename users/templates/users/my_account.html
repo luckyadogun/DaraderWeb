@@ -29,30 +29,32 @@
                                 <div class="profile-wrap">
                                     <div class="row mb-50">
                                         <div class="col-lg-5 col-md-6 col-sm-5">
-                                            <img src="{% static 'assets/images/agents/agent_1.jpg' %}" alt="..." class="img-responsive">
+                                            <img src="https://ui-avatars.com/api/?background=6449E7&color=ffffff&name={{user}}&size=351" alt="..." class="img-responsive">
                                         </div>
                                         <div class="col-lg-7 col-md-6 col-sm-7">
                                             <div class="agent-details">
-                                                <h3>Tony Stark</h3>
+                                                <h3>{{ user }}</h3>
                                                 <ul class="address-list">
-                                                    <li>
-                                                        <span>
-                                                            Company:
-                                                        </span>
-                                                        Zillion Properties.
-                                                    </li>
-                                                    <li>
-                                                        <span>
-                                                            Title:
-                                                        </span>
-                                                        Real estate Agent
-                                                    </li>
-                                                    <li>
-                                                        <span>
-                                                            Office:
-                                                        </span>
-                                                        +55 425-634-7071
-                                                    </li>
+                                                    {% if user.company.exists %}
+                                                        <li>
+                                                            <span>
+                                                                Company:
+                                                            </span>
+                                                            Zillion Properties.
+                                                        </li>
+                                                        <li>
+                                                            <span>
+                                                                Title:
+                                                            </span>
+                                                            Real estate Agent
+                                                        </li>
+                                                        <li>
+                                                            <span>
+                                                                Office:
+                                                            </span>
+                                                            +55 425-634-7071
+                                                        </li>
+                                                    {% endif %}
                                                     <li>
                                                         <span>
                                                             Mobile:
@@ -63,14 +65,14 @@
                                                         <span>
                                                             Email:
                                                         </span>
-                                                        tony_stark@sarchholm.com
+                                                        {{ user.email }}
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <span>
                                                             Skype:
                                                         </span>
                                                         tony_stark
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                                 <ul class="social-buttons style1">
                                                     <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>

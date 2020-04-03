@@ -741,8 +741,8 @@
 
 .most-viewed-img a img {
     object-fit: cover;
-    height: 100%;
-    width: 100%;
+    height: 100px;
+    width: 180px;
     border-radius: 4px;
 }
 

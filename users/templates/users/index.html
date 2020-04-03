@@ -2,6 +2,10 @@
 {% load static %}
 {% load humanize %}
 
+{% load total_properties %}
+{% load total_for_sale %}
+{% load total_for_rent %}
+
 {% block title %} Find amazing properties in Nigeria {% endblock %}
 
     <div class="page-wrapper">
@@ -19,7 +23,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="recent-activity">
+                            <!-- <div class="recent-activity">
                                 <div class="act-title">
                                     <h5>Recent Activities</h5>
                                 </div>
@@ -39,7 +43,7 @@
                                         <p>5 hours ago</p>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -50,17 +54,17 @@
                     <div class="row">
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--red">
-                                <h2 class="counter-value">21</h2>
-                                <span class="desc">Published Property</span>
+                                <h2 class="counter-value">{% total_properties %}</h2>
+                                <span class="desc">Total Properties</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/home.png' %}" alt="...">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--blue">
-                                <h2 class="counter-value">90</h2>
-                                <span class="desc">Total Reviews</span>
+                            <div class="statistic__item item--blue">                                
+                                <h2 class="counter-value">{% total_for_sale %}</h2>
+                                <span class="desc">Total Properties For Sale</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/review.png' %}" alt="...">
                                 </div>
@@ -68,8 +72,8 @@
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--orange">
-                                <h2 class="counter-value">734</h2>
-                                <span class="desc">Total Views</span>
+                                <h2 class="counter-value">{% total_for_rent %}</h2>
+                                <span class="desc">Total Properties For Rent</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/bar-chart.png' %}" alt="...">
                                 </div>
@@ -78,7 +82,7 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--green">
                                 <h2 class="counter-value">21</h2>
-                                <span class="desc">times Bookmarked</span>
+                                <span class="desc">Total Bookmarked</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/like.png' %}" alt="...">
                                 </div>
@@ -94,7 +98,7 @@
                     <div class="row">
                         <div class="col-xl-6 col-lg-12">
                             <div class="act-title">
-                                <h5>Property view Statistics</h5>
+                                <h5>Nigeria Property Market Statistics</h5>
                             </div>
                             <div class="page_view_chart">
                                 <canvas id="buyers"></canvas>
@@ -106,76 +110,35 @@
                                     <h5>Popular Properties</h5>
                                 </div>
                                 <div class="viewd-item-wrap">
-                                    <div class="most-viewed-item">
-                                        <div class="most-viewed-img">
-                                            <a href="#"><img src="{% static 'assets/images//property/property_1.jpg' %}" alt="..."></a>
-                                            <ul class="feature_text v2">
-                                                <li class="feature_or"><span>For Sale</span></li>
-                                            </ul>
-                                        </div>
-                                        <div class="most-viewed-detail">
-                                            <h3><a href="single-listing-one.html">Villa on Hartford</a></h3>
-                                            <p class="list-address"><i class="fas fa-map-marker-alt"></i>2854 Meadow View Drive, Hartford, USA</p>
-                                            <div class="trend-open">
-                                                <p><span class="per_sale">starts from</span>$25000</p>
+                                    {% for recent in recent_properties %}
+                                        <div class="most-viewed-item">
+                                            <div class="most-viewed-img">
+                                                {% for img in recent.gallery.all %}
+                                                    {% if forloop.first %}                                                    
+                                                        <a href="#">
+                                                            <img src="{{ img.image.url }}" alt="{{recent.title}}">
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <ul class="feature_text v2">
+                                                    <li class="feature_or"> <span>FOR {{ recent.property_category|upper }}</span></li>
+                                                </ul>
                                             </div>
-                                            <div class="ratings">
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star-half"></i>
+                                            <div class="most-viewed-detail">
+                                                <h3><a href="{{ recent.get_absolute_url }}">₦{{ recent.price|floatformat|intcomma }}</a></h3>
+                                                <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
+                                                <div class="ratings">
+                                                    <i class="ion-ios-star"></i>
+                                                    <i class="ion-ios-star"></i>
+                                                    <i class="ion-ios-star"></i>
+                                                    <i class="ion-ios-star"></i>
+                                                    <i class="ion-ios-star-half"></i>
+                                                </div>
+                                                <!-- <div class="views">Views : <span>178</span></div> -->
                                             </div>
-                                            <div class="views">Views : <span>178</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="most-viewed-item">
-                                        <div class="most-viewed-img">
-                                            <a href="#"><img src="{% static 'assets/images//property/property_3.jpg' %}" alt="..."></a>
-                                            <ul class="feature_text v2">
-                                                <li class="feature_or"><span>For Rent</span></li>
-                                            </ul>
-                                        </div>
-                                        <div class="most-viewed-detail">
-                                            <h3><a href="single-listing-one.html">Family home in Glasgow</a></h3>
-                                            <p class="list-address"><i class="fas fa-map-marker-alt"></i>60 High St, Glasgow, London</p>
-                                            <div class="trend-open">
-                                                <p>$7500<span class="per_month">month</span></p>
-                                            </div>
-                                            <div class="ratings">
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star-half"></i>
-                                            </div>
-                                            <div class="views">Views : <span>124</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="most-viewed-item">
-                                        <div class="most-viewed-img">
-                                            <a href="#"><img src="{% static 'assets/images//property/property_6.jpg' %}" alt="..."></a>
-                                            <ul class="feature_text v2">
-                                                <li class="feature_or"><span>For Rent</span></li>
-                                            </ul>
-                                        </div>
-                                        <div class="most-viewed-detail">
-                                            <h3><a href="single-listing-one.html">Apartment in Cecil Lake</a></h3>
-                                            <p class="list-address"><i class="fas fa-map-marker-alt"></i>131 midlas , Cecil Lake, BC</p>
-                                            <div class="trend-open">
-                                                <p>$9000<span class="per_month">month</span></p>
-                                            </div>
-                                            <div class="ratings">
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star"></i>
-                                                <i class="ion-ios-star-half"></i>
-                                            </div>
-                                            <div class="views">Views : <span>114</span></div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </div> 
+                                    {% endfor %}                                   
+                                </div>                                
                             </div>
                         </div>
                     </div>

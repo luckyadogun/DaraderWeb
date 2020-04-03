@@ -25,7 +25,7 @@
                                             <div class="tab-pane fade show active" id="login" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6" id="login-modal">
-                                                        <form id="login-form" method="POST"> 
+                                                        <form id="login-form" method="POST" autocomplete="zzz"> 
                                                             {% csrf_token %}                                                          
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="email" value="" required="">
@@ -70,7 +70,7 @@
                                             <div class="tab-pane fade" id="register" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6" id="signup-modal">
-                                                        <form id="register-form" method="POST">
+                                                        <form id="register-form" method="POST" autocomplete="off">
                                                             {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="user_name" tabindex="1" class="form-control" placeholder="Username" value="">

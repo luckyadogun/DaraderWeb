@@ -14,10 +14,14 @@ class UserCreationForm(forms.ModelForm):
         label="Internal Staff", 
         widget=forms.CheckboxInput,
         required=False)
+    is_account_manager = forms.BooleanField(
+        label="Account Manager",
+        widget=forms.CheckboxInput,
+        required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'is_staff')
+        fields = ('email', 'username', 'is_staff', 'is_account_manager')
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
@@ -49,10 +53,14 @@ class UserChangeForm(forms.ModelForm):
         widget=forms.CheckboxInput,
         required=False)
     is_active = forms.BooleanField(widget=forms.CheckboxInput)
+    is_account_manager = forms.BooleanField(
+        label="Account Manager",
+        widget=forms.CheckboxInput,
+        required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'is_active', 'is_staff')
+        fields = ('email', 'username', 'password', 'is_active', 'is_staff', 'is_account_manager')
 
     def clean_password(self):
         return self.initial["password"]
