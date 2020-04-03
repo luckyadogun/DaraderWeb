@@ -57,7 +57,7 @@
                                         </li>
                                     {% endif %}
 
-                                    {% if user.is_authenticated and user.company.exists %}
+                                    {% if user.is_authenticated and user..is_account_manager %}
                                         <div class="add-list float-right ml-3">
                                             <a class="btn v6" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
                                         </div>

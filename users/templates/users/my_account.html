@@ -29,55 +29,68 @@
                                 <div class="profile-wrap">
                                     <div class="row mb-50">
                                         <div class="col-lg-5 col-md-6 col-sm-5">
-                                            <img src="{% static 'assets/images/agents/agent_1.jpg' %}" alt="..." class="img-responsive">
+                                            <img src="https://ui-avatars.com/api/?background=6449E7&color=ffffff&name={{user}}&size=351" alt="..." class="img-responsive">
                                         </div>
                                         <div class="col-lg-7 col-md-6 col-sm-7">
                                             <div class="agent-details">
-                                                <h3>Tony Stark</h3>
+                                                <h3>{% if user.full_name %} {{ user.full_name }} {% else %} {{ user.username }}{% endif %}</h3>
                                                 <ul class="address-list">
-                                                    <li>
-                                                        <span>
-                                                            Company:
-                                                        </span>
-                                                        Zillion Properties.
-                                                    </li>
-                                                    <li>
-                                                        <span>
-                                                            Title:
-                                                        </span>
-                                                        Real estate Agent
-                                                    </li>
-                                                    <li>
-                                                        <span>
-                                                            Office:
-                                                        </span>
-                                                        +55 425-634-7071
-                                                    </li>
+                                                    {% if user.is_account_manager and user.company.exists %}
+                                                        {% for company in user.company.all %}
+                                                            <li>
+                                                                <span>
+                                                                    Company:
+                                                                </span>
+                                                                {{ company.name }}
+                                                            </li>                                                            
+                                                            <li>
+                                                                <span>
+                                                                    Title:
+                                                                </span>
+                                                                Real Estate {{ company.account_type|title }}
+                                                            </li>
+                                                            <li>
+                                                                <span>
+                                                                    Office:
+                                                                </span>
+                                                                {{ company.office_phone }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    {% endif %}
+
+                                                    {% if user.mobile_phone %}
                                                     <li>
                                                         <span>
                                                             Mobile:
                                                         </span>
-                                                        +55 255-634-7071
+                                                        {{ user.mobile_phone }}
                                                     </li>
+                                                    {% endif %}
                                                     <li>
                                                         <span>
                                                             Email:
                                                         </span>
-                                                        tony_stark@sarchholm.com
+                                                        {{ user.email }}
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <span>
                                                             Skype:
                                                         </span>
                                                         tony_stark
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                                 <ul class="social-buttons style1">
-                                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                                    <li><a href="#"><i class="fab fa-pinterest-p"></i></a></li>
-                                                    <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                                                    <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+                                                    {% if user.facebook %}
+                                                        <li><a href="{{ user.facebook }}"><i class="fab fa-facebook-f"></i></a></li>
+                                                    {% endif %}
+
+                                                    {% if user.facebook %}
+                                                        <li><a href="{{ user.twitter }}"><i class="fab fa-twitter"></i></a></li>
+                                                    {% endif %}
+
+                                                    {% if user.facebook %}
+                                                        <li><a href="{{ user.instagram }}"><i class="fab fa-instagram"></i></a></li>
+                                                    {% endif %}
                                                 </ul>
                                                 <a href="{% url 'users:update-account' %}" class="btn v3 mt-50">Edit profile</a>
                                             </div>

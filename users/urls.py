@@ -4,19 +4,15 @@ from .views import (
     DashboardView, MyPropertyView,
     MyBookingsView, AddPropertyView,
     MyAccountView, UpdateAccountView,
-    BookmarkedView
+    BookmarkedView, property_delete_view,
     )
 
 urlpatterns = [
     path('dashboard', DashboardView.as_view(), name="dashboard"),
+    path('properties', MyPropertyView.as_view(), name="my-properties"),
     path(
-        'properties/active',
-        MyPropertyView.as_view(),
-        {"queryset": "active"}, name="active-properties"),
-    path(
-        'properties/inactive',
-        MyPropertyView.as_view(),
-        {"queryset": "inactive"}, name="inactive-properties"),
+        'ajax/properties/<int:pk>/delete', 
+        property_delete_view, name="delete-property"),  
     path('bookings', MyBookingsView.as_view(), name="my-bookings"),
     path('favourites', BookmarkedView.as_view(), name="bookmarked"),
     path('add-property', AddPropertyView.as_view(), name="add-property"),

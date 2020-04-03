@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Property, \
     Company, Country, State, Gallery, \
-    PropertyDetails, Client, SocialMediaURL
+    PropertyDetails
 
 
 class PropertyDetailsInline(admin.StackedInline):
@@ -35,19 +35,6 @@ class CompanyAdmin(admin.ModelAdmin):
         'account_type', 'is_approved', 'is_featured',)  
     list_filter = ('created', 'is_approved', 'is_featured',) 
     search_fields = ('name', 'phone', )
-
-
-class ClientSocialMediaInline(admin.TabularInline):
-    model = SocialMediaURL
-    max_num = 1
-
-
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
-    list_display = ('__str__',)
-    list_filter = ('created',)
-    search_fields = ('__str__',)
-    inlines = [ClientSocialMediaInline, ]
 
 
 @admin.register(Country)

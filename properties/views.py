@@ -8,8 +8,25 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import login, logout, authenticate
 
+from users.forms import UserCreationForm
+
 from .models import Property, PropertyDetails
 from .utils import get_currently_featured
+
+
+def signup_view(request):    
+    if request.is_ajax and request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save
+            # send email and redirect to acct activation
+            # redirect from activation to dashboard
+            return redirect(reverse("users:dashboard"))
+        else:
+            return JsonResponse({"result": "Failed"})
+    return redirect(reverse("properties:home"))
 
 
 def login_view(request):
@@ -25,6 +42,8 @@ def login_view(request):
             return JsonResponse({"result": "Success!"})
         else:
             return JsonResponse({"result": "Failed!"})
+
+    return redirect(reverse("properties:home"))
 
 
 def logout_view(request):
@@ -138,7 +157,6 @@ class SearchResultView(ListView):
         context = super().get_context_data(**kwargs)
         context["qs"] = self.request.META["QUERY_STRING"]
         context["recent_properties"] = Property.objects.order_by("created")[:5]
-        context["total_properties"] = Property.objects.count()
         context["total_flats"] = Property.objects.filter(
                                     property_type="flat").count()
         context["total_houses"] = Property.objects.filter(

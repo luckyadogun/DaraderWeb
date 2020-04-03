@@ -3,10 +3,11 @@ from django.urls import path
 from .views import (
     HomePageView, SearchResultView,
     PropertyDetailView, login_view,
-    logout_view
+    logout_view, signup_view
     )
 
 urlpatterns = [
+    path('ajax/signup', signup_view, name="signup"),
     path('ajax/login', login_view, name="login"),
     path('logout', logout_view, name="logout"),
     path('', HomePageView.as_view(), name="home"),
