@@ -1,26 +1,36 @@
 from django.urls import reverse
 from django.views.generic import ListView
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.deprecation import MiddlewareMixin
 
-from properties.models import Property, Company
+from properties.models import Property, Company, BookingRequest
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "users/index.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)        
-        context["recent_properties"] = Property.objects.order_by("created")[:3]
+        property_obj = Property.objects.filter(
+            owner__manager=self.request.user)
+
+        context = super().get_context_data(**kwargs)
+        context["my_properties_count"] = property_obj.count()
+        context["my_properties_forsale"] = property_obj.filter(
+            property_category="sale").count()
+        context["my_properties_forrent"] = property_obj.filter(
+            property_category="rent").count()
+        context["recent_properties"] = property_obj.order_by("created")[:3]
 
         return context
 
 
-class MyPropertyView(ListView):
+class MyPropertyView(LoginRequiredMixin, ListView):
     template_name = "users/my_properties.html"
     context_object_name = "properties"
     paginate_by = 5
@@ -29,46 +39,74 @@ class MyPropertyView(ListView):
         company = Company.objects.get(manager=self.request.user)
         return Property.objects.filter(owner=company)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
+@login_required
+def property_delete_view(request):
+    company = get_object_or_404(Company, manager=request.user)
 
-class PropertyDeleteView(DeleteView):
-    model = Property
-    template_name = "users/property_delete.html"
-    success_url = reverse_lazy("users:my-properties")
-
-    def get_queryset(self):
-        company = Company.objects.get(manager=self.request.user)
-        return self.model.objects.filter(owner=company)
-
-
-def property_delete_view(request, pk=None):
     if request.is_ajax and request.method == "POST":
         property_id = request.POST.get("propertyID")
-        print(property_id)
-        # check if property_id == pk and owner
-        # use get_object_or_404(id=property_id)
-        # delete object
+        property_obj = get_object_or_404(Property, id=property_id)
+
+        if property_obj.owner == company:
+            property_obj.delete()
+            return JsonResponse({"result": "Success!"})
+        return JsonResponse({"result": "Unauthorized Access!"})
+
+    return redirect(reverse("users:my-properties"))
+
+
+class MyBookingsView(LoginRequiredMixin, ListView):
+    template_name = "users/my_bookings.html"
+    context_object_name = "bookings"
+    paginate_by = 10
+
+    def get_queryset(self):        
+        return BookingRequest.objects.filter(
+            company__manager=self.request.user,
+            status="booked")
+
+
+@login_required
+def booking_delete_view(request):
+    company = get_object_or_404(Company, manager=request.user)
+
+    if request.is_ajax and request.method == "POST":
+        booking_id = request.POST.get("bookingID")
+        booking = get_object_or_404(BookingRequest, id=booking_id)
+
+        if booking.company == company:
+            booking.delete()
+            return JsonResponse({"result": "Success!"})
+        return JsonResponse({"result": "Unauthorized Access!"})
+
+    return redirect(reverse("users:my-bookings"))
+
+
+@login_required
+def booking_setup_view(request):
+    if request.is_ajax and request.method == "POST":
+        booking_id = request.POST.get("bookingID")
+        booking = get_object_or_404(BookingRequest, id=booking_id)
+        # send email
+        booking.status = "unbooked"
+        booking.save()
         return JsonResponse({"result": "Success!"})
 
-
-class MyBookingsView(TemplateView):
-    template_name = "users/my_bookings.html"
+    return redirect(reverse("users:my-bookings"))
 
 
-class AddPropertyView(TemplateView):
+class AddPropertyView(LoginRequiredMixin, TemplateView):
     template_name = "users/add_property.html"
 
 
-class MyAccountView(TemplateView):
+class MyAccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/my_account.html"
 
 
-class UpdateAccountView(TemplateView):
+class UpdateAccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/update_account.html"
 
 
-class BookmarkedView(TemplateView):
+class BookmarkedView(LoginRequiredMixin, TemplateView):
     template_name = "users/bookmarks.html"

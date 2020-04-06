@@ -230,3 +230,29 @@ class PropertyDetails(models.Model):
 
     class Meta:
         verbose_name_plural = "Property Details"
+
+
+class BookingRequest(TimeStampedModel):
+    BOOKED = "booked"
+    UNBOOKED = "unbooked"
+
+    BOOKING_STATUS = (
+        (BOOKED, BOOKED),
+        (UNBOOKED, UNBOOKED),
+    )
+
+    status = models.CharField(
+        max_length=20, null=True,
+        default=UNBOOKED, choices=BOOKING_STATUS)
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE,
+        related_name="bookingrequest")
+    client = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="bookingrequest")
+    property_details = models.ForeignKey(
+        PropertyDetails, on_delete=models.CASCADE,
+        related_name="bookingrequest")
+    mobile_phone = models.CharField(
+        validators=[validate_phone], max_length=17,
+        null=True, blank=True)

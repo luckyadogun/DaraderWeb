@@ -57,7 +57,7 @@
                                             </div>
                                             <div class="listing-button">
                                                 <a href="#" class="btn v3"><i class="ion-edit"></i> Edit</a>
-                                                <a href="#" class="btn v4" onclick="test('{{ property.title }}', '{{ property.id }}');"><i class="ion-android-delete"></i> Delete</a>
+                                                <a href="#" class="btn v4" onclick="deleteProperty('{{ property.title }}', '{{ property.id }}');"><i class="ion-android-delete"></i> Delete</a>
                                             </div>
                                         </div> 
                                     {% endfor %}                                   
@@ -101,30 +101,16 @@
     </div>
     {% endblock %}
 
-    {% block script %}
+    {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        // $(document).ready(function(){
-        //     $("#delete-property").click(function(e){
-        //         e.preventDefault();
-        //         console.log("sup");
-        //     });
-        // });
 
-        // $("#delete-property").click(function(e){
-        //     e.preventDefault();
-        //     console.log("sup");
-        // });
-
-        function test(property, propertyID){
-            var action = confirm(`Sure You wanna delete ${property}`);
-            console.log(action);
-            console.log(propertyID)
-
+        function deleteProperty(property, propertyID){
+            var action = confirm(`Confirm deletion of: ${property}`);
             if(action == true){
                 $.ajax({
                     type: "POST",
-                    url: `ajax/properties/${propertyID}/delete`,
+                    url: 'ajax/properties/delete',
                     dataType: "JSON",
                     data: {
                         propertyID: propertyID,
@@ -132,12 +118,15 @@
                         },                    
                     success: function(response){
                         var result = response["result"];
-                        console.log(result);
-                        location.reload();
+                        if(result == "Success!"){
+                            location.reload();
+                        }else{
+                            alert(result);
+                        };             
                     },
                     error: function(response){
                         var result = response["result"];
-                        console.log(result);
+                        alert("Error! Something went wrong!");
                     }
                 });
             };

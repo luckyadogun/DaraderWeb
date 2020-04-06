@@ -26,7 +26,11 @@
                     <div class="row">
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--red">
-                                <h2 class="counter-value">{% total_properties %}</h2>
+                                {% if user.is_account_manager %}
+                                    <h2 class="counter-value">{% total_properties %}</h2>
+                                {% else %}
+                                    <h2 class="counter-value">{{ my_properties_count }}</h2>
+                                {% endif %}
                                 <span class="desc">Total Properties</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/home.png' %}" alt="...">
@@ -34,9 +38,13 @@
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--blue">                                
-                                <h2 class="counter-value">{% total_for_sale %}</h2>
-                                <span class="desc">Total Properties For Sale</span>
+                            <div class="statistic__item item--blue"> 
+                                {% if user.is_account_manager %}  
+                                    <h2 class="counter-value">{{ my_properties_forsale }}</h2>
+                                {% else %}                                                        
+                                    <h2 class="counter-value">{% total_for_sale %}</h2>
+                                {% endif %}
+                                    <span class="desc">Total Properties For Sale</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/review.png' %}" alt="...">
                                 </div>
@@ -44,8 +52,12 @@
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--orange">
-                                <h2 class="counter-value">{% total_for_rent %}</h2>
-                                <span class="desc">Total Properties For Rent</span>
+                                {% if user.is_account_manager %}
+                                    <h2 class="counter-value">{{ my_properties_forrent }}</h2>
+                                {% else %}
+                                    <h2 class="counter-value">{% total_for_rent %}</h2>
+                                {% endif %}
+                                    <span class="desc">Total Properties For Rent</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/bar-chart.png' %}" alt="...">
                                 </div>
@@ -87,7 +99,7 @@
                                             <div class="most-viewed-img">
                                                 {% for img in recent.gallery.all %}
                                                     {% if forloop.first %}                                                    
-                                                        <a href="{{ property.get_absolute_url }}" target="_blank">
+                                                        <a target="_blank" href="{{ property.get_absolute_url }}" target="_blank">
                                                             <img src="{{ img.image.url }}" alt="{{recent.title}}">
                                                         </a>
                                                     {% endif %}
@@ -97,7 +109,7 @@
                                                 </ul>
                                             </div>
                                             <div class="most-viewed-detail">
-                                                <h3><a href="{{ recent.get_absolute_url }}">₦{{ recent.price|floatformat|intcomma }}</a></h3>
+                                                <h3><a target="_blank" href="{{ recent.get_absolute_url }}">{{ recent.title|truncatewords:5 }}</a></h3>
                                                 <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
                                                 <div class="ratings">
                                                     <i class="ion-ios-star"></i>

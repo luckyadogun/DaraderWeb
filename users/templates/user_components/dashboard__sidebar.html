@@ -10,7 +10,7 @@
             <nav class="navbar-sidebar2">
                 <ul class="list-unstyled navbar__list">
                     <li>
-                        <a{% if 'my/dashboard' in request.path %}class="active"{% endif %} href="{% url 'users:dashboard' %}">
+                        <a {% if 'my/dashboard' in request.path %}class="active"{% endif %} href="{% url 'users:dashboard' %}">
                             <i class="ion-ios-gear-outline"></i>Dashboard
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                             <i class="ion-ios-person-outline"></i>My profile</a>
                     </li>                    
                     <li>
-                        <a href="{% url 'properties:logout' %}">
+                        <a {% if '/logout' in request.path %}class="active"{% endif %} href="{% url 'properties:logout' %}">
                             <i class="ion-ios-upload-outline"></i>Logout</a>
                     </li>
                 </ul>

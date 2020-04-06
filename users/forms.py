@@ -1,5 +1,8 @@
 from django import forms
+from django.forms import inlineformset_factory
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
+from properties.models import Property, PropertyDetails
 
 from .models import User
 from .utils import validate_phone
@@ -54,7 +57,7 @@ class UserChangeForm(forms.ModelForm):
     facebook = forms.URLField(required=False)
     twitter = forms.URLField(required=False)
     instagram = forms.URLField(required=False)
-    password = ReadOnlyPasswordHashField
+    # password = ReadOnlyPasswordHashField
     is_staff = forms.BooleanField(
         label="Internal Staff", 
         widget=forms.CheckboxInput,
@@ -75,3 +78,19 @@ class UserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
+
+
+class PropertyUpdateForm(forms.ModelForm):
+    property_obj = forms.ModelChoiceField(queryset=Property.objects.all())
+
+    class Meta:
+        model = PropertyDetails
+        fields = "__all__"
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        property_obj = self.cleaned_data["property_obj"]
+        instance.property_obj = Property.objects.get(id=property_obj)
+        instance.save(commit)
+
+        return instance
