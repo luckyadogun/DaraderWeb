@@ -16,8 +16,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "users/index.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)        
-        context["recent_properties"] = Property.objects.order_by("created")[:3]
+        property_obj = Property.objects.filter(
+            owner__manager=self.request.user)
+
+        context = super().get_context_data(**kwargs)
+        context["my_properties_count"] = property_obj.count()
+        context["my_properties_forsale"] = property_obj.filter(
+            property_category="sale").count()
+        context["my_properties_forrent"] = property_obj.filter(
+            property_category="rent").count()
+        context["recent_properties"] = property_obj.order_by("created")[:3]
 
         return context
 

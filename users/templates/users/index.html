@@ -26,7 +26,11 @@
                     <div class="row">
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--red">
-                                <h2 class="counter-value">{% total_properties %}</h2>
+                                {% if user.is_account_manager %}
+                                    <h2 class="counter-value">{% total_properties %}</h2>
+                                {% else %}
+                                    <h2 class="counter-value">{{ my_properties_count }}</h2>
+                                {% endif %}
                                 <span class="desc">Total Properties</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/home.png' %}" alt="...">
@@ -34,9 +38,13 @@
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--blue">                                
-                                <h2 class="counter-value">{% total_for_sale %}</h2>
-                                <span class="desc">Total Properties For Sale</span>
+                            <div class="statistic__item item--blue"> 
+                                {% if user.is_account_manager %}  
+                                    <h2 class="counter-value">{{ my_properties_forsale }}</h2>
+                                {% else %}                                                        
+                                    <h2 class="counter-value">{% total_for_sale %}</h2>
+                                {% endif %}
+                                    <span class="desc">Total Properties For Sale</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/review.png' %}" alt="...">
                                 </div>
@@ -44,8 +52,12 @@
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--orange">
-                                <h2 class="counter-value">{% total_for_rent %}</h2>
-                                <span class="desc">Total Properties For Rent</span>
+                                {% if user.is_account_manager %}
+                                    <h2 class="counter-value">{{ my_properties_forrent }}</h2>
+                                {% else %}
+                                    <h2 class="counter-value">{% total_for_rent %}</h2>
+                                {% endif %}
+                                    <span class="desc">Total Properties For Rent</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/bar-chart.png' %}" alt="...">
                                 </div>
