@@ -33,23 +33,24 @@
                                             <tr>
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Date/Time</th>
-                                                <th scope="col">Name</th>
+                                                <th scope="col">Full Name</th>
                                                 <th scope="col">Property</th>
                                                 <th scope="col">User Info</th>
-                                                <th scope="col">Exception</th>
+                                                <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for booking in bookings %}
                                             <tr class="bg-white">
-                                                <th scope="row">#203</th>
-                                                <td>21/10/19</td>
-                                                <td>Sara conor</td>
+                                                <th scope="row">#{{ booking.property_details.property_obj.property_id|truncatewords:3 }}</th>
+                                                <td>{{ booking.created }}</td>
+                                                <td>{{ booking.client.full_name|upper }}</td>
                                                 <td>
                                                     <div class="property-title-box">
-                                                        <h4><a href="single-listing-one.html">Family home in Glasgow</a></h4>
+                                                        <h4><a target="_blank" href="{{ booking.property_obj.get_absolute_url }}">{{ booking.property_details.property_obj.title|truncatewords:4|upper }}</a></h4>
                                                         <div class="property-location">
                                                             <i class="fa fa-map-marker-alt"></i>
-                                                            <p>60 High St, Glasgow, London</p>
+                                                            <p>{{ booking.property_details.property_obj.address|truncatewords:6|upper }}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -57,159 +58,26 @@
                                                     <ul class="list">
                                                         <li>
                                                             <div class="contact-info">
-                                                                <div class="text"><a href="tel:44078767595">+44 078 767 595</a></div>
+                                                                <div class="text"><a href="tel:{% if booking.mobile_phone %}{{booking.mobile_phone}}{% else %}{{booking.client.mobile_phone}}{% endif %}">
+                                                                    {% if booking.mobile_phone %}{{booking.mobile_phone}}{% else %}{{booking.client.mobile_phone}}{% endif %}
+                                                                </a></div>
                                                             </div>
                                                         </li>
                                                         <li>
                                                             <div class="contact-info">
-                                                                <div class="text"><a href="#">sarah@mail.com</a></div>
+                                                                <div class="text"><a href="#">{{ booking.client.email|upper }}</a></div>
                                                             </div>
                                                         </li>
                                                     </ul>
                                                 </td>
                                                 <td>
                                                     <div class="listing-button">
-                                                        <a href="#" class="btn v3">Cancel</a>
-                                                        <a href="#" class="btn v4">Approve</a>
+                                                        <a href="#" class="btn v3" onclick="deleteBooking('{{ booking.id }}');">Cancel</a>
+                                                    <a href="#" class="btn v4" onclick="setupBooking('{{ booking.id }}', '{{ booking.client.full_name }}');">Approve</a>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row">#207</th>
-                                                <td>15/10/19</td>
-                                                <td>Jhon edge</td>
-                                                <td>
-                                                    <div class="property-title-box">
-                                                        <h4><a href="single-listing-one.html">Villa on Hartford</a></h4>
-                                                        <div class="property-location">
-                                                            <i class="fa fa-map-marker-alt"></i>
-                                                            <p>2854 Meadow View Drive, Hartford, USA</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <ul class="list">
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="tel:44078767595">+44 078 767 595</a></div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="#">edge@mail.com</a></div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    <div class="listing-button">
-                                                        <a href="#" class="btn v3">Cancel</a>
-                                                        <a href="#" class="btn v4">Approve</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="bg-white">
-                                                <th scope="row">#305</th>
-                                                <td>3/10/19</td>
-                                                <td>Sarah williamson</td>
-                                                <td>
-                                                    <div class="property-title-box">
-                                                        <h4><a href="single-listing-one.html">Bay view Apartment</a></h4>
-                                                        <div class="property-location">
-                                                            <i class="fa fa-map-marker-alt"></i>
-                                                            <p>1797 Hillcrest Lane, Boulevard, CA</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <ul class="list">
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="tel:44078767595">+88 765 767 595</a></div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="#">sarah@mail.com</a></div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    <div class="listing-button">
-                                                        <a href="#" class="btn v3">Cancel</a>
-                                                        <a href="#" class="btn v4">Approve</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">#102</th>
-                                                <td>23/9/19</td>
-                                                <td>Jhon Conor</td>
-                                                <td>
-                                                    <div class="property-title-box">
-                                                        <h4><a href="single-listing-one.html">Office Space in Thatcham</a></h4>
-                                                        <div class="property-location">
-                                                            <i class="fa fa-map-marker-alt"></i>
-                                                            <p>Colthrop Lane, Thatcham, London</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <ul class="list">
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="tel:44078767595">+44 234 767 595</a></div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="#">jhon@mail.com</a></div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    <div class="listing-button">
-                                                        <a href="#" class="btn v3">Cancel</a>
-                                                        <a href="#" class="btn v4">Approve</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="bg-white">
-                                                <th scope="row">#313</th>
-                                                <td>25/9/19</td>
-                                                <td>Makato hiasho</td>
-                                                <td>
-                                                    <div class="property-title-box">
-                                                        <h4><a href="single-listing-one.html">Luxury Villa in Birmingham</a></h4>
-                                                        <div class="property-location">
-                                                            <i class="fa fa-map-marker-alt"></i>
-                                                            <p>159 Dudley Rd, Birmingham, UK</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <ul class="list">
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="tel:44078767595">+99 034 444 666</a></div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="contact-info">
-                                                                <div class="text"><a href="#">makato@mail.com</a></div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    <div class="listing-button">
-                                                        <a href="#" class="btn v3">Cancel</a>
-                                                        <a href="#" class="btn v4">Approve</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>                                    
                                 </div>
@@ -250,4 +118,63 @@
         </div>
         <!--Dashboard content Wrapper ends-->
     </div>
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function deleteBooking(bookingID){
+            var action = confirm('Are you sure you want to delete this booking?');
+            if(action == true){
+                $.ajax({
+                    type: "POST",
+                    url: 'ajax/bookings/delete',
+                    dataType: "JSON",
+                    data: {
+                        bookingID: bookingID,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        },                    
+                    success: function(response){
+                        var result = response["result"];
+                        if(result == "Success!"){
+                            location.reload();
+                        }else{
+                            alert(result);
+                        };             
+                    },
+                    error: function(response){
+                        var result = response["result"];
+                        alert("Error! Something went wrong!");
+                    }
+                });
+            };
+        };
+
+        // setupBooking
+        function setupBooking(bookingID, clientName){            
+            $.ajax({
+                type: "POST",
+                url: 'ajax/bookings/setup',
+                dataType: "JSON",
+                data: {
+                    bookingID: bookingID,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },                    
+                success: function(response){
+                    var result = response["result"];
+                    if(result == "Success!"){
+                        alert(`Booking has been successfully setup with ${clientName}`)                        
+                        location.reload();
+                    }else{
+                        alert(result);
+                    };             
+                },
+                error: function(response){
+                    var result = response["result"];
+                    alert("Error! Something went wrong!");
+                }
+            });
+        };
+
+    </script>
     {% endblock %}

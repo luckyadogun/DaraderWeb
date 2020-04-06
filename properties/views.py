@@ -10,7 +10,9 @@ from django.contrib.auth import login, logout, authenticate
 
 from users.forms import UserCreationForm
 
-from .models import Property, PropertyDetails
+from .models import (
+    Property, PropertyDetails, 
+    BookingRequest, Company)
 from .utils import get_currently_featured
 
 
@@ -199,8 +201,16 @@ class PropertyDetailView(DetailView):
         comment = self.request.POST.get("comment")
 
         if inquirer_name and inquirer_email and inquirer_phone:
-            # send email
             self.object = self.get_object()
+
+            # add to bookings
+            BookingRequest.objects.create(
+                status="booked",
+                company=self.object.property_obj.owner,
+                client=self.request.user,
+                property_details=self.object,
+                mobile_phone=inquirer_phone)
+            # send email
             context = self.get_context_data()
             messages.success(self.request, "Successfully Booked!")
             return self.render_to_response(context=context)
