@@ -5,6 +5,7 @@
 {% load total_properties %}
 {% load total_for_sale %}
 {% load total_for_rent %}
+{% load total_bookmarks %}
 
 {% block title %} Find amazing properties in Nigeria {% endblock %}
 
@@ -27,9 +28,9 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--red">
                                 {% if user.is_account_manager %}
-                                    <h2 class="counter-value">{% total_properties %}</h2>
+                                    <h2 class="counter-value">{% total_properties user %}</h2>
                                 {% else %}
-                                    <h2 class="counter-value">{{ my_properties_count }}</h2>
+                                    <h2 class="counter-value">{% total_properties %}</h2>
                                 {% endif %}
                                 <span class="desc">Total Properties</span>
                                 <div class="icon">
@@ -40,7 +41,7 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--blue"> 
                                 {% if user.is_account_manager %}  
-                                    <h2 class="counter-value">{{ my_properties_forsale }}</h2>
+                                    <h2 class="counter-value">{% total_for_sale user %}</h2>
                                 {% else %}                                                        
                                     <h2 class="counter-value">{% total_for_sale %}</h2>
                                 {% endif %}
@@ -53,7 +54,7 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--orange">
                                 {% if user.is_account_manager %}
-                                    <h2 class="counter-value">{{ my_properties_forrent }}</h2>
+                                    <h2 class="counter-value">{% total_for_rent user %}</h2>
                                 {% else %}
                                     <h2 class="counter-value">{% total_for_rent %}</h2>
                                 {% endif %}
@@ -65,7 +66,7 @@
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="statistic__item item--green">
-                                <h2 class="counter-value">21</h2>
+                                <h2 class="counter-value">{% total_bookmarks user %}</h2>
                                 <span class="desc">Total Bookmarked</span>
                                 <div class="icon">
                                     <img src="{% static 'assets/images//dashboard/like.png' %}" alt="...">

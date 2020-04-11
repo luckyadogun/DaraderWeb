@@ -1,0 +1,148 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock %}
+
+    <div class="page-wrapper">
+        <!--Sidebar Menu Starts-->
+        {% block sidebar %}
+            {% include "user_components/dashboard__sidebar.html" %}
+        {% endblock %}
+        <!--Sidebar Menu ends-->
+
+        {% block content %}
+        <!--Dashboard content Wrapper starts-->
+        <div class="dash-content-wrap">
+            <!-- Top header starts-->
+            {% include "user_components/dashboard__header.html" %}
+            <!-- Top header ends-->
+            <!-- Dashboard Content starts-->
+            <div class="dash-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="recent-activity my-listing">
+                                <div class="act-title">
+                                    <h5>Favourite Property</h5>
+                                </div>
+                                <div class="db-booking-wrap favourite table-content table-responsive">
+                                    {% if bookmarks %}
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Property</th>
+                                                    <th scope="col">Date Added</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for property in bookmarks %}
+                                                    <tr class="bg-white">
+                                                        <th scope="row">
+                                                            <div class="most-viewed-item">
+                                                                <div class="most-viewed-img">
+                                                                    {% for img in property.gallery.all %}
+                                                                        {% if forloop.first %}                                                    
+                                                                            <a href="{{ property.get_absolute_url }}" target="_blank">
+                                                                                <img src="{{ img.image.url }}" alt="{{property.title}}">
+                                                                            </a>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    <ul class="feature_text">
+                                                                        <li class="feature_or"> <span>FOR {{ property.property_category|upper }}</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="most-viewed-detail">
+                                                                    <h3><a href="{{ property.get_absolute_url }}" target="_blank">{{ property.title }}</a></h3>
+                                                                    <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ property.address }}</p>
+                                                                    <div class="trend-open">
+                                                                        <p>₦{{ property.price|floatformat|intcomma }}</p>
+                                                                    </div>
+                                                                </div>  
+                                                            </div>
+                                                        </th>
+                                                        <td>{{ property.created }}</td>
+                                                        <td>
+                                                            <div class="listing-button">
+                                                                <a href="#" class="btn v4" onclick="deleteBookmark('{{ property.id }}');">Delete</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p style="text-align: center;">You currently have no saved properties</p>
+                                    {% endif %}
+                                </div>
+                                 <!--pagination starts-->
+                                {% if is_paginated %}
+                                    <div class="post-nav nav-res pt-50  ">
+                                        <div class="row">
+                                            <div class="col-md-8 offset-md-2  col-xs-12 ">
+                                                <div class="page-num text-center">                                                                                                                                        
+                                                    <ul>
+                                                        {% for i in paginator.page_range %}                                       
+                                                            {% if page_obj.number == i %}
+                                                                <li class="active"><a href="?{{ qs }}&page={{ page_obj.page_number }}">{{ i }}</a></li>
+                                                            {% else %}
+                                                                <li><a href="?{{ qs }}&page={{ i }}">{{ i }}</a></li>
+                                                            {% endif %}                                                        
+                                                        {% endfor %}
+                                                        
+                                                        {% if page_obj.has_next %}
+                                                            <li><a href="?{{ qs }}&page={{ page_obj.next_page_number }}"><i class="lnr lnr-chevron-right"></i></a></li>
+                                                        {% endif %}
+                                                    </ul>                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!--pagination ends-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dashboard Content ends-->
+            <!--Dashboard footer starts-->
+            {% include "user_components/dashboard__footer.html" %}
+            <!--Dashboard footer ends-->
+        </div>
+        <!--Dashboard content Wrapper ends-->
+    </div>
+    {% endblock %}
+
+    {% block scripts %}
+    <script>
+
+        function deleteBookmark(propertyID){
+            var action = confirm("Are you sure you want delete this from your bookmarks?");
+            if(action == true){
+                $.ajax({
+                    type: "POST",
+                    url: 'ajax/bookmarks/delete',
+                    dataType: "JSON",
+                    data: {
+                        propertyID: propertyID,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        },                    
+                    success: function(response){
+                        var result = response["result"];
+                        if(result == "Success!"){
+                            location.reload();
+                        }else{
+                            alert(result);
+                        };             
+                    },
+                    error: function(response){
+                        var result = response["result"];
+                        alert("Error! Something went wrong!");
+                    }
+                });
+            };
+        };
+    </script>
+    {% endblock %}

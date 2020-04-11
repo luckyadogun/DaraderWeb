@@ -135,7 +135,7 @@
                                                     <span>{{ property.owner }}</span>
                                                 </a>
                                                 <ul class="save-btn">                                                    
-                                                    <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
+                                                    <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i class="lnr lnr-heart" value="{{property.pk}}"></i></a></li> 
                                                 </ul>                                                
                                             </div>                                                                                        
                                         </div>                                        
@@ -231,7 +231,7 @@
                                                 <span>{{ property.owner }}</span>
                                             </a>
                                             <ul class="save-btn">                                                    
-                                                <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                                    
+                                                <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i class="lnr lnr-heart" value="{{property.pk}}"></i></a></li> 
                                             </ul>                                                
                                         </div>                                                                                        
                                     </div>                                        
@@ -391,7 +391,7 @@
                                             <span>{{ property.owner }}</span>
                                         </a>
                                         <ul class="save-btn">                                            
-                                            <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bookmark"><a href="#"><i class="lnr lnr-heart"></i></a></li>                                            
+                                            <li data-toggle="tooltip" data-placement="top" title=""><a href="#" id="bookmark-this" custom-data-value="{{ property.id }}"><i class="lnr lnr-heart" value=" {{property.pk}} "></i></a></li> 
                                         </ul>                                        
                                     </div>
                                 </div>

@@ -60,7 +60,7 @@ class Company(TimeStampedModel):
 
     is_approved = models.BooleanField(
         _("approve company"),
-        help_text="click here to approve or disapprove this company", 
+        help_text="click here to approve or disapprove this company",
         default=False)
     is_featured = models.BooleanField(
         _("feature company"),
@@ -107,7 +107,7 @@ def generate_property_id():
     Generate a hardened unique property ID
     with little possibility of collision
     """
-    return uuid.uuid4().hex[8:16] + str(random.random())[20:]
+    return uuid.uuid4().hex
 
 
 class Property(TimeStampedModel):
@@ -147,27 +147,33 @@ class Property(TimeStampedModel):
 
     property_id = models.CharField(
         _("Property ID"), max_length=40, unique=True, 
-        default=uuid.uuid4())
+        default=generate_property_id)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"), max_length=400, blank=True)
     address = models.CharField(_("address"), max_length=200)
     area = models.CharField(
         _("area"), max_length=200, 
         blank=True, null=True)
-    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
-    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
+    country = models.ForeignKey(
+        Country, on_delete=models.SET_NULL,
+        null=True, default='')
+    state = models.ForeignKey(
+        State, on_delete=models.SET_NULL,
+        null=True, default='')
     zipcode = models.CharField(
-        _("zipcode or postal code"), 
+        _("zipcode or postal code"),
         max_length=20, blank=True, null=True)
     property_category = models.CharField(
         _("category"), max_length=20, 
-        choices=PROPERTY_CATEGORY_CHOICES)
+        choices=PROPERTY_CATEGORY_CHOICES,
+        default=SALE)
     property_type = models.CharField(
-        _("type"), max_length=20, 
+        _("type"), max_length=20, default=ALL,
         choices=PROPERTY_TYPE_CHOICES)
     market_status = models.CharField(
         _("status"), max_length=20, 
-        choices=PROPERTY_MARKET_STATUS)
+        choices=PROPERTY_MARKET_STATUS,
+        default=AVAILABLE)
     price = models.DecimalField(
         _("price"), 
         max_digits=20, decimal_places=2)
@@ -242,17 +248,19 @@ class BookingRequest(TimeStampedModel):
     )
 
     status = models.CharField(
-        max_length=20, null=True,
-        default=UNBOOKED, choices=BOOKING_STATUS)
+        max_length=20, null=True, default=UNBOOKED, choices=BOOKING_STATUS)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE,
-        related_name="bookingrequest")
+        Company, on_delete=models.CASCADE, related_name="bookingrequest")
     client = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name="bookingrequest")
+        User, on_delete=models.CASCADE, related_name="bookingrequest")
     property_details = models.ForeignKey(
         PropertyDetails, on_delete=models.CASCADE,
         related_name="bookingrequest")
     mobile_phone = models.CharField(
-        validators=[validate_phone], max_length=17,
-        null=True, blank=True)
+        validators=[validate_phone], max_length=17, null=True, blank=True)
+
+
+class BookmarkedProperty(TimeStampedModel):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    property_obj = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="bookmarked")

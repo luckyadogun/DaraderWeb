@@ -2878,6 +2878,7 @@ input[type="text"]:focus {
 
 .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
     color: #888;
+    text-transform: uppercase;
 }
 
 /*-------------------------------------------

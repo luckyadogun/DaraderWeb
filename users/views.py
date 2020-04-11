@@ -1,31 +1,28 @@
-from django.urls import reverse
 from django.views.generic import ListView
-from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import Http404, JsonResponse
+from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.deprecation import MiddlewareMixin
 
-from properties.models import Property, Company, BookingRequest
+from .forms import (
+    PropertyForm,
+    GalleryForm,
+    PropertyDetailsForm)
+
+from properties.models import (
+    Property, Company,
+    BookingRequest, 
+    BookmarkedProperty)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "users/index.html"
 
     def get_context_data(self, *args, **kwargs):
-        property_obj = Property.objects.filter(
-            owner__manager=self.request.user)
-
         context = super().get_context_data(**kwargs)
-        context["my_properties_count"] = property_obj.count()
-        context["my_properties_forsale"] = property_obj.filter(
-            property_category="sale").count()
-        context["my_properties_forrent"] = property_obj.filter(
-            property_category="rent").count()
-        context["recent_properties"] = property_obj.order_by("created")[:3]
+        context["recent_properties"] = Property.objects.order_by("created")[:3]
 
         return context
 
@@ -53,7 +50,7 @@ def property_delete_view(request):
             return JsonResponse({"result": "Success!"})
         return JsonResponse({"result": "Unauthorized Access!"})
 
-    return redirect(reverse("users:my-properties"))
+    raise Http404("Page Doesn't Exist!")
 
 
 class MyBookingsView(LoginRequiredMixin, ListView):
@@ -80,7 +77,7 @@ def booking_delete_view(request):
             return JsonResponse({"result": "Success!"})
         return JsonResponse({"result": "Unauthorized Access!"})
 
-    return redirect(reverse("users:my-bookings"))
+    raise Http404("Page Doesn't Exist!")
 
 
 @login_required
@@ -93,11 +90,39 @@ def booking_setup_view(request):
         booking.save()
         return JsonResponse({"result": "Success!"})
 
-    return redirect(reverse("users:my-bookings"))
+    raise Http404("Page Doesn't Exist!")
 
 
-class AddPropertyView(LoginRequiredMixin, TemplateView):
-    template_name = "users/add_property.html"
+class BookmarkedView(LoginRequiredMixin, ListView):
+    template_name = "users/my_bookmarks.html"
+    context_object_name = "bookmarks"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookmarkedProperty.objects.filter(
+            owner=self.request.user)
+
+
+# class AddPropertyView(LoginRequiredMixin, CreateView):
+#     template_name = "users/add_property.html"
+#     form_class = PropertyForm
+
+
+def add_property(request):
+    if request.method == "POST":
+        property_form = PropertyForm()
+        gallery_form = GalleryForm()
+        property_details_form = PropertyDetailsForm()
+    else:
+        property_form = PropertyForm()
+        gallery_form = GalleryForm()
+        property_details_form = PropertyDetailsForm()
+
+    return render(request, 'users/add_property.html', {
+            'property_form': property_form,
+            'gallery_form': gallery_form,
+            'property_details_form': property_details_form
+            })
 
 
 class MyAccountView(LoginRequiredMixin, TemplateView):
@@ -106,7 +131,3 @@ class MyAccountView(LoginRequiredMixin, TemplateView):
 
 class UpdateAccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/update_account.html"
-
-
-class BookmarkedView(LoginRequiredMixin, TemplateView):
-    template_name = "users/bookmarks.html"

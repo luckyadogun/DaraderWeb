@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
     HomePageView, SearchResultView,
     PropertyDetailView, login_view,
-    logout_view, signup_view
+    logout_view, signup_view,
+    bookmark_item_view
     )
 
 urlpatterns = [
@@ -44,4 +45,6 @@ urlpatterns = [
     path(
         'property/<int:pk>/<slug>/',
         PropertyDetailView.as_view(), name="property-details"),
+    path(
+        'ajax/bookmark', bookmark_item_view, name="bookmark-property"),
 ]

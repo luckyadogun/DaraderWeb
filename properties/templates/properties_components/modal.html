@@ -25,8 +25,8 @@
                                             <div class="tab-pane fade show active" id="login" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6" id="login-modal">
-                                                        <form id="login-form" method="POST" autocomplete="zzz"> 
-                                                            {% csrf_token %}                                                          
+                                                        <form id="login-form" method="POST">                                                         
+                                                            {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="email" value="" required="">
                                                             </div>
@@ -47,7 +47,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
-                                                                <button type="submit" class="btn v8"><span class="lnr lnr-exit"></span> Log In</button>
+                                                                <button type="submit" class="btn v8"><span class="lnr lnr-exit"></span>Log In</button>
                                                             </div>
                                                         </form>
                                                         <!-- <div class="social-profile-login  text-left mt-20">
@@ -70,7 +70,7 @@
                                             <div class="tab-pane fade" id="register" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-md-6" id="signup-modal">
-                                                        <form id="register-form" method="POST" autocomplete="off">
+                                                        <form id="register-form" method="POST">
                                                             {% csrf_token %}
                                                             <div class="form-group">
                                                                 <input type="text" name="username" id="user_name" tabindex="1" class="form-control" placeholder="Username" value="">
@@ -85,7 +85,7 @@
                                                                 <input type="password" name="password2" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
                                                             </div>
                                                             <div class="res-box text-left">
-                                                                <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                                                                <input type="checkbox" tabindex="3" class="" name="remember" id="remember" required>
                                                                 <label for="remember">I've read and accept terms &amp; conditions</label>
                                                             </div>
                                                             <div class="res-box text-center mt-30">
@@ -164,16 +164,13 @@
             });
 
             // signup
+
             $("#register-form").submit(function(e){
                 e.preventDefault();
                 var toc = $(this).find("#remember")
                 var serializedData = $(this).serialize();
 
-                if(!toc.checked){
-                    alert("Please indicate that you accept our terms and condition!")
-                    location.reload();
-                }else{
-                    $.ajax({
+                $.ajax({
                     type: "POST",
                     url: "ajax/signup",
                     dataType: "JSON",
@@ -189,7 +186,11 @@
                                 </div>`
                             )
                             $("#login-form").effect("shake");
-                        }  
+                        };
+
+                        if(result == "Success"){
+                            location.reload();
+                        }
                     },
                     error: function(response){
                         $("#signup-modal").prepend(
@@ -201,8 +202,7 @@
                             )
                         $("#login-form").effect("shake");
                         }
-                    });
-                };                
-            });
-        });        
+                    });              
+                });
+            });        
     </script>
