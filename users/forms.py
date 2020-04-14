@@ -92,10 +92,10 @@ class PropertyForm(forms.ModelForm):
 
     class Meta:
         model = Property
-        exclude = ('slug',)
+        exclude = ('slug', 'owner', 'market_status',)
         widgets = {
             'property_id': forms.TextInput(attrs={
-                'class': 'form-control filter-input', 
+                'class': 'form-control filter-input',
                 'readonly': 'readonly'}),
 
             'title': forms.TextInput(attrs={
@@ -128,7 +128,7 @@ class PropertyForm(forms.ModelForm):
 
             'price': forms.NumberInput(attrs={
                 'class': 'form-control filter-input',
-                'placeholder': '3,000,000'}),
+                'placeholder': '3000000'}),
 
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -142,14 +142,14 @@ class PropertyForm(forms.ModelForm):
 
 
 class GalleryForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.ClearableFileInput(
+        attrs={
+            'multiple': True, 'class': 'add-listing__input-file',
+            'type': 'file', 'name': 'file', 'id': 'img_file'}))
 
     class Meta:
         model = Gallery
         exclude = ('property_obj',)
-        widgets = {
-            'image': forms.FileInput(attrs={
-                'class': 'add-listing__input-file'})
-        }
 
 
 class PropertyDetailsForm(forms.ModelForm):
@@ -185,7 +185,7 @@ class PropertyDetailsForm(forms.ModelForm):
             'covered_area': forms.NumberInput(attrs={
                 'class': 'form-control filter-input',
                 'placeholder': '(Optional) Enter property occupied area'}),
-            
+
             'has_basketball_court': forms.CheckboxInput(attrs={
                 'class': 'form-control filter-input', 'id': 'check-a'}),
 
@@ -197,6 +197,4 @@ class PropertyDetailsForm(forms.ModelForm):
 
             'has_swimming_pool': forms.CheckboxInput(attrs={
                 'class': 'form-control filter-input', 'id': 'check-d'}),
-
-            
         }

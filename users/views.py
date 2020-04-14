@@ -1,5 +1,7 @@
 from django.views.generic import ListView
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import (
+            get_object_or_404, render,
+            redirect, reverse)
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.views.generic.edit import CreateView
@@ -109,14 +111,39 @@ class BookmarkedView(LoginRequiredMixin, ListView):
 
 
 def add_property(request):
-    if request.method == "POST":
-        property_form = PropertyForm()
-        gallery_form = GalleryForm()
-        property_details_form = PropertyDetailsForm()
+    if request.is_ajax and request.method == "POST":
+        print('DATA: ', request.POST)
+        print('FILES: ', request.FILES)
+
+        property_form = PropertyForm(request.POST, prefix="form1")
+        gallery_form = GalleryForm(request.POST, request.FILES)
+        property_details_form = PropertyDetailsForm(
+            request.POST, prefix="form2")
+
+        print("errors: ", property_form.errors)
+
+        if property_form.is_valid():
+
+            print("did after!")
+
+            property_obj = property_form.save(commit=False)
+            property_obj.owner = Company.objects.get(manager=request.user.id)
+            property_obj.save()
+
+            gallery = gallery_form.save(commit=False)
+            gallery.property_obj = property_obj
+            gallery.save()
+
+            property_details = property_details_form.save(commit=False)
+            property_details.property_obj = property_obj
+            property_details.save()
+
+            return redirect(reverse("users:my-properties"))
+
     else:
-        property_form = PropertyForm()
+        property_form = PropertyForm(prefix="form1")
         gallery_form = GalleryForm()
-        property_details_form = PropertyDetailsForm()
+        property_details_form = PropertyDetailsForm(prefix="form2")
 
     return render(request, 'users/add_property.html', {
             'property_form': property_form,
