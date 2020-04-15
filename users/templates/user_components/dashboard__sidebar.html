@@ -16,7 +16,7 @@
                     </li>       
                         <li>
                             <a {% if 'my/favourites' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
-                            <i class="ion-ios-heart-outline"></i>Favourites</a>
+                            <i class="ion-ios-heart-outline"></i>Bookmarks</a>
                         </li>
                     {% if user.is_account_manager %}
                         <li>

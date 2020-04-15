@@ -57,7 +57,7 @@
                                                     <!-- <div class="views">Views : <span>178</span></div> -->
                                                 </div>
                                                 <div class="listing-button">
-                                                    <a href="#" class="btn v3"><i class="ion-edit"></i> Edit</a>
+                                                    <a href="{% url 'users:update-property' property.id %}" class="btn v3"><i class="ion-edit"></i> Edit</a>
                                                     <a href="#" class="btn v4" onclick="deleteProperty('{{ property.title }}', '{{ property.id }}');"><i class="ion-android-delete"></i> Delete</a>
                                                 </div>
                                             </div> 

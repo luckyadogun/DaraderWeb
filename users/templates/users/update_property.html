@@ -19,7 +19,7 @@
             <!-- Top header ends-->
             <!--Dashboard content starts-->
             <div class="dash-content">
-                <form enctype="multipart/form-data" id="formData" method="POST" action="{% url 'users:add-property' %}">
+                <form enctype="multipart/form-data" id="formData" method="POST" action="{% url 'users:update-property' property.id %}">
                     {% csrf_token %}
                     <div class="container-fluid">
                         <div class="row">
@@ -216,18 +216,18 @@
             $("#submit").click(function(e){                
                 $.ajax({
                     type: "POST",
-                    url: "add-property",
                     dataType: "JSON",                    
                     data: formData.serialize(),
                     success: function(response){
-                        formData.reset();                        
+                        formData.reset();
+                        console.log("worked!");
                     },
                     error: function(){
                         formData.reset();
-                        alert("Something went wrong!");
+                        console.log("failed!");
                     }
                 })
             });
         });
     </script>
-{% endblock %}
+    {% endblock %}

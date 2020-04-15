@@ -37,35 +37,35 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for property in bookmarks %}
+                                                {% for bookmark in bookmarks %}
                                                     <tr class="bg-white">
                                                         <th scope="row">
                                                             <div class="most-viewed-item">
                                                                 <div class="most-viewed-img">
-                                                                    {% for img in property.gallery.all %}
+                                                                    {% for img in bookmark.property_obj.gallery.all %}
                                                                         {% if forloop.first %}                                                    
-                                                                            <a href="{{ property.get_absolute_url }}" target="_blank">
-                                                                                <img src="{{ img.image.url }}" alt="{{property.title}}">
+                                                                            <a href="{{ bookmark.property_obj.get_absolute_url }}" target="_blank">
+                                                                                <img src="{{ img.image.url }}" alt="{{bookmark.property_obj.title}}">
                                                                             </a>
                                                                         {% endif %}
                                                                     {% endfor %}
                                                                     <ul class="feature_text">
-                                                                        <li class="feature_or"> <span>FOR {{ property.property_category|upper }}</span></li>
+                                                                        <li class="feature_or"> <span>FOR {{ bookmark.property_obj.property_category|upper }}</span></li>
                                                                     </ul>
                                                                 </div>
                                                                 <div class="most-viewed-detail">
-                                                                    <h3><a href="{{ property.get_absolute_url }}" target="_blank">{{ property.title }}</a></h3>
-                                                                    <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ property.address }}</p>
+                                                                    <h3><a href="{{ bookmark.property_obj.get_absolute_url }}" target="_blank">{{ bookmark.property_obj.title }}</a></h3>
+                                                                    <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ bookmark.property_obj.address }}</p>
                                                                     <div class="trend-open">
-                                                                        <p>₦{{ property.price|floatformat|intcomma }}</p>
+                                                                        <p>₦{{ bookmark.property_obj.price|floatformat|intcomma }}</p>
                                                                     </div>
                                                                 </div>  
                                                             </div>
                                                         </th>
-                                                        <td>{{ property.created }}</td>
+                                                        <td>{{ bookmark.created }}</td>
                                                         <td>
                                                             <div class="listing-button">
-                                                                <a href="#" class="btn v4" onclick="deleteBookmark('{{ property.id }}');">Delete</a>
+                                                                <a href="#" class="btn v4" onclick="deleteBookmark('{{ bookmark.id }}');">Delete</a>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -118,7 +118,7 @@
     {% block scripts %}
     <script>
 
-        function deleteBookmark(propertyID){
+        function deleteBookmark(bookmarkID){
             var action = confirm("Are you sure you want delete this from your bookmarks?");
             if(action == true){
                 $.ajax({
@@ -126,7 +126,7 @@
                     url: 'ajax/bookmarks/delete',
                     dataType: "JSON",
                     data: {
-                        propertyID: propertyID,
+                        bookmarkID: bookmarkID,
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                         },                    
                     success: function(response){

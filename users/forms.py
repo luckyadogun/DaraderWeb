@@ -100,11 +100,13 @@ class PropertyForm(forms.ModelForm):
 
             'title': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
-                'placeholder': 'Enter property title'}),
+                'placeholder': 'Enter property title',
+                'required': 'true'}),
 
             'address': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
-                'placeholder': 'Enter property address'}),
+                'placeholder': 'Enter property address',
+                'required': 'true'}),
 
             'area': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
@@ -128,11 +130,12 @@ class PropertyForm(forms.ModelForm):
 
             'price': forms.NumberInput(attrs={
                 'class': 'form-control filter-input',
-                'placeholder': '3000000'}),
+                'placeholder': '3000000', 'required': 'true'}),
 
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter a property description'}),
+                'placeholder': 'Enter a property description',
+                'required': 'true'}),
         }
 
     # def __init__(self, user, *args, **kwargs):
@@ -198,3 +201,31 @@ class PropertyDetailsForm(forms.ModelForm):
             'has_swimming_pool': forms.CheckboxInput(attrs={
                 'class': 'form-control filter-input', 'id': 'check-d'}),
         }
+
+
+class PropertyUpdateForm(PropertyForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['property_id'].widget.attrs['placeholder'] = self.instance.property_id
+        self.fields['title'].widget.attrs['placeholder'] = self.instance.title
+        self.fields['address'].widget.attrs['placeholder'] = self.instance.address
+        self.fields['area'].widget.attrs['placeholder'] = self.instance.area
+        self.fields['country'].widget.attrs['value'] = self.instance.country
+        self.fields['state'].widget.attrs['value'] = self.instance.state
+        self.fields['zipcode'].widget.attrs['placeholder'] = self.instance.zipcode
+        self.fields['property_type'].widget.attrs['value'] = self.instance.property_type
+        self.fields['property_category'].widget.attrs['value'] = self.instance.property_category
+        self.fields['price'].widget.attrs['placeholder'] = self.instance.price
+        self.fields['description'].widget.attrs['placeholder'] = self.instance.description
+
+
+class DetailsUpdateForm(PropertyDetailsForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bedrooms'].widget.attrs['placeholder'] = self.instance.bedrooms
+        self.fields['livingrooms'].widget.attrs['placeholder'] = self.instance.livingrooms
+        self.fields['bathrooms'].widget.attrs['placeholder'] = self.instance.bathrooms
+        self.fields['toilets'].widget.attrs['placeholder'] = self.instance.toilets        
+        self.fields['parking_spaces'].widget.attrs['placeholder'] = self.instance.parking_spaces
+        self.fields['total_area'].widget.attrs['placeholder'] = self.instance.total_area
+        self.fields['covered_area'].widget.attrs['placeholder'] = self.instance.covered_area

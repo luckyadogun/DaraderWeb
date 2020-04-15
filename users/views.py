@@ -1,22 +1,26 @@
 from django.views.generic import ListView
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import Http404, JsonResponse
+from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (
             get_object_or_404, render,
             redirect, reverse)
-from django.contrib.auth.decorators import login_required
-from django.http import Http404, JsonResponse
-from django.views.generic.edit import CreateView
-from django.views.generic.base import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import (
     PropertyForm,
     GalleryForm,
-    PropertyDetailsForm)
+    PropertyDetailsForm,
+    PropertyUpdateForm,
+    DetailsUpdateForm
+    )
 
 from properties.models import (
     Property, Company,
-    BookingRequest, 
-    BookmarkedProperty)
+    BookingRequest, Gallery,
+    BookmarkedProperty,
+    PropertyDetails)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -55,12 +59,95 @@ def property_delete_view(request):
     raise Http404("Page Doesn't Exist!")
 
 
+@login_required
+def add_property(request):
+    if request.is_ajax and request.method == "POST":
+
+        property_form = PropertyForm(request.POST, prefix="form1")
+        gallery_form = GalleryForm(request.POST, request.FILES)
+        property_details_form = PropertyDetailsForm(
+            request.POST, prefix="form2")
+
+        forms = all([
+            property_form.is_valid(),
+            gallery_form.is_valid(),
+            property_details_form.is_valid()])
+
+        if forms:
+            property_obj = property_form.save(commit=False)
+            property_obj.owner = Company.objects.get(manager=request.user.id)
+            property_obj.save()
+
+            gallery = gallery_form.save(commit=False)
+            gallery.property_obj = property_obj
+            gallery.save()
+
+            property_details = property_details_form.save(commit=False)
+            property_details.property_obj = property_obj
+            property_details.save()
+
+            return redirect(reverse("users:my-properties"))
+
+    else:
+        property_form = PropertyForm(prefix="form1")
+        gallery_form = GalleryForm()
+        property_details_form = PropertyDetailsForm(prefix="form2")
+
+    return render(request, 'users/add_property.html', {
+            'property_form': property_form,
+            'gallery_form': gallery_form,
+            'property_details_form': property_details_form
+            })
+
+
+def update_property(request, pk=None):
+    property_obj = get_object_or_404(Property, id=pk)
+    gallery_obj = get_object_or_404(
+        Gallery, property_obj=property_obj)
+    prop_details = get_object_or_404(
+        PropertyDetails, property_obj=property_obj)
+
+    if request.is_ajax and request.method == "POST":
+
+        property_form = PropertyUpdateForm(
+            request.POST, instance=property_obj, prefix="form1")
+        gallery_form = GalleryForm(
+            request.POST, request.FILES, instance=gallery_obj)
+        property_details_form = DetailsUpdateForm(
+            request.POST, instance=prop_details, prefix="form2")
+
+        forms = all([
+                property_form.is_valid(),
+                gallery_form.is_valid(),
+                property_details_form.is_valid()])
+
+        if forms:
+            property_form.save()
+            gallery_form.save()
+            property_details_form.save()
+
+            return redirect(reverse("users:my-properties"))
+    else:
+        property_form = PropertyUpdateForm(
+            instance=property_obj, prefix="form1")
+        gallery_form = GalleryForm(instance=gallery_obj)
+        property_details_form = DetailsUpdateForm(
+            instance=prop_details, prefix="form2")
+
+    return render(request, 'users/update_property.html', {
+            'property_form': property_form,
+            'gallery_form': gallery_form,
+            'property_details_form': property_details_form,
+            'property': property_obj
+            })
+
+
 class MyBookingsView(LoginRequiredMixin, ListView):
     template_name = "users/my_bookings.html"
     context_object_name = "bookings"
     paginate_by = 10
 
-    def get_queryset(self):        
+    def get_queryset(self):
         return BookingRequest.objects.filter(
             company__manager=self.request.user,
             status="booked")
@@ -104,52 +191,20 @@ class BookmarkedView(LoginRequiredMixin, ListView):
         return BookmarkedProperty.objects.filter(
             owner=self.request.user)
 
+@login_required
+def bookmark_delete_view(request):
+    company = get_object_or_404(Company, manager=request.user)
 
-# class AddPropertyView(LoginRequiredMixin, CreateView):
-#     template_name = "users/add_property.html"
-#     form_class = PropertyForm
-
-
-def add_property(request):
     if request.is_ajax and request.method == "POST":
-        print('DATA: ', request.POST)
-        print('FILES: ', request.FILES)
+        bookmark_id = request.POST.get("bookmarkID")
+        bookmark = get_object_or_404(BookmarkedProperty, id=bookmark_id)
 
-        property_form = PropertyForm(request.POST, prefix="form1")
-        gallery_form = GalleryForm(request.POST, request.FILES)
-        property_details_form = PropertyDetailsForm(
-            request.POST, prefix="form2")
+        if bookmark.property_obj.owner == company:
+            bookmark.delete()
+            return JsonResponse({"result": "Success!"})
+        return JsonResponse({"result": "Unauthorized Access!"})
 
-        print("errors: ", property_form.errors)
-
-        if property_form.is_valid():
-
-            print("did after!")
-
-            property_obj = property_form.save(commit=False)
-            property_obj.owner = Company.objects.get(manager=request.user.id)
-            property_obj.save()
-
-            gallery = gallery_form.save(commit=False)
-            gallery.property_obj = property_obj
-            gallery.save()
-
-            property_details = property_details_form.save(commit=False)
-            property_details.property_obj = property_obj
-            property_details.save()
-
-            return redirect(reverse("users:my-properties"))
-
-    else:
-        property_form = PropertyForm(prefix="form1")
-        gallery_form = GalleryForm()
-        property_details_form = PropertyDetailsForm(prefix="form2")
-
-    return render(request, 'users/add_property.html', {
-            'property_form': property_form,
-            'gallery_form': gallery_form,
-            'property_details_form': property_details_form
-            })
+    raise Http404("Page Doesn't Exist!")
 
 
 class MyAccountView(LoginRequiredMixin, TemplateView):
