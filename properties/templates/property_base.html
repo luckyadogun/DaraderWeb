@@ -73,6 +73,40 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
     <!--Main js-->
     <script src="{% static 'assets/js/main.js' %}"></script>
+    <!-- JQuery -->
+    <script>
+        $(document).ready(function(){
+            $(".lnr-heart").click(function(e){
+                e.preventDefault();
+                var propertyID = $(this).attr("value");
+
+                $.ajax({
+                    type: "POST",
+                    url: "ajax/bookmark",
+                    dataType: "JSON",
+                    data: {
+                        propertyID: propertyID,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(response){
+                        var result = response['result'];
+                        if(result == "Success!"){
+                            location.reload();
+                        }else if(result == "Already Bookmarked!"){
+                            alert(result);                    
+                        }else{
+                            $("#user-login-popup").modal("show");
+                        };
+                    },
+                    error: function(response){
+                        var result = response["result"];                       
+                        alert("Error! Something went wrong!");
+                    }
+                });
+            });
+        });
+    </script>
+    
     <!--Scripts ends-->
 </body>
 

@@ -13,13 +13,12 @@
                         <a {% if 'my/dashboard' in request.path %}class="active"{% endif %} href="{% url 'users:dashboard' %}">
                             <i class="ion-ios-gear-outline"></i>Dashboard
                         </a>
-                    </li>
-                    {% if not user.is_account_manager %}         
+                    </li>       
                         <li>
                             <a {% if 'my/favourites' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
-                            <i class="ion-ios-heart-outline"></i>Favourites</a>
+                            <i class="ion-ios-heart-outline"></i>Bookmarks</a>
                         </li>
-                    {% else %}
+                    {% if user.is_account_manager %}
                         <li>
                             <a {% if 'my/properties' in request.path %}class="active"{% endif %} href="{% url 'users:my-properties' %}">
                                 <i class="ion-social-buffer-outline"></i>My Properties

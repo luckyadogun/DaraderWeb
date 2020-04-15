@@ -26,41 +26,45 @@
                                     <h5>My Listings</h5>
                                 </div>
                                 <div class="viewd-item-wrap">
-                                    {% for property in properties %}
-                                        <div class="most-viewed-item">
-                                            <div class="most-viewed-img">
-                                                {% for img in property.gallery.all %}
-                                                    {% if forloop.first %}                                                    
-                                                        <a href="{{ property.get_absolute_url }}" target="_blank">
-                                                            <img src="{{ img.image.url }}" alt="{{property.title}}">
-                                                        </a>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                <ul class="feature_text">
-                                                    <li class="feature_or"> <span>FOR {{ property.property_category|upper }}</span></li>
-                                                </ul>
-                                            </div>
-                                            <div class="most-viewed-detail">
-                                                <h3><a href="{{ property.get_absolute_url }}" target="_blank">{{ property.title }}</a></h3>
-                                                <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ property.address }}</p>
-                                                <div class="trend-open">
-                                                    <p>₦{{ property.price|floatformat|intcomma }}</p>
+                                    {% if properties %}
+                                        {% for property in properties %}
+                                            <div class="most-viewed-item">
+                                                <div class="most-viewed-img">
+                                                    {% for img in property.gallery.all %}
+                                                        {% if forloop.first %}                                                    
+                                                            <a href="{{ property.get_absolute_url }}" target="_blank">
+                                                                <img src="{{ img.image.url }}" alt="{{property.title}}">
+                                                            </a>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <ul class="feature_text">
+                                                        <li class="feature_or"> <span>FOR {{ property.property_category|upper }}</span></li>
+                                                    </ul>
                                                 </div>
-                                                <div class="ratings">
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star-half"></i>
+                                                <div class="most-viewed-detail">
+                                                    <h3><a href="{{ property.get_absolute_url }}" target="_blank">{{ property.title }}</a></h3>
+                                                    <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ property.address }}</p>
+                                                    <div class="trend-open">
+                                                        <p>₦{{ property.price|floatformat|intcomma }}</p>
+                                                    </div>
+                                                    <div class="ratings">
+                                                        <i class="ion-ios-star"></i>
+                                                        <i class="ion-ios-star"></i>
+                                                        <i class="ion-ios-star"></i>
+                                                        <i class="ion-ios-star"></i>
+                                                        <i class="ion-ios-star-half"></i>
+                                                    </div>
+                                                    <!-- <div class="views">Views : <span>178</span></div> -->
                                                 </div>
-                                                <!-- <div class="views">Views : <span>178</span></div> -->
-                                            </div>
-                                            <div class="listing-button">
-                                                <a href="#" class="btn v3"><i class="ion-edit"></i> Edit</a>
-                                                <a href="#" class="btn v4" onclick="deleteProperty('{{ property.title }}', '{{ property.id }}');"><i class="ion-android-delete"></i> Delete</a>
-                                            </div>
-                                        </div> 
-                                    {% endfor %}                                   
+                                                <div class="listing-button">
+                                                    <a href="{% url 'users:update-property' property.id %}" class="btn v3"><i class="ion-edit"></i> Edit</a>
+                                                    <a href="#" class="btn v4" onclick="deleteProperty('{{ property.title }}', '{{ property.id }}');"><i class="ion-android-delete"></i> Delete</a>
+                                                </div>
+                                            </div> 
+                                        {% endfor %}       
+                                    {% else %}
+                                        <p style="text-align: center;">You currently have no properties</p>  
+                                    {% endif %}                          
                                 </div>
                                  <!--pagination starts-->
                                 {% if is_paginated %}
@@ -102,7 +106,6 @@
     {% endblock %}
 
     {% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
 
         function deleteProperty(property, propertyID){

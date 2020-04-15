@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load total_bookmarks %}
 
     <header class="header transparent scroll-hide">
         <!--Main Menu starts-->
@@ -25,10 +25,7 @@
                                         </li>
                                         <li>
                                             <a href="{% url 'properties:lease' %}">For Lease</a>                                                
-                                        </li>
-                                        <li>
-                                            <a href="#">Request</a>                                                
-                                        </li>
+                                        </li>                                        
                                     </ul>
                                 </div>
                             </nav>
@@ -52,25 +49,25 @@
                                 <ul class="user-btn">
                                     {% if user.is_authenticated %}                               
                                         <li id="bookmarked"><a href="#"><i class="lnr lnr-heart"></i></a>
+                                            <span id="total-bookmarked">{% total_bookmarks user %}</span>
+                                        </li>
+
+                                        {% if user.is_account_manager %}
+                                            <div class="add-list float-right ml-3">
+                                                <a class="btn v6" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="add-list float-right ml-3">
+                                                <a class="btn v7" href="{% url 'properties:logout' %}"><i class="lnr lnr-home"></i>Logout </a>
+                                            </div>
+                                        {% endif %}
+
+                                    {% else %}
+                                        <li id="bookmarked"><a href="#"><i class="lnr lnr-heart"></i></a>
                                             <span id="total-bookmarked">0</span>
                                         </li>
-                                    {% endif %}
-
-                                    {% if user.is_account_manager %}
-                                        <div class="add-list float-right ml-3">
-                                            <a class="btn v6" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
-                                        </div>
-                                    {% else %}
-                                        <div class="add-list float-right ml-3">
-                                            <a class="btn v7" href="{% url 'properties:logout' %}"><i class="lnr lnr-home"></i>Logout </a>
-                                        </div>
-                                    {% endif %}
-
-                                    {% if not user.is_authenticated %}
-                                        <li><a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-heart"></i></a>
-                                            <span>0</span>
-                                        </li>
-                                        <li><a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-user"></i></a>
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#user-login-popup"><i class="lnr lnr-user"></i></a>
                                         </li>
                                     {% endif %}
                                 </ul>                                

@@ -4,31 +4,30 @@ from django.contrib import messages
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render_to_response, redirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 
 from users.forms import UserCreationForm
 
 from .models import (
-    Property, PropertyDetails, 
-    BookingRequest, Company)
+    Property, PropertyDetails,
+    BookingRequest, BookmarkedProperty as Bookmarked)
 from .utils import get_currently_featured
 
 
-def signup_view(request):    
+def signup_view(request):
     if request.is_ajax and request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save
+            user = form.save(commit=True)
             # send email and redirect to acct activation
             # redirect from activation to dashboard
-            return redirect(reverse("users:dashboard"))
+            # return redirect(reverse("users:dashboard"))
+            return JsonResponse({"result": "Success"})
         else:
             return JsonResponse({"result": "Failed"})
-    return redirect(reverse("properties:home"))
+    raise Http404("Page Doesn't Exist!")
 
 
 def login_view(request):
@@ -39,13 +38,13 @@ def login_view(request):
             username=username,
             password=password
             )
-        if user is not None and user.is_active:            
+        if user is not None and user.is_active:
             login(request, user)
             return JsonResponse({"result": "Success!"})
         else:
             return JsonResponse({"result": "Failed!"})
 
-    return redirect(reverse("properties:home"))
+    raise Http404("Page Doesn't Exist!")
 
 
 def logout_view(request):
@@ -184,7 +183,7 @@ class PropertyDetailView(DetailView):
 
         obj = self.get_object()
         context["similar"] = PropertyDetails.objects.filter(
-            Q(property_obj__title__icontains=obj.property_obj.title) | 
+            Q(property_obj__title__icontains=obj.property_obj.title) |
             Q(property_obj__property_type=obj.property_obj.property_type) |
             Q(property_obj__area=obj.property_obj.area) |
             Q(property_obj__owner=obj.property_obj.owner)
@@ -194,7 +193,7 @@ class PropertyDetailView(DetailView):
 
     def post(self, *args, **kwargs):
         tour_date = self.request.POST.get("tour-date")
-        tour_time = self.request.POST.get("tour-time")        
+        tour_time = self.request.POST.get("tour-time")
         inquirer_name = self.request.POST.get("inquirer-name")
         inquirer_phone = self.request.POST.get("inquirer-phone")
         inquirer_email = self.request.POST.get("inquirer-email")
@@ -214,6 +213,28 @@ class PropertyDetailView(DetailView):
             context = self.get_context_data()
             messages.success(self.request, "Successfully Booked!")
             return self.render_to_response(context=context)
+
+
+def bookmark_item_view(request):
+    if request.is_ajax and request.method == "POST":
+        property_id = request.POST.get('propertyID')
+
+        if request.user.is_authenticated:
+            property_obj = get_object_or_404(Property, id=property_id)
+
+            try:
+                Bookmarked.objects.get(
+                    owner=request.user, 
+                    property_obj=property_obj)
+                return JsonResponse({"result": "Already Bookmarked!"})
+            except Bookmarked.DoesNotExist:
+                Bookmarked.objects.create(
+                    owner=request.user, property_obj=property_obj)
+                return JsonResponse({"result": "Success!"})
+
+        return JsonResponse({"result": "Unauthorized"})
+    else:
+        raise Http404("Page Doesn't Exist!")
 
 
 def handler404(request, exception, template_name="properties/404.html"):
