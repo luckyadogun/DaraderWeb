@@ -100,7 +100,7 @@
                                             <div class="most-viewed-img">
                                                 {% for img in recent.gallery.all %}
                                                     {% if forloop.first %}                                                    
-                                                        <a target="_blank" href="{{ property.get_absolute_url }}" target="_blank">
+                                                        <a href="{{ property.get_absolute_url }}" target="_blank">
                                                             <img src="{{ img.image.url }}" alt="{{recent.title}}">
                                                         </a>
                                                     {% endif %}
@@ -110,7 +110,7 @@
                                                 </ul>
                                             </div>
                                             <div class="most-viewed-detail">
-                                                <h3><a target="_blank" href="{{ recent.get_absolute_url }}">{{ recent.title|truncatewords:5 }}</a></h3>
+                                                <h3><a href="{{ recent.get_absolute_url }}" target="_blank">{{ recent.title|truncatewords:5 }}</a></h3>
                                                 <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
                                                 <div class="ratings">
                                                     <i class="ion-ios-star"></i>
@@ -134,6 +134,7 @@
             {% include "user_components/dashboard__footer.html" %}
             <!--Dashboard footer ends-->
         </div>
+        {% endblock %}
         <!--Dashboard content Wrapper ends-->
     </div>
-    {% endblock %}
+    

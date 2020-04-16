@@ -2,9 +2,9 @@ from django.urls import path
 
 from .views import (
     HomePageView, SearchResultView,
-    PropertyDetailView, login_view,
+    login_view,
     logout_view, signup_view,
-    bookmark_item_view
+    bookmark_item_view, property_details
     )
 
 urlpatterns = [
@@ -44,7 +44,7 @@ urlpatterns = [
         {"queryset": "event centre"}, name="event_centres"),
     path(
         'property/<int:pk>/<slug>/',
-        PropertyDetailView.as_view(), name="property-details"),
+        property_details, name="property-details"),
     path(
         'ajax/bookmark', bookmark_item_view, name="bookmark-property"),
 ]

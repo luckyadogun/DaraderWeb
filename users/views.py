@@ -1,5 +1,4 @@
 from django.views.generic import ListView
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.views.generic.base import TemplateView
@@ -61,6 +60,8 @@ def property_delete_view(request):
 
 @login_required
 def add_property(request):
+    context = {}
+
     if request.is_ajax and request.method == "POST":
 
         property_form = PropertyForm(request.POST, prefix="form1")
@@ -78,9 +79,13 @@ def add_property(request):
             property_obj.owner = Company.objects.get(manager=request.user.id)
             property_obj.save()
 
-            gallery = gallery_form.save(commit=False)
-            gallery.property_obj = property_obj
-            gallery.save()
+            uploaded_images = request.FILES.getlist('image')
+
+            for img in uploaded_images:
+                gallery = Gallery(
+                    property_obj=property_obj,
+                    image=img)
+                gallery.save()
 
             property_details = property_details_form.save(commit=False)
             property_details.property_obj = property_obj
@@ -93,14 +98,16 @@ def add_property(request):
         gallery_form = GalleryForm()
         property_details_form = PropertyDetailsForm(prefix="form2")
 
-    return render(request, 'users/add_property.html', {
-            'property_form': property_form,
-            'gallery_form': gallery_form,
-            'property_details_form': property_details_form
-            })
+    context["property_form"] = property_form
+    context["gallery_form"] = gallery_form
+    context["property_details_form"] = property_details_form
+
+    return render(request, 'users/add_property.html', context)
 
 
 def update_property(request, pk=None):
+    context = {}
+
     property_obj = get_object_or_404(Property, id=pk)
     gallery_obj = get_object_or_404(
         Gallery, property_obj=property_obj)
@@ -122,9 +129,16 @@ def update_property(request, pk=None):
                 property_details_form.is_valid()])
 
         if forms:
-            property_form.save()
-            gallery_form.save()
+            property_obj = property_form.save()
             property_details_form.save()
+
+            uploaded_images = request.FILES.getlist('image')
+
+            for img in uploaded_images:
+                gallery = Gallery(
+                    property_obj=property_obj,
+                    image=img)
+                gallery.save()
 
             return redirect(reverse("users:my-properties"))
     else:
@@ -134,12 +148,12 @@ def update_property(request, pk=None):
         property_details_form = DetailsUpdateForm(
             instance=prop_details, prefix="form2")
 
-    return render(request, 'users/update_property.html', {
-            'property_form': property_form,
-            'gallery_form': gallery_form,
-            'property_details_form': property_details_form,
-            'property': property_obj
-            })
+    context["property_form"] = property_form
+    context["gallery_form"] = gallery_form
+    context["property_details_form"] = property_details_form
+    context["property"] = property_obj
+
+    return render(request, 'users/update_property.html', context)
 
 
 class MyBookingsView(LoginRequiredMixin, ListView):
