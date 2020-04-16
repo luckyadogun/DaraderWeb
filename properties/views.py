@@ -5,7 +5,10 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import (
+    render_to_response,
+    redirect, render,
+    get_object_or_404)
 from django.contrib.auth import login, logout, authenticate
 
 from users.forms import UserCreationForm
@@ -13,6 +16,7 @@ from users.forms import UserCreationForm
 from .models import (
     Property, PropertyDetails,
     BookingRequest, BookmarkedProperty as Bookmarked)
+from .forms import BookingRequestForm as BRForm
 from .utils import get_currently_featured
 
 
@@ -171,48 +175,43 @@ class SearchResultView(ListView):
         return context
 
 
-class PropertyDetailView(DetailView):
-    template_name = "properties/single-property.html"
-    model = PropertyDetails
+def property_details(request, pk, slug):
+    context = {}
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["recent_properties"] = Property.objects.order_by("created")[:3]
-        context["featured"] = get_currently_featured()
-        context["images"] = [x.image.url for x in self.object.property_obj.gallery.all()]
+    obj = PropertyDetails.objects.get(
+        property_obj__id=pk,
+        property_obj__slug=slug)
 
-        obj = self.get_object()
-        context["similar"] = PropertyDetails.objects.filter(
-            Q(property_obj__title__icontains=obj.property_obj.title) |
-            Q(property_obj__property_type=obj.property_obj.property_type) |
-            Q(property_obj__area=obj.property_obj.area) |
-            Q(property_obj__owner=obj.property_obj.owner)
-        )
+    if request.method == "POST":
+        bookingform = BRForm(request.POST)
 
-        return context
+        if bookingform.is_valid():
+            booking_obj = bookingform.save(commit=False)
+            booking_obj.company = obj.property_obj.owner
+            booking_obj.client = request.user
+            booking_obj.status = "booked"
+            booking_obj.save()
 
-    def post(self, *args, **kwargs):
-        tour_date = self.request.POST.get("tour-date")
-        tour_time = self.request.POST.get("tour-time")
-        inquirer_name = self.request.POST.get("inquirer-name")
-        inquirer_phone = self.request.POST.get("inquirer-phone")
-        inquirer_email = self.request.POST.get("inquirer-email")
-        comment = self.request.POST.get("comment")
-
-        if inquirer_name and inquirer_email and inquirer_phone:
-            self.object = self.get_object()
-
-            # add to bookings
-            BookingRequest.objects.create(
-                status="booked",
-                company=self.object.property_obj.owner,
-                client=self.request.user,
-                property_details=self.object,
-                mobile_phone=inquirer_phone)
             # send email
-            context = self.get_context_data()
-            messages.success(self.request, "Successfully Booked!")
-            return self.render_to_response(context=context)
+        else:
+            messages.error(request, bookingform.errors)
+
+    else:
+        bookingform = BRForm()
+
+    context["object"] = obj
+    context["recent_properties"] = Property.objects.order_by("created")[:3]
+    context["featured"] = get_currently_featured()
+    context["images"] = [x.image.url for x in obj.property_obj.gallery.all()]
+    context["similar"] = PropertyDetails.objects.filter(
+        Q(property_obj__title__icontains=obj.property_obj.title) |
+        Q(property_obj__property_type=obj.property_obj.property_type) |
+        Q(property_obj__area=obj.property_obj.area) |
+        Q(property_obj__owner=obj.property_obj.owner)
+    )
+    context["bookingform"] = bookingform
+
+    return render(request, 'properties/single-property.html', context)
 
 
 def bookmark_item_view(request):
@@ -224,7 +223,7 @@ def bookmark_item_view(request):
 
             try:
                 Bookmarked.objects.get(
-                    owner=request.user, 
+                    owner=request.user,
                     property_obj=property_obj)
                 return JsonResponse({"result": "Already Bookmarked!"})
             except Bookmarked.DoesNotExist:

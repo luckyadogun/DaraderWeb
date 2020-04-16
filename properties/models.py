@@ -207,7 +207,7 @@ def property_images_directory_path(instance, filename):
 
 class Gallery(models.Model):
     image = models.ImageField(
-        _("image"), upload_to=property_images_directory_path)    
+        _("image"), upload_to=property_images_directory_path)
     property_obj = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name="gallery")
 
@@ -247,6 +247,9 @@ class BookingRequest(TimeStampedModel):
         (UNBOOKED, UNBOOKED),
     )
 
+    tour_date = models.DateField(blank=True, null=True)
+    tour_time = models.TimeField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
     status = models.CharField(
         max_length=20, null=True, default=UNBOOKED, choices=BOOKING_STATUS)
     company = models.ForeignKey(

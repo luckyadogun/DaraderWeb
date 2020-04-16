@@ -1,10 +1,7 @@
 from django import forms
-from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from properties.models import (
-    Property, PropertyDetails,
-    Country, State, Company, Gallery)
+    Property, PropertyDetails, Gallery)
 
 from .models import User
 from .utils import validate_phone
