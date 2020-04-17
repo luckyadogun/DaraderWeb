@@ -19,160 +19,175 @@
             <!-- Top header ends-->
             <!--Dashboard content starts-->
             <div class="dash-content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="db-add-list-wrap">
-                                <div class="act-title">
-                                    <h5>Edit Profile :</h5>
-                                </div>
-                                <div class="db-add-listing">
-                                    <div class="row">
-                                        <div class="col-md-4 offset-md-4">
-                                            <!-- Avatar -->
-                                            <div class="edit-profile-photo">
-                                                <img src="{% static 'assets/images/agents/agent_1.jpg' %}" alt="">
-                                                <div class="change-photo-btn">
-                                                    <div class="contact-form__upload-btn xs-left">
-                                                        <input class="contact-form__input-file" type="file" name="photo-upload" id="photo-upload">
-                                                        <span>
-                                                            Upload Photos
-                                                        </span>
+                <form id="formData" method="POST" action="{% url 'users:update-account' %}">
+                    {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Edit Profile :</h5>
+                                    </div>
+                                    {{ account_form.non_field_errors }}
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-4 offset-md-4">
+                                                <!-- Avatar -->
+                                                <!-- <div class="edit-profile-photo">
+                                                    <img src="{% static 'assets/images/agents/agent_1.jpg' %}" alt="">
+                                                    <div class="change-photo-btn">
+                                                        <div class="contact-form__upload-btn xs-left">
+                                                            <input class="contact-form__input-file" type="file" name="photo-upload" id="photo-upload">
+                                                            <span>
+                                                                Upload Photos
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>First name</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="Tony">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ account_form.first_name.errors }}
+                                                            <label>First name</label>
+                                                            {{ account_form.first_name }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Last name</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="Stark">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ account_form.last_name.errors }}
+                                                            <label>Last name</label>
+                                                            {{ account_form.last_name }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Company name</label>
-                                                        <input type="text" class="form-control filter-input" placeholder=" Zillion Properties">
+                                                    <!-- <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Company name</label>
+                                                            <input type="text" class="form-control filter-input" placeholder=" Zillion Properties">
+                                                        </div>
+                                                    </div> -->
+                                                    <!-- <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Your Title</label>
+                                                            <input type="text" class="form-control filter-input" placeholder="Real estate Agent">
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ account_form.email.errors }}
+                                                            <label>Email Address</label>
+                                                            {{ account_form.email }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Your Title</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="Real estate Agent">
+                                                    <!-- <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Phone(Office)</label>
+                                                            <input type="text" class="form-control filter-input" placeholder="+880 252 333">
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ account_form.mobile_phone.errors }}
+                                                            <label>Mobile Phone</label>
+                                                            {{ account_form.mobile_phone }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Email id</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="steve@mail.com">
+                                                    <!-- <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Skype ID</label>
+                                                            <input type="text" class="form-control filter-input" placeholder="Tony99">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Phone(Office)</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="+880 252 333">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Phone(Mobile)</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="+880 252 333">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Skype ID</label>
-                                                        <input type="text" class="form-control filter-input" placeholder="Tony99">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>About Me</label>
-                                                        <textarea class="form-control chat-msg" name="message" rows="4" placeholder="Write About Yourself ..."></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <a href="#" class="btn v3">Save Changes</a>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>About Me</label>
+                                                            <textarea class="form-control chat-msg" name="message" rows="4" placeholder="Write About Yourself ..."></textarea>
+                                                        </div>
+                                                    </div> -->                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="db-add-list-wrap">
-                                <div class="act-title">
-                                    <h5>Change Password :</h5>
-                                </div>
-                                <div class="db-add-listing">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Old Password</label>
-                                                <input type="password" class="form-control filter-input">
+                            <div class="col-md-6">
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Change Password :</h5>
+                                    </div>
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {{ account_form.old_password.errors }}
+                                                    <label>Old Password</label>
+                                                    {{ account_form.old_password }}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>New Password</label>
-                                                <input type="password" class="form-control filter-input">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {{ account_form.new_password.errors }}
+                                                    <label>New Password</label>
+                                                    {{ account_form.new_password }}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Confirm new Password</label>
-                                                <input type="password" class="form-control filter-input">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <a href="#" class="btn v3">Change Password</a>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {{ account_form.new_password2.errors }}
+                                                    <label>Confirm new Password</label>
+                                                    {{ account_form.new_password2 }}
+                                                </div>
+                                            </div>                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="db-add-list-wrap">
-                                <div class="act-title">
-                                    <h5>Social Networks</h5>
+                            <div class="col-md-6">
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Social Networks</h5>
+                                    </div>
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Facebook url</label>
+                                                    {{ account_form.facebook }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Twitter url</label>
+                                                    {{ account_form.twitter }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Instagram url</label>
+                                                    {{ account_form.instagram }}
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="db-add-listing">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Facebook url</label>
-                                                <input type="password" class="form-control filter-input">
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="db-add-list-wrap">
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-6 text-right lg-center">
+                                                <input class="btn v3" id="submit" type="submit" value="Submit">
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Twitter url</label>
-                                                <input type="password" class="form-control filter-input">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Instagram url</label>
-                                                <input type="password" class="form-control filter-input">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <a href="#" class="btn v3">Save Chages</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <!--Dashboard content ends-->
             <!--Dashboard footer starts-->

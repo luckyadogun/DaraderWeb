@@ -15,7 +15,7 @@
                         </a>
                     </li>       
                         <li>
-                            <a {% if 'my/favourites' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
+                            <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
                             <i class="ion-ios-heart-outline"></i>Bookmarks</a>
                         </li>
                     {% if user.is_account_manager %}
@@ -23,7 +23,20 @@
                             <a {% if 'my/properties' in request.path %}class="active"{% endif %} href="{% url 'users:my-properties' %}">
                                 <i class="ion-social-buffer-outline"></i>My Properties
                             </a>
-                        </li>                        
+                        </li>
+                        {% if user.company.exists %}
+                        <li>
+                            <a {% if 'my/company/update' in request.path %}class="active"{% endif %} href="{% url 'users:update-company' %}">
+                                <i class="ion-ios-plus-outline"></i>Update Company
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a {% if 'my/company/add' in request.path %}class="active"{% endif %} href="{% url 'users:add-company' %}">
+                                <i class="ion-ios-plus-outline"></i>Setup Company
+                            </a>
+                        </li> 
+                        {% endif %}                  
                         <li>
                             <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:my-bookings' %}">
                                 <i class="ion-ios-copy-outline"></i>Booking Request</a>

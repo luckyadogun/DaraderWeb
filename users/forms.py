@@ -1,7 +1,8 @@
 from django import forms
 
 from properties.models import (
-    Property, PropertyDetails, Gallery)
+    Property, PropertyDetails, 
+    Gallery, Company)
 
 from .models import User
 from .utils import validate_phone
@@ -85,6 +86,106 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+class AccountUpdateForm(forms.ModelForm):
+    old_password = forms.CharField(required=False, widget=forms.PasswordInput(
+        attrs={'class': 'form-control filter-input', 'placeholder': 'Enter old password'}))
+    new_password = forms.CharField(required=False, widget=forms.PasswordInput(
+        attrs={'class': 'form-control filter-input', 'placeholder': 'Enter new password'}))
+    new_password2 = forms.CharField(required=False, widget=forms.PasswordInput(
+        attrs={'class': 'form-control filter-input', 'placeholder': 'Enter new password again'}))
+
+    class Meta:
+        model = User
+        fields = (
+            'first_name', 'last_name',
+            'email', 'mobile_phone',
+            'facebook', 'twitter',
+            'instagram'
+        )
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'First Name',
+                'required': False}),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Last Name',
+                'required': False}),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Email address',
+                'required': False}),
+            'mobile_phone': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': '+2348123456789',
+                'required': False}),
+            'facebook': forms.URLInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Facebook URL (Optional)',
+                'required': False}),
+            'twitter': forms.URLInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Twitter URL (Optional)',
+                'required': False}),
+            'instagram': forms.URLInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Instagram URL (Optional)',
+                'required': False}),
+        }
+
+        def clean_new_password2(self):
+            old_password = self.cleaned_data.get("old_password")
+            new_password = self.cleaned_data.get("new_password")
+            new_password2 = self.cleaned_data.get("new_password2")
+
+            if old_password and new_password and new_password2:
+                if new_password != new_password2:
+                    raise forms.ValidationError("Passwords don't match!")
+            return new_password2
+
+
+class CompanyForm(forms.ModelForm):
+    logo = forms.ImageField(required=True, widget=forms.ClearableFileInput(
+        attrs={'class': 'add-listing__input-file', 'name': 'file'}))
+
+    class Meta:
+        model = Company
+        fields = (
+            'name', 'office_phone',
+            'mobile_phone', 'address',
+            'logo', 'about', 'account_type'
+            )
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Company Name',
+                'required': True}),   
+            'office_phone': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': '+2348123456789',
+                'required': False}),         
+            'mobile_phone': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': '+2348123456789',
+                'required': False}),
+            'address': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Company Address',
+                'required': True}),
+            'about': forms.Textarea(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Tell us about your company',
+                'required': True}),
+            'account_type': forms.Select(attrs={
+                'class': 'listing-input hero__form-input  form-control custom-select'}),            
+        }
+
+
+class CompanyUpdateForm(CompanyForm):
+    def blank(self):
+        pass
+
+
 class PropertyForm(forms.ModelForm):
 
     class Meta:
@@ -135,14 +236,9 @@ class PropertyForm(forms.ModelForm):
                 'required': 'true'}),
         }
 
-    # def __init__(self, user, *args, **kwargs):
-    #     super().__init__(self, *args, **kwargs)
-    #     self.fields['owner'] = forms.ModelChoiceField(
-    #         queryset=Company.objects.filter(manager__id=1))
-
 
 class GalleryForm(forms.ModelForm):
-    image = forms.ImageField(widget=forms.ClearableFileInput(
+    image = forms.ImageField(required=False, widget=forms.ClearableFileInput(
         attrs={
             'multiple': True, 'class': 'add-listing__input-file',
             'type': 'file', 'name': 'file', 'id': 'img_file'}))
@@ -214,6 +310,12 @@ class PropertyUpdateForm(PropertyForm):
         self.fields['property_category'].widget.attrs['value'] = self.instance.property_category
         self.fields['price'].widget.attrs['placeholder'] = self.instance.price
         self.fields['description'].widget.attrs['placeholder'] = self.instance.description
+
+
+class GalleryUpdateForm(GalleryForm):
+    def __init(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].widget.attrs['required'] = False
 
 
 class DetailsUpdateForm(PropertyDetailsForm):
