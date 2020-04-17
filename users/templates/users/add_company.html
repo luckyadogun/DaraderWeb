@@ -1,0 +1,121 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock %}
+
+    <div class="page-wrapper">
+        <!--Sidebar Menu Starts-->
+        {% block sidebar %}
+            {% include "user_components/dashboard__sidebar.html" %}
+        {% endblock %}
+        <!--Sidebar Menu ends-->
+
+        {% block content %}
+        <!--Dashboard content Wrapper starts-->
+        <div class="dash-content-wrap">
+            <!-- Top header starts-->
+            {% include "user_components/dashboard__header.html" %}
+            <!-- Top header ends-->
+            <!--Dashboard content starts-->
+            <div class="dash-content">
+                <form id="formData" method="POST" action="{% url 'users:add-company' %}">
+                    {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Add Company :</h5>
+                                    </div>
+                                    {{ company_form.non_field_errors }}
+                                    <div class="db-add-listing">
+                                        <div class="row">                                            
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ company_form.name.errors }}
+                                                            <label>Company Name</label>
+                                                            {{ company_form.name }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ company_form.address.errors }}
+                                                            <label>Company Address</label>
+                                                            {{ company_form.address }}
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ company_form.office_phone.errors }}
+                                                            <label>Office Phone</label>
+                                                            {{ company_form.office_phone }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ company_form.mobile_phone.errors }}
+                                                            <label>Mobile Phone</label>
+                                                            {{ company_form.mobile_phone }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            {{ company_form.about.errors }}
+                                                            <label>About</label>
+                                                            {{ company_form.about }}
+                                                        </div>
+                                                    </div>   
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            {{ company_form.account_type.errors }}
+                                                            <label>Account Type</label>
+                                                            {{ company_form.account_type }}
+                                                        </div>
+                                                    </div>  
+                                                    <div class="col-md-6 mb-5">
+                                                        <div class="form-group">                                                    
+                                                            <div class="form-group">   
+                                                                <label>Upload Logo</label>                                                             
+                                                                <div class="add-listing__input-file-box">                                                                    
+                                                                    {{ company_form.logo }}
+                                                                    <div class="add-listing__input-file-wrap">
+                                                                        <i class="lnr lnr-cloud-upload"></i>
+                                                                        <p>Click here to upload your images</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                            
+                                                    </div>                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="db-add-list-wrap">
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-6 text-right lg-center">
+                                                <input class="btn v3" id="submit" type="submit" value="Submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--Dashboard content ends-->
+            <!--Dashboard footer starts-->
+            {% include "user_components/dashboard__footer.html" %}
+            <!--Dashboard footer ends-->
+        </div>
+        <!--Dashboard content Wrapper ends-->
+    </div>
+    {% endblock %}

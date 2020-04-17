@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
+from django.contrib import messages
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (
@@ -12,7 +13,10 @@ from .forms import (
     GalleryForm,
     PropertyDetailsForm,
     PropertyUpdateForm,
-    DetailsUpdateForm
+    DetailsUpdateForm,
+    GalleryUpdateForm,
+    AccountUpdateForm,
+    CompanyForm, CompanyUpdateForm
     )
 
 from properties.models import (
@@ -105,12 +109,11 @@ def add_property(request):
     return render(request, 'users/add_property.html', context)
 
 
+@login_required
 def update_property(request, pk=None):
     context = {}
 
     property_obj = get_object_or_404(Property, id=pk)
-    gallery_obj = get_object_or_404(
-        Gallery, property_obj=property_obj)
     prop_details = get_object_or_404(
         PropertyDetails, property_obj=property_obj)
 
@@ -118,8 +121,7 @@ def update_property(request, pk=None):
 
         property_form = PropertyUpdateForm(
             request.POST, instance=property_obj, prefix="form1")
-        gallery_form = GalleryForm(
-            request.POST, request.FILES, instance=gallery_obj)
+        gallery_form = GalleryUpdateForm(request.POST, request.FILES)
         property_details_form = DetailsUpdateForm(
             request.POST, instance=prop_details, prefix="form2")
 
@@ -144,7 +146,7 @@ def update_property(request, pk=None):
     else:
         property_form = PropertyUpdateForm(
             instance=property_obj, prefix="form1")
-        gallery_form = GalleryForm(instance=gallery_obj)
+        gallery_form = GalleryUpdateForm()
         property_details_form = DetailsUpdateForm(
             instance=prop_details, prefix="form2")
 
@@ -225,5 +227,75 @@ class MyAccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/my_account.html"
 
 
-class UpdateAccountView(LoginRequiredMixin, TemplateView):
-    template_name = "users/update_account.html"
+@login_required
+def account_update_view(request):
+    context = {}
+
+    if request.method == "POST":
+        account_form = AccountUpdateForm(request.POST, instance=request.user)
+
+        if account_form.is_valid():
+            user = account_form.save(commit=False)
+            user.set_password(account_form.cleaned_data["new_password2"])
+            user.save()
+
+            return redirect(reverse("properties:home"))
+        else:
+            messages.error(request, account_form.errors)
+    else:
+        account_form = AccountUpdateForm(instance=request.user)
+
+    context["account_form"] = account_form
+    return render(request, 'users/update_account.html', context)
+
+
+
+@login_required
+def add_company_view(request):
+    context = {}
+
+    if request.method == "POST":
+        company_form = CompanyForm(request.POST)
+
+        if company_form.is_valid():
+            company = company_form.save(commit=False)
+            company.manager = request.user
+            company.logo = request.FILES.get("file")
+            company.save()
+
+            return redirect(reverse("users:dashboard"))
+        else:
+            messages.error(request, company_form.errors)
+
+    else:
+        company_form = CompanyForm()
+
+    context["company_form"] = company_form
+    return render(request, 'users/add_company.html', context)
+
+
+@login_required
+def update_company_view(request):
+    context = {}
+
+    company_obj = Company.objects.get(manager=request.user)
+
+    if request.method == "POST":
+        company_form = CompanyUpdateForm(
+            request.POST, instance=company_obj)
+
+        if company_form.is_valid():
+            company = company_form.save(commit=False)
+            company.logo = request.FILES.get("file")
+            company.save()
+
+            return redirect(reverse("users:dashboard"))
+        else:
+            messages.error(request, company_form.errors)
+
+    else:
+        company_form = CompanyUpdateForm()
+
+    context["company_form"] = company_form
+    return render(request, 'users/update_company.html', context)
+

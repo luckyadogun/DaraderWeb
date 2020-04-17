@@ -84,7 +84,8 @@ class Company(TimeStampedModel):
         _("logo"), upload_to=company_logo_image_path,
         default='', null=True, blank=True)
     account_type = models.CharField(
-        _("account type"), max_length=20, choices=ACCOUNT_TYPE_CHOICES)
+        _("account type"), max_length=20, 
+        choices=ACCOUNT_TYPE_CHOICES, default=ESTATE_AGENT)
 
     objects = models.Manager()
     agents = ApprovedAgentManager()
@@ -207,7 +208,7 @@ def property_images_directory_path(instance, filename):
 
 class Gallery(models.Model):
     image = models.ImageField(
-        _("image"), upload_to=property_images_directory_path)
+        _("image"), upload_to=property_images_directory_path, blank=True)
     property_obj = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name="gallery")
 
@@ -247,8 +248,6 @@ class BookingRequest(TimeStampedModel):
         (UNBOOKED, UNBOOKED),
     )
 
-    tour_date = models.DateField(blank=True, null=True)
-    tour_time = models.TimeField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
     status = models.CharField(
         max_length=20, null=True, default=UNBOOKED, choices=BOOKING_STATUS)

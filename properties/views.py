@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
-from django.views.generic.detail import DetailView
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import (
     render_to_response,
@@ -188,11 +187,13 @@ def property_details(request, pk, slug):
         if bookingform.is_valid():
             booking_obj = bookingform.save(commit=False)
             booking_obj.company = obj.property_obj.owner
+            booking_obj.property_details = obj
             booking_obj.client = request.user
             booking_obj.status = "booked"
             booking_obj.save()
 
             # send email
+            messages.success(request, "Successfully Booked!")
         else:
             messages.error(request, bookingform.errors)
 
