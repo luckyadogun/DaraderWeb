@@ -146,7 +146,9 @@ class AccountUpdateForm(forms.ModelForm):
 
 class CompanyForm(forms.ModelForm):
     logo = forms.ImageField(required=True, widget=forms.ClearableFileInput(
-        attrs={'class': 'add-listing__input-file', 'name': 'file'}))
+        attrs={
+            'class': 'add-listing__input-file', 
+            'name': 'file', 'type': 'file'}))
 
     class Meta:
         model = Company
@@ -159,11 +161,11 @@ class CompanyForm(forms.ModelForm):
             'name': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
                 'placeholder': 'Company Name',
-                'required': True}),   
+                'required': True}),
             'office_phone': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
                 'placeholder': '+2348123456789',
-                'required': False}),         
+                'required': False}),
             'mobile_phone': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
                 'placeholder': '+2348123456789',
@@ -182,8 +184,18 @@ class CompanyForm(forms.ModelForm):
 
 
 class CompanyUpdateForm(CompanyForm):
-    def blank(self):
-        pass
+    # logo = forms.ImageField(required=True, widget=forms.ClearableFileInput(
+    #     attrs={'class': 'add-listing__input-file', 'type': 'file', 'name': 'file'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['placeholder'] = self.instance.name
+        self.fields['office_phone'].widget.attrs['placeholder'] = self.instance.office_phone
+        self.fields['mobile_phone'].widget.attrs['placeholder'] = self.instance.mobile_phone
+        self.fields['address'].widget.attrs['placeholder'] = self.instance.address
+        self.fields['about'].widget.attrs['placeholder'] = self.instance.about
+        self.fields['account_type'].widget.attrs['placeholder'] = self.instance.account_type
+        self.fields['logo'].widget.attrs['required'] = False
 
 
 class PropertyForm(forms.ModelForm):

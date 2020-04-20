@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.urls import reverse
 from django.contrib import messages
+from django.utils.crypto import get_random_string
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -10,6 +11,7 @@ from django.shortcuts import (
     get_object_or_404)
 from django.contrib.auth import login, logout, authenticate
 
+from users.models import User
 from users.forms import UserCreationForm
 
 from .models import (
@@ -235,6 +237,22 @@ def bookmark_item_view(request):
         return JsonResponse({"result": "Unauthorized"})
     else:
         raise Http404("Page Doesn't Exist!")
+
+
+def password_recovery(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        if User.objects.filter(email=email).exists():
+            new_password = get_random_string()
+            user = User.objects.get(email=email)
+            user.set_password(new_password)
+            user.save()
+
+            # send email
+            messages.success(request, f"New password sent to: {email}")
+        else:
+            messages.error(request, f"User with that email doesn't exist!")
+    return render(request, 'properties/auth/password_recovery.html', {})
 
 
 def handler404(request, exception, template_name="properties/404.html"):

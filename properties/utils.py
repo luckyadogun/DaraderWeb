@@ -19,3 +19,4 @@ def get_currently_featured():
         return currently_featured.property.all()[:5]
     except ValueError:
         return Property.objects.all()[:5]
+

@@ -19,7 +19,7 @@
             <!-- Top header ends-->
             <!--Dashboard content starts-->
             <div class="dash-content">
-                <form id="formData" method="POST" action="{% url 'users:add-company' %}">
+                <form enctype="multipart/form-data" id="formData" method="POST" action="{% url 'users:add-company' %}">
                     {% csrf_token %}
                     <div class="container-fluid">
                         <div class="row">

@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import Http404, JsonResponse
 from django.contrib import messages
 from django.views.generic.base import TemplateView
@@ -19,6 +20,8 @@ from .forms import (
     CompanyForm, CompanyUpdateForm
     )
 
+from .decorators import manager_required
+
 from properties.models import (
     Property, Company,
     BookingRequest, Gallery,
@@ -26,6 +29,7 @@ from properties.models import (
     PropertyDetails)
 
 
+@method_decorator([login_required], name='dispatch')
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "users/index.html"
 
@@ -36,6 +40,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
+@method_decorator([login_required], name='dispatch')
 class MyPropertyView(LoginRequiredMixin, ListView):
     template_name = "users/my_properties.html"
     context_object_name = "properties"
@@ -47,6 +52,7 @@ class MyPropertyView(LoginRequiredMixin, ListView):
 
 
 @login_required
+@manager_required
 def property_delete_view(request):
     company = get_object_or_404(Company, manager=request.user)
 
@@ -63,6 +69,7 @@ def property_delete_view(request):
 
 
 @login_required
+@manager_required
 def add_property(request):
     context = {}
 
@@ -83,7 +90,7 @@ def add_property(request):
             property_obj.owner = Company.objects.get(manager=request.user.id)
             property_obj.save()
 
-            uploaded_images = request.FILES.getlist('image')
+            uploaded_images = request.FILES.getlist('image') or request.FILES.get('image')
 
             for img in uploaded_images:
                 gallery = Gallery(
@@ -110,6 +117,7 @@ def add_property(request):
 
 
 @login_required
+@manager_required
 def update_property(request, pk=None):
     context = {}
 
@@ -158,6 +166,7 @@ def update_property(request, pk=None):
     return render(request, 'users/update_property.html', context)
 
 
+@method_decorator([login_required], name='dispatch')
 class MyBookingsView(LoginRequiredMixin, ListView):
     template_name = "users/my_bookings.html"
     context_object_name = "bookings"
@@ -170,6 +179,7 @@ class MyBookingsView(LoginRequiredMixin, ListView):
 
 
 @login_required
+@manager_required
 def booking_delete_view(request):
     company = get_object_or_404(Company, manager=request.user)
 
@@ -186,6 +196,7 @@ def booking_delete_view(request):
 
 
 @login_required
+@manager_required
 def booking_setup_view(request):
     if request.is_ajax and request.method == "POST":
         booking_id = request.POST.get("bookingID")
@@ -198,6 +209,7 @@ def booking_setup_view(request):
     raise Http404("Page Doesn't Exist!")
 
 
+@method_decorator([login_required], name='dispatch')
 class BookmarkedView(LoginRequiredMixin, ListView):
     template_name = "users/my_bookmarks.html"
     context_object_name = "bookmarks"
@@ -207,7 +219,9 @@ class BookmarkedView(LoginRequiredMixin, ListView):
         return BookmarkedProperty.objects.filter(
             owner=self.request.user)
 
+
 @login_required
+@manager_required
 def bookmark_delete_view(request):
     company = get_object_or_404(Company, manager=request.user)
 
@@ -223,11 +237,13 @@ def bookmark_delete_view(request):
     raise Http404("Page Doesn't Exist!")
 
 
+@method_decorator([login_required], name='dispatch')
 class MyAccountView(LoginRequiredMixin, TemplateView):
     template_name = "users/my_account.html"
 
 
 @login_required
+@manager_required
 def account_update_view(request):
     context = {}
 
@@ -249,18 +265,22 @@ def account_update_view(request):
     return render(request, 'users/update_account.html', context)
 
 
-
 @login_required
+@manager_required
 def add_company_view(request):
     context = {}
 
     if request.method == "POST":
-        company_form = CompanyForm(request.POST)
+        company_form = CompanyForm(
+            request.POST, request.FILES)
 
         if company_form.is_valid():
             company = company_form.save(commit=False)
             company.manager = request.user
-            company.logo = request.FILES.get("file")
+            logo = request.FILES.get("logo")
+
+            if logo:
+                company.logo = logo
             company.save()
 
             return redirect(reverse("users:dashboard"))
@@ -275,6 +295,7 @@ def add_company_view(request):
 
 
 @login_required
+@manager_required
 def update_company_view(request):
     context = {}
 
@@ -282,20 +303,24 @@ def update_company_view(request):
 
     if request.method == "POST":
         company_form = CompanyUpdateForm(
-            request.POST, instance=company_obj)
+            request.POST, request.FILES,
+            instance=company_obj)
 
         if company_form.is_valid():
             company = company_form.save(commit=False)
-            company.logo = request.FILES.get("file")
+            logo = request.FILES.get("logo")
+
+            if logo:
+                company.logo = logo
             company.save()
 
-            return redirect(reverse("users:dashboard"))
+            return redirect(reverse("users:update-company"))
         else:
             messages.error(request, company_form.errors)
 
     else:
-        company_form = CompanyUpdateForm()
+        company_form = CompanyUpdateForm(instance=company_obj)
 
     context["company_form"] = company_form
+    context["company"] = company_obj
     return render(request, 'users/update_company.html', context)
-
