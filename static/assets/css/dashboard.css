@@ -1688,7 +1688,9 @@ ul.buttons li {
 
 .profile-wrap .edit-profile-photo img,
 .db-add-listing .edit-profile-photo img {
-    width: 100%;
+    width: 50%;
+    border: solid 4px blue;
+    border-radius: 5px;
 }
 
 .db-add-listing .edit-profile-photo .contact-form__input-file {

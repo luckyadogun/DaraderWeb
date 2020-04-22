@@ -25,7 +25,13 @@
                                         </li>
                                         <li>
                                             <a href="{% url 'properties:lease' %}">For Lease</a>                                                
-                                        </li>                                        
+                                        </li>  
+                                        <li>
+                                            <a href="{% url 'properties:contact' %}">Contact us</a>                                                
+                                        </li>         
+                                        <li>
+                                            <a href="{% url 'properties:faq' %}">FAQ</a>                                                
+                                        </li>                               
                                     </ul>
                                 </div>
                             </nav>
@@ -54,7 +60,7 @@
 
                                         {% if user.is_account_manager %}
                                             <div class="add-list float-right ml-3">
-                                                <a class="btn v6" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
+                                                <a class="btn v8" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
                                             </div>
                                         {% else %}
                                             <div class="add-list float-right ml-3">

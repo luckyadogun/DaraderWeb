@@ -33,9 +33,9 @@
                                                 <tr>
                                                     <th scope="col">ID</th>
                                                     <th scope="col">Date/Time</th>
-                                                    <th scope="col">Full Name</th>
+                                                    <th scope="col">Client</th>
                                                     <th scope="col">Property</th>
-                                                    <th scope="col">User Info</th>
+                                                    <th scope="col">Info</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
@@ -44,7 +44,7 @@
                                                 <tr class="bg-white">
                                                     <th scope="row">#{{ booking.property_details.property_obj.property_id|truncatewords:3 }}</th>
                                                     <td>{{ booking.created }}</td>
-                                                    <td>{{ booking.client.full_name|upper }}</td>
+                                                    <td>{% if booking.client.full_name %}{{ booking.client.full_name|upper }}{% else %}{{booking.client.username}}{% endif %}</td>
                                                     <td>
                                                         <div class="property-title-box">
                                                             <h4><a target="_blank" href="{{ booking.property_obj.get_absolute_url }}">{{ booking.property_details.property_obj.title|truncatewords:4|upper }}</a></h4>

@@ -30,6 +30,10 @@
                                 <i class="ion-ios-plus-outline"></i>Update Company
                             </a>
                         </li>
+                        <li>
+                            <a {% if 'my/add-property' in request.path %}class="active"{% endif %} href="{% url 'users:add-property' %}">
+                                <i class="ion-ios-plus-outline"></i>Add Property</a>
+                        </li>  
                         {% else %}
                         <li>
                             <a {% if 'my/company/add' in request.path %}class="active"{% endif %} href="{% url 'users:add-company' %}">
@@ -40,11 +44,8 @@
                         <li>
                             <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:my-bookings' %}">
                                 <i class="ion-ios-copy-outline"></i>Booking Request</a>
-                        </li>                                        
-                        <li>
-                            <a {% if 'my/add-property' in request.path %}class="active"{% endif %} href="{% url 'users:add-property' %}">
-                                <i class="ion-ios-plus-outline"></i>Add Property</a>
-                        </li>                        
+                        </li>   
+                                                                                                           
                     {% endif %}
                     <li>
                         <a {% if 'my/account' in request.path %}class="active"{% endif %} href="{% url 'users:account' %}">

@@ -1,6 +1,4 @@
-import uuid
-import random
-
+from django.utils.crypto import get_random_string
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -103,14 +101,6 @@ class Company(TimeStampedModel):
         verbose_name_plural = "companies"
 
 
-def generate_property_id():
-    """
-    Generate a hardened unique property ID
-    with little possibility of collision
-    """
-    return uuid.uuid4().hex
-
-
 class Property(TimeStampedModel):
     SALE = "sale"
     RENT = "rent"
@@ -148,7 +138,7 @@ class Property(TimeStampedModel):
 
     property_id = models.CharField(
         _("Property ID"), max_length=40, unique=True, 
-        default=generate_property_id)
+        default=get_random_string)
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"), max_length=400, blank=True)
     address = models.CharField(_("address"), max_length=200)
