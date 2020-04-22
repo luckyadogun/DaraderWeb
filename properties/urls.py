@@ -4,7 +4,8 @@ from .views import (
     HomePageView, SearchResultView,
     login_view, password_recovery,
     logout_view, signup_view,
-    bookmark_item_view, property_details
+    bookmark_item_view, property_details,
+    contact_view, faq_view, activate_view
     )
 
 urlpatterns = [
@@ -48,4 +49,7 @@ urlpatterns = [
     path(
         'ajax/bookmark', bookmark_item_view, name="bookmark-property"),
     path('forgot-password', password_recovery, name="forgot-password"),
+    path('contact', contact_view, name="contact"),
+    path('faq', faq_view, name="faq"),
+    path('activate/<uidb64>/<token>', activate_view, name='activate'),
 ]

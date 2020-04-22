@@ -21,6 +21,7 @@ from .forms import (
     )
 
 from .decorators import manager_required
+from .helpers import email_booking_confirmed
 
 from properties.models import (
     Property, Company,
@@ -201,9 +202,10 @@ def booking_setup_view(request):
     if request.is_ajax and request.method == "POST":
         booking_id = request.POST.get("bookingID")
         booking = get_object_or_404(BookingRequest, id=booking_id)
-        # send email
         booking.status = "unbooked"
         booking.save()
+
+        email_booking_confirmed(booking)
         return JsonResponse({"result": "Success!"})
 
     raise Http404("Page Doesn't Exist!")

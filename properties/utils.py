@@ -1,22 +1,13 @@
-import random
+from django.utils import six
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
-from .models import Company, Property
+
+class TokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return (
+            six.text_type(user.pk) + six.text_type(timestamp) +
+            six.text_type(user.is_active)
+        )
 
 
-def get_currently_featured():
-    """
-    Here we use randomly select a featured
-    company and list their property on the
-    `HomePageView`
-
-    """
-    featured_companies = Company.objects.filter(
-        is_approved=True, is_featured=True)
-    total_featured_companies = featured_companies.count()
-    try:
-        currently_featured = featured_companies[
-            random.randrange(0, total_featured_companies)]
-        return currently_featured.property.all()[:5]
-    except ValueError:
-        return Property.objects.all()[:5]
-
+account_activation_token = TokenGenerator()

@@ -13,6 +13,7 @@ psycopg2-binary = "==2.8.4"
 Django = "==2.2.10"
 pillow = "==7.0.0"
 django-filter = "*"
+django-mailgun = "*"
 
 [requires]
 python_version = "3.7"

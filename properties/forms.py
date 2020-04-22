@@ -18,3 +18,26 @@ class BookingRequestForm(forms.ModelForm):
                 'placeholder': 'Enter your phone number',
                 'required': True})
         }
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(
+        required=True, 
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'fname',
+            'placeholder': 'Name'
+        }))
+    email = forms.EmailField(
+        required=True, 
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'id': 'email_address',
+            'placeholder': 'Email address'
+        }))
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'id': 'comment',
+            'placeholder': 'Your Message'
+        }))

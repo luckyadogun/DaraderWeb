@@ -10,15 +10,25 @@ from django.shortcuts import (
     redirect, render,
     get_object_or_404)
 from django.contrib.auth import login, logout, authenticate
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
 from users.models import User
 from users.forms import UserCreationForm
 
+from .forms import ContactForm, BookingRequestForm as BRForm
 from .models import (
     Property, PropertyDetails,
-    BookingRequest, BookmarkedProperty as Bookmarked)
-from .forms import BookingRequestForm as BRForm
-from .utils import get_currently_featured
+    BookmarkedProperty as Bookmarked)
+
+from .helpers import (
+    get_currently_featured,
+    email_activate_acct,
+    email_booking_request,
+    email_contact_us)
+
+
+from .utils import account_activation_token
 
 
 def signup_view(request):
@@ -26,9 +36,7 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=True)
-            # send email and redirect to acct activation
-            # redirect from activation to dashboard
-            # return redirect(reverse("users:dashboard"))
+            email_activate_acct(request, user)
             return JsonResponse({"result": "Success"})
         else:
             return JsonResponse({"result": "Failed"})
@@ -50,6 +58,21 @@ def login_view(request):
             return JsonResponse({"result": "Failed!"})
 
     raise Http404("Page Doesn't Exist!")
+
+
+def activate_view(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return redirect(reverse("properties:home"))
+    else:
+        raise Http404("User Doesn't Exist!")
 
 
 def logout_view(request):
@@ -193,8 +216,7 @@ def property_details(request, pk, slug):
             booking_obj.client = request.user
             booking_obj.status = "booked"
             booking_obj.save()
-
-            # send email
+            email_booking_request(request, obj.property_obj.owner.manager.pk)
             messages.success(request, "Successfully Booked!")
         else:
             messages.error(request, bookingform.errors)
@@ -239,19 +261,48 @@ def bookmark_item_view(request):
         raise Http404("Page Doesn't Exist!")
 
 
+def contact_view(request):
+    context = {}
+    if request.method == "POST":
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            data = {
+                "name": contact_form.cleaned_data["name"],
+                "email": contact_form.cleaned_data["email"],
+                "message": contact_form.cleaned_data["message"],
+            }
+            email_contact_us(data)
+            return redirect(reverse("properties:home"))
+        else:
+            messages.error(request, contact_form.errors)
+    else:
+        contact_form = ContactForm()
+
+    context["contact_form"] = contact_form
+    return render(request, 'properties/contact.html', context)
+
+
+def faq_view(request):
+    return render(request, 'properties/faq.html', {})
+
+
 def password_recovery(request):
     if request.method == "POST":
         email = request.POST.get('email')
         if User.objects.filter(email=email).exists():
-            new_password = get_random_string()
-            user = User.objects.get(email=email)
-            user.set_password(new_password)
-            user.save()
+            new_password1 = request.POST.get('password1')
+            new_password2 = request.POST.get('password2')
 
-            # send email
-            messages.success(request, f"New password sent to: {email}")
+            if new_password1 == new_password2:
+                user = User.objects.get(email=email)
+                user.set_password(new_password2)
+                user.save()
+
+                messages.success(request, "Password changed successfuly!")
+            else:
+                messages.error(request, "Password doesn't match!")
         else:
-            messages.error(request, f"User with that email doesn't exist!")
+            messages.error(request, "User with that email doesn't exist!")
     return render(request, 'properties/auth/password_recovery.html', {})
 
 
