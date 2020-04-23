@@ -26,5 +26,6 @@ $(document).ready(function(){
                 alert("Error! Something went wrong!");
             }
         });
+        return false;
     });
 });

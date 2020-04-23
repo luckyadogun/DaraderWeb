@@ -7,27 +7,29 @@ from django.utils.http import urlsafe_base64_encode
 
 from project.settings import send_email, INTERNAL_EMAIL
 
-from users.models import User
-
 from .models import Company, Property
 from .utils import account_activation_token
 
 
-def email_activate_acct(request, user_pk):
-    user = User.objects.get(id=user_pk)
-    URI = request.build_absolute_uri(reverse("properties:activate"))
+def email_activate_acct(request, user):
+    UID = urlsafe_base64_encode(force_bytes(user.pk))
+    TOKEN = account_activation_token.make_token(user)
+
+    URI = request.build_absolute_uri(
+        reverse(
+            "properties:activate",
+            kwargs={'uidb64': UID, 'token': TOKEN}),
+        )
+
     subject = 'Activate your account'
     message = render_to_string('properties/email/activate_account.html', {
         'user': f"{user}",
-        'domain': URI,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
+        'domain': URI
     })
     send_email(recipient=user.email, subject=subject, html_content=message)
 
 
-def email_booking_request(request, user_pk):
-    user = User.objects.get(id=user_pk)
+def email_booking_request(request, user):
     URI = request.build_absolute_uri(reverse("users:my-bookings"))
     subject = 'You have a booking request'
     message = render_to_string('properties/email/new_booking.html', {
