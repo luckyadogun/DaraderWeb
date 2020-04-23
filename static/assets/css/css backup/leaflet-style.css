@@ -341,13 +341,13 @@ body #submit_map {
 }
 
 .leaflet-control-layers-toggle {
-    background-image: url(images/layers.html);
+    background-image: url(static/assets/images/layers.html);
     width: 36px;
     height: 36px
 }
 
 .leaflet-retina .leaflet-control-layers-toggle {
-    background-image: url(images/layers-2x.html);
+    background-image: url(static/assets/images/layers-2x.html);
     background-size: 26px 26px
 }
 
@@ -395,7 +395,7 @@ body #submit_map {
 }
 
 .leaflet-default-icon-path {
-    background-image: url(images/marker-icon.html)
+    background-image: url(static/assets/images/marker-icon.html)
 }
 
 .leaflet-container .leaflet-control-attribution {
@@ -903,7 +903,7 @@ transition: all .2s ease-in-out;
     height: 26px;
     border: none;
     background-color: #fff;
-    background-image: url(images/geocoder.html);
+    background-image: url(static/assets/images/geocoder.html);
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer
@@ -915,7 +915,7 @@ transition: all .2s ease-in-out;
 }
 
 .leaflet-control-geocoder-throbber .leaflet-control-geocoder-icon {
-    background-image: url(images/throbber.html)
+    background-image: url(static/assets/images/throbber.html)
 }
 
 .leaflet-control-geocoder-form-no-error {
