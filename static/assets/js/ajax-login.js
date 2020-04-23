@@ -1,7 +1,10 @@
 $(document).ready(function(){
     $("#login-form").submit(function(e){
         e.preventDefault();
+        e.stopImmediatePropagation();
         var serializedData = $(this).serialize();
+
+        console.log(loginURL)
 
         $.ajax({
             type: "POST",
@@ -22,8 +25,10 @@ $(document).ready(function(){
                         </div>`
                     )
                     $("#login-form").effect("shake");
+                    location.reload();
                 }  
             },            
         });
+        return false;
     });
 });

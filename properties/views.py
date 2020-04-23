@@ -39,7 +39,7 @@ def signup_view(request):
             email_activate_acct(request, user)
             return JsonResponse({"result": "Success"})
         else:
-            return JsonResponse({"result": "Failed"})
+            return JsonResponse({"result": form.errors})
     raise Http404("Page Doesn't Exist!")
 
 
@@ -216,7 +216,7 @@ def property_details(request, pk, slug):
             booking_obj.client = request.user
             booking_obj.status = "booked"
             booking_obj.save()
-            email_booking_request(request, obj.property_obj.owner.manager.pk)
+            email_booking_request(request, obj.property_obj.owner.manager)
             messages.success(request, "Successfully Booked!")
         else:
             messages.error(request, bookingform.errors)
