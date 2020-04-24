@@ -2510,7 +2510,7 @@ ul.hero_list li:last-child {
 }
 
 .hero-events {
-    background: url("static/assets/images/header/slider-3.jpg");
+    background: url("/static/assets/images/header/header_11.png");
     background-size: cover;
     background-position: top;
     background-repeat: no-repeat;
@@ -2716,7 +2716,7 @@ input[type="text"]:focus {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url(static/assets/img/banner-music.jpg);
+    background: url(/static/assets/img/banner-music.jpg);
     background-size: cover;
     overflow: hidden;
     z-index: 999;
@@ -8398,7 +8398,7 @@ a.popup-yt i {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url(static/assets/img/banner-music.jpg);
+    background: url(/static/assets/img/banner-music.jpg);
     background-size: cover;
     overflow: hidden;
     z-index: 9;
