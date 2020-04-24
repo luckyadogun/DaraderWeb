@@ -2715,8 +2715,7 @@ input[type="text"]:focus {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
-    background: url(/static/assets/img/banner-music.jpg);
+    height: 100vh;    
     background-size: cover;
     overflow: hidden;
     z-index: 999;
