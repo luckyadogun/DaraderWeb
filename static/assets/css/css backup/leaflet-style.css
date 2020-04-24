@@ -900,6 +900,10 @@ transition: all .2s ease-in-out;
     height: 26px;
     border: none;
     background-color: #fff;
+<<<<<<< HEAD
+=======
+    /* background-image: url(static/assets/images/geocoder.html); */
+>>>>>>> c57d67913e367d3a673578de762e6ec7f6c561c7
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer
@@ -911,6 +915,10 @@ transition: all .2s ease-in-out;
 }
 
 .leaflet-control-geocoder-throbber .leaflet-control-geocoder-icon {
+<<<<<<< HEAD
+=======
+    /* background-image: url(static/assets/images/throbber.html); */
+>>>>>>> c57d67913e367d3a673578de762e6ec7f6c561c7
 }
 
 .leaflet-control-geocoder-form-no-error {
