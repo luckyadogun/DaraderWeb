@@ -117,17 +117,16 @@
 
     {% block scripts %}
     <script>
-
         function deleteBookmark(bookmarkID){
             var action = confirm("Are you sure you want delete this from your bookmarks?");
             if(action == true){
                 $.ajax({
                     type: "POST",
-                    url: 'ajax/bookmarks/delete',
+                    url: deleteBookmarkURL,
                     dataType: "JSON",
                     data: {
                         bookmarkID: bookmarkID,
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        csrfmiddlewaretoken: csrfToken,
                         },                    
                     success: function(response){
                         var result = response["result"];
@@ -136,12 +135,9 @@
                         }else{
                             alert(result);
                         };             
-                    },
-                    error: function(response){
-                        var result = response["result"];
-                        alert("Error! Something went wrong!");
-                    }
+                    },                    
                 });
+                return false;
             };
         };
     </script>

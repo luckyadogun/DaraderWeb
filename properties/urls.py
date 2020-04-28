@@ -33,7 +33,7 @@ urlpatterns = [
         {"queryset": "flat"}, name="flats"),
     path(
         'lands/', SearchResultView.as_view(),
-        {"queryset": "land"}, name="lands"), 
+        {"queryset": "land"}, name="lands"),
     path(
         'houses/', SearchResultView.as_view(),
         {"queryset": "house"}, name="houses"),

@@ -46,6 +46,11 @@
     <!-- Dashboard JS-->
     <script src="{% static 'assets/js/dashboard.js' %}"></script>
 
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+        var deleteBookmarkURL = "{% url 'users:bookmark-delete' %}"
+    </script>
+
 </body>
 
 </html>

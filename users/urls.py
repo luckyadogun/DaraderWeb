@@ -15,7 +15,7 @@ urlpatterns = [
     path('add-property/', add_property, name="add-property"),
     path(
         'ajax/properties/delete/',
-        property_delete_view, 
+        property_delete_view,
         name="delete-property"),
     path('property/<int:pk>/update/', update_property, name="update-property"),
     path('bookings/', MyBookingsView.as_view(), name="my-bookings"),

@@ -3,9 +3,11 @@ $(document).ready(function(){
         e.preventDefault();
         var propertyID = $(this).attr("value");
 
+        console.log(bookmarkURL);
+
         $.ajax({
             type: "POST",
-            url: "ajax/bookmark",
+            url: bookmarkURL,
             dataType: "JSON",
             data: {
                 propertyID: propertyID,

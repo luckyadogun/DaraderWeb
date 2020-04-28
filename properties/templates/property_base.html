@@ -78,6 +78,7 @@
         var csrfToken = '{{ csrf_token }}';
         var loginURL = "{% url 'properties:login' %}"
         var signupURL = "{% url 'properties:signup' %}"
+        var bookmarkURL = "{% url 'properties:bookmark-property' %}"
     </script> 
     <script src="{% static 'assets/js/ajax-bookmark.js' %}"></script> 
     <script src="{% static 'assets/js/ajax-login.js' %}"></script>

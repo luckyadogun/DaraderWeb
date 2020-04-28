@@ -52,10 +52,16 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    first_name = forms.CharField(label='First Name', max_length=200)
-    last_name = forms.CharField(label='Last Name', max_length=200)    
+    first_name = forms.CharField(
+        label='First Name',
+        max_length=200,
+        required=False)
+    last_name = forms.CharField(
+        label='Last Name',
+        max_length=200,
+        required=False)
     mobile_phone = forms.CharField(
-        max_length=20, 
+        max_length=20,
         validators=[validate_phone],
         required=False)
     facebook = forms.URLField(required=False)

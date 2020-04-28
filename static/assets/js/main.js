@@ -788,21 +788,3 @@
     });
 
 
-
-     /*-------------------------------------
-              Custom JS
-     -------------------------------------*/
-    //  Bookmarking
-    // var doc = document.getElementById("bookmark-this").querySelector("li a");
-    // var totalBookmarked =  document.getElementById("total-bookmarked");
-
-    // var bookMarked = [];
-
-    // doc.addEventListener("click", function(){
-    //     if (bookMarked.includes(doc.value)){
-    //         bookMarked.splice(bookMarked.indexOf(doc.value), 1);
-    //     }else{
-    //         bookMarked.push(doc.value);
-    //         totalBookmarked.innerHTML = bookMarked.length;
-    // }});
-
