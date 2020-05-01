@@ -2,7 +2,7 @@
 
     <aside class="menu-sidebar js-right-sidebar d-block">
         <div class="logo">
-            <a href="{% url 'properties:home' %}">
+            <a href="{% url 'users:dashboard' %}">
                 <img src="{% static 'assets/images/logo-blue.png' %}" alt="SarchHolm" />
             </a>
         </div>
@@ -13,11 +13,19 @@
                         <a {% if 'my/dashboard' in request.path %}class="active"{% endif %} href="{% url 'users:dashboard' %}">
                             <i class="ion-ios-gear-outline"></i>Dashboard
                         </a>
-                    </li>       
+                    </li> 
+                    {% if user.is_admin or user.is_staff %}  
                         <li>
-                            <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
-                            <i class="ion-ios-heart-outline"></i>Bookmarks</a>
+                            <a {% if 'my/properties/manage' in request.path %}class="active"{% endif %} href="{% url 'users:manage-properties' %}">
+                                <i class="ion-social-buffer-outline"></i>Manage Properties
+                            </a>
                         </li>
+                    {% endif %}
+                        
+                    <li>
+                        <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
+                        <i class="ion-ios-heart-outline"></i>Bookmarks</a>
+                    </li>
                     {% if user.is_account_manager %}
                         <li>
                             <a {% if 'my/properties' in request.path %}class="active"{% endif %} href="{% url 'users:my-properties' %}">

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Property, \
     Company, Country, State, Gallery, \
-    PropertyDetails
+    PropertyDetails, LGA
 
 
 class PropertyDetailsInline(admin.StackedInline):
@@ -45,3 +45,8 @@ class CountryAdmin(admin.ModelAdmin):
 @admin.register(State)
 class StateAdmin(admin.ModelAdmin):
     list_display = ('name', 'country',)
+
+
+@admin.register(LGA)
+class LGAAdmin(admin.ModelAdmin):
+    list_display = ('name', 'state',)    

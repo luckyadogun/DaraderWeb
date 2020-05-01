@@ -2,7 +2,7 @@ from django import forms
 
 from properties.models import (
     Property, PropertyDetails, 
-    Gallery, Company)
+    Gallery, Company, State, LGA)
 
 from .models import User
 from .utils import validate_phone
@@ -205,6 +205,9 @@ class CompanyUpdateForm(CompanyForm):
 
 
 class PropertyForm(forms.ModelForm):
+    lga = forms.ModelChoiceField(widget=forms.Select(
+        attrs={'class': 'listing-input hero__form-input form-control custom-select'}), 
+        queryset=LGA.objects.none())
 
     class Meta:
         model = Property
@@ -224,15 +227,17 @@ class PropertyForm(forms.ModelForm):
                 'placeholder': 'Enter property address',
                 'required': 'true'}),
 
-            'area': forms.TextInput(attrs={
-                'class': 'form-control filter-input',
-                'placeholder': 'Enter Neighborhood'}),
-
             'country': forms.Select(attrs={
-                'class': 'listing-input hero__form-input  form-control custom-select'}),
+                'class': 'listing-input hero__form-input  form-control custom-select',
+                'name': 'country'}),
 
             'state': forms.Select(attrs={
-                'class': 'listing-input hero__form-input  form-control custom-select'}),
+                'class': 'listing-input hero__form-input  form-control custom-select',
+                'name': 'state'}),
+
+            # 'lga': forms.Select(attrs={
+            #     'class': 'listing-input hero__form-input  form-control custom-select',
+            #     'name': 'lga'}), 
 
             'zipcode': forms.TextInput(attrs={
                 'class': 'form-control filter-input',

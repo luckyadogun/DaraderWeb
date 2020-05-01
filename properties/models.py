@@ -43,6 +43,18 @@ class State(models.Model):
         return self.name
 
 
+class LGA(models.Model):
+    name = models.CharField(_("LGA"), max_length=200)
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "LGA"
+        verbose_name_plural = "LGA"
+
+
 def company_logo_image_path(instance, filename):
     return f"companies/{instance.name}/images/{filename}"
 
@@ -142,15 +154,15 @@ class Property(TimeStampedModel):
     title = models.CharField(_("title"), max_length=200)
     slug = models.SlugField(_("slug"), max_length=400, blank=True)
     address = models.CharField(_("address"), max_length=200)
-    area = models.CharField(
-        _("area"), max_length=200, 
-        blank=True, null=True)
+    lga = models.ForeignKey(
+        LGA, on_delete=models.SET_NULL,
+        null=True, default='', related_name='property_lga')
     country = models.ForeignKey(
         Country, on_delete=models.SET_NULL,
         null=True, default='')
     state = models.ForeignKey(
         State, on_delete=models.SET_NULL,
-        null=True, default='')
+        null=True, related_name='property_state')
     zipcode = models.CharField(
         _("zipcode or postal code"),
         max_length=20, blank=True, null=True)

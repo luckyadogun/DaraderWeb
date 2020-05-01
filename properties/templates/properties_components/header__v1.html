@@ -32,8 +32,14 @@
                                         </li>    
                                         <li>
                                             <a href="{% url 'properties:faq' %}">FAQ</a>                                                
-                                        </li>                                    
-                                        <li class="d-lg-none"><a class="btn v3" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
+                                        </li>   
+                                                                         
+                                        <li class="d-lg-none">
+                                            {% if user.is_staff %}
+                                                <a class="btn v3" href="{% url 'users:manage-properties' %}"><i class="lnr lnr-home"></i>Manage Listing </a>
+                                            {% else %}
+                                                <a class="btn v3" href="{% url 'users:add-property' %}"><i class="lnr lnr-home"></i>Add Listing </a>
+                                            {% endif %}
                                         </li>
                                     </ul>
                                 </div>

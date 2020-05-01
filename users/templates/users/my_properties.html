@@ -23,7 +23,11 @@
                         <div class="col-md-12">
                             <div class="recent-activity my-listing">
                                 <div class="act-title">
-                                    <h5>My Listings</h5>
+                                    {% if user.is_staff %}
+                                        <h5>Manage Listings</h5>                                        
+                                    {% else %}
+                                        <h5>My Listings</h5>
+                                    {% endif %}
                                 </div>
                                 <div class="viewd-item-wrap">
                                     {% if properties %}

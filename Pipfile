@@ -17,6 +17,7 @@ gunicorn = "==19.9.0"
 dj-database-url = "==0.5.0"
 whitenoise = "==5.0.1"
 Pillow = "==7.0.0"
+django-select2 = "*"
 
 [requires]
 python_version = "3.7"

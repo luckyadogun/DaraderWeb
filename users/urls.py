@@ -7,12 +7,19 @@ from .views import (
     BookmarkedView, property_delete_view,
     booking_delete_view, booking_setup_view,
     update_property,  bookmark_delete_view,
-    add_company_view, update_company_view)
+    add_company_view, update_company_view,
+    ajax_load_cities)
 
 urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
-    path('properties/', MyPropertyView.as_view(), name="my-properties"),
-    path('add-property/', add_property, name="add-property"),
+    path(
+        'properties/', MyPropertyView.as_view(),
+        {"queryset": "listing"}, name="my-properties"),
+    path(
+        'properties/manage/', MyPropertyView.as_view(),
+        {"queryset": "manage"}, name='manage-properties'),
+    path('ajax-load-cities/', ajax_load_cities, name="load-cities"),
+    path('add-property/', add_property, name="add-property"),    
     path(
         'ajax/properties/delete/',
         property_delete_view,
@@ -26,5 +33,5 @@ urlpatterns = [
     path('account/', MyAccountView.as_view(), name="account"),
     path('account/update/', account_update_view, name="update-account"),
     path('company/add/', add_company_view, name="add-company"),
-    path('company/update/', update_company_view, name="update-company"),
+    path('company/update/', update_company_view, name="update-company"),    
 ]

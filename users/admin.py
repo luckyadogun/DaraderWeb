@@ -21,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': (
                 'email', 'username', 
                 'first_name', 'last_name',
-                'password', 'is_staff', 
+                'password', 'is_staff', 'state',
                 'is_active', 'is_account_manager',
                 'mobile_phone', 'facebook', 'twitter',
                 'instagram'

@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -20,14 +21,14 @@ from .forms import (
     CompanyForm, CompanyUpdateForm
     )
 
-from .decorators import manager_required
+from .decorators import staff_or_manager_required, manager_required
 from .helpers import email_booking_confirmed
 
 from properties.models import (
     Property, Company,
     BookingRequest, Gallery,
-    BookmarkedProperty,
-    PropertyDetails)
+    BookmarkedProperty, LGA,
+    PropertyDetails, State)
 
 
 @method_decorator([login_required], name='dispatch')
@@ -41,19 +42,24 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-@method_decorator([login_required], name='dispatch')
+@method_decorator([staff_or_manager_required], name='dispatch')
 class MyPropertyView(LoginRequiredMixin, ListView):
     template_name = "users/my_properties.html"
     context_object_name = "properties"
     paginate_by = 5
 
     def get_queryset(self):
-        company = Company.objects.get(manager=self.request.user)
-        return Property.objects.filter(owner=company)
+        if self.kwargs["queryset"] == "manage":
+            if self.request.user.is_staff:
+                return Property.objects.filter(state=self.request.user.state)
+
+        if self.kwargs["queryset"] == "listing":
+            company = Company.objects.get(manager=self.request.user)
+            return Property.objects.filter(owner=company)
 
 
 @login_required
-@manager_required
+@staff_or_manager_required
 def property_delete_view(request):
     company = get_object_or_404(Company, manager=request.user)
 
@@ -67,6 +73,14 @@ def property_delete_view(request):
         return JsonResponse({"result": "Unauthorized Access!"})
 
     raise Http404("Page Doesn't Exist!")
+
+
+def ajax_load_cities(request):
+    if request.is_ajax and request.method == "GET":
+        state_id = request.GET.get('stateID')
+        lga = LGA.objects.filter(state__id=state_id).order_by('name')
+        data = serializers.serialize("json", lga, fields=('name'))
+        return JsonResponse(data, safe=False)
 
 
 @login_required
@@ -118,7 +132,7 @@ def add_property(request):
 
 
 @login_required
-@manager_required
+@staff_or_manager_required
 def update_property(request, pk=None):
     context = {}
 
@@ -240,7 +254,7 @@ def bookmark_delete_view(request):
 
 
 @method_decorator([login_required], name='dispatch')
-class MyAccountView(LoginRequiredMixin, TemplateView):
+class MyAccountView(TemplateView):
     template_name = "users/my_account.html"
 
 

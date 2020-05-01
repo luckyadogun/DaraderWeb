@@ -42,21 +42,23 @@
                                                     <label>Address</label>
                                                     {{ property_form.address }}
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>Neighborhood </label>
-                                                    {{ property_form.area }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                            </div>                                            
+                                            <div class="col-md-4" id="country">
                                                 <label>Select Country</label>
                                                 {{ property_form.country }}
                                             </div>
                                             <div class="col-md-4">
-                                                <label>Select State</label>
+                                                <label>Select State</label>                                                
                                                 {{ property_form.state }}
-                                            </div>                                            
+                                            </div> 
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Local Government </label>                                                                                                
+                                                    <select id="lga" class="listing-input hero__form-input  form-control custom-select">
+                                                        <option value="">Select an option</option>                                                                                                                                                                             
+                                                    </select>                                                    
+                                                </div>
+                                            </div>                                           
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Zip/Postal Code</label>
@@ -211,22 +213,48 @@
     {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
+        // $(document).ready(function(){
+        //     var formData = $("form#formData");
+        //     $("#submit").click(function(e){                
+        //         $.ajax({
+        //             type: "POST",
+        //             url: addPropertyURL,
+        //             dataType: "JSON",                    
+        //             data: formData.serialize(),
+        //             success: function(response){
+        //                 formData.reset();                        
+        //             },
+        //             error: function(){
+        //                 formData.reset();
+        //                 alert("Something went wrong!");
+        //             }
+        //         })
+        //     });
+        // });
+
         $(document).ready(function(){
-            var formData = $("form#formData");
-            $("#submit").click(function(e){                
-                $.ajax({
-                    type: "POST",
-                    url: "add-property",
-                    dataType: "JSON",                    
-                    data: formData.serialize(),
-                    success: function(response){
-                        formData.reset();                        
-                    },
-                    error: function(){
-                        formData.reset();
-                        alert("Something went wrong!");
-                    }
-                })
+            $("#id_form1-state").on("change", function() {
+                var stateID = $("#id_form1-state")[0]['value'];                
+
+                if(stateID){
+                    var selectBox = document.getElementById("lga");
+
+                    $.ajax({
+                        type: "GET",
+                        url: loadCitiesURL,
+                        dataType: "JSON",
+                        data: {
+                            stateID: stateID,
+                            csrfmiddlewaretoken: csrfToken
+                        },
+                        success: function(data){
+                            $.each(JSON.parse(data), function(index, option){                               
+                                selectBox[index] = new Option(option['fields']['name'], index, false, false)                                                                
+                            });
+                            console.log(selectBox);
+                        }                                            
+                    });
+                }
             });
         });
     </script>
