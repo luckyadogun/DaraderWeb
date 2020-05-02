@@ -231,7 +231,7 @@ def property_details(request, pk, slug):
     context["similar"] = PropertyDetails.objects.filter(
         Q(property_obj__title__icontains=obj.property_obj.title) |
         Q(property_obj__property_type=obj.property_obj.property_type) |
-        Q(property_obj__area=obj.property_obj.area) |
+        Q(property_obj__lga=obj.property_obj.lga) |
         Q(property_obj__owner=obj.property_obj.owner)
     )
     context["bookingform"] = bookingform

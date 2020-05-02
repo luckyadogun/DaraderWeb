@@ -10,7 +10,7 @@
 }
 
 .item--blue {
-    background: #6449e7;
+    background: #0072b1;
 }
 
 .item--red {
@@ -567,7 +567,7 @@
 }
 
 .inbox-num.active {
-    background: #6449e7;
+    background: #0072b1;
 }
 
 .inbox-num.pending {
@@ -666,7 +666,7 @@
 }
 
 .recent-activity .act-wrap .alert.br-b {
-    border-left: 2px solid #6449e7;
+    border-left: 2px solid #0072b1;
 
 }
 
@@ -858,13 +858,13 @@
     padding: 5px 15px;
     font-weight: 400;
     background: transparent;
-    border: 1px solid #6449e7;
-    color: #6449e7 !important;
+    border: 1px solid #0072b1;
+    color: #0072b1 !important;
     transition: 0.5s;
 }
 
 .listing-button .btn.v3:hover {
-    background: #6449e7;
+    background: #0072b1;
     color: #fff !important;
     border: 1px solid transparent;
 
@@ -877,7 +877,7 @@
 .listing-button .btn.v4 {
     padding: 5px 15px;
     font-weight: 400;
-    background: #6449e7;
+    background: #0072b1;
     border: 1px solid transparent;
     color: #fff !important;
     transition: 0.5s;
@@ -889,12 +889,12 @@
 
 .listing-button .btn.v4:hover {
     background: transparent;
-    color: #6449e7 !important;
-    border: 1px solid #6449e7;
+    color: #0072b1 !important;
+    border: 1px solid #0072b1;
 }
 
 .listing-button .btn.v4:hover i {
-    color: #6449e7;
+    color: #0072b1;
 }
 
 /*======================================
@@ -1153,7 +1153,7 @@
 }
 
 .send-mess {
-    background: #6449e7;
+    background: #0072b1;
     color: #fff;
     border-radius: 8px;
     padding: 12px 25px;

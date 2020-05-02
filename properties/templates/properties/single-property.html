@@ -94,7 +94,7 @@
                                             <ul class="listing-address">
                                                 <li>Address : <span>{{ object.property_obj.address }}</span></li>
                                                 <li>State : <span>{{ object.property_obj.state.name }}</span></li>
-                                                <li>Neighborhood : <span>{% if object.property_obj.area == None %}{{ object.property_obj.state.name }}{% else %}{{ object.property_obj.area }}{% endif %}</span></li>
+                                                <li>Neighborhood : <span>{% if object.property_obj.lga == None %}{{ object.property_obj.state.name }}{% else %}{{ object.property_obj.area }}{% endif %}</span></li>
                                                 <li>Zip/Postal Code : <span>{{ object.property_obj.zipcode }}</span></li>
                                                 <li>Country : <span>{{ object.property_obj.country.name }}</span></li>
                                                 <li>City : <span>{{ object.property_obj.state.name }}</span></li>

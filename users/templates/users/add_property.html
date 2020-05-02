@@ -213,24 +213,24 @@
     {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        // $(document).ready(function(){
-        //     var formData = $("form#formData");
-        //     $("#submit").click(function(e){                
-        //         $.ajax({
-        //             type: "POST",
-        //             url: addPropertyURL,
-        //             dataType: "JSON",                    
-        //             data: formData.serialize(),
-        //             success: function(response){
-        //                 formData.reset();                        
-        //             },
-        //             error: function(){
-        //                 formData.reset();
-        //                 alert("Something went wrong!");
-        //             }
-        //         })
-        //     });
-        // });
+        $(document).ready(function(){
+            var formData = $("form#formData");
+            $("#submit").click(function(e){                
+                $.ajax({
+                    type: "POST",
+                    url: addPropertyURL,
+                    dataType: "JSON",                    
+                    data: formData.serialize(),
+                    success: function(response){
+                        formData.reset();                        
+                    },
+                    error: function(){
+                        formData.reset();
+                        alert("Something went wrong!");
+                    }
+                })
+            });
+        });
 
         $(document).ready(function(){
             $("#id_form1-state").on("change", function() {
@@ -238,7 +238,6 @@
 
                 if(stateID){
                     var selectBox = document.getElementById("lga");
-
                     $.ajax({
                         type: "GET",
                         url: loadCitiesURL,
@@ -251,7 +250,6 @@
                             $.each(JSON.parse(data), function(index, option){                               
                                 selectBox[index] = new Option(option['fields']['name'], index, false, false)                                                                
                             });
-                            console.log(selectBox);
                         }                                            
                     });
                 }
