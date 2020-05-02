@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Property, \
     Company, Country, State, Gallery, \
-    PropertyDetails, LGA
+    PropertyDetails, LGA, FloorPlan
 
 
 class PropertyDetailsInline(admin.StackedInline):
@@ -16,6 +16,11 @@ class PropertyImageInline(admin.TabularInline):
     extra = 0
 
 
+class PropertyFloorPlanImageInline(admin.TabularInline):
+    model = FloorPlan
+    extra = 0
+
+
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     readonly_fields = ('property_id',)
@@ -23,7 +28,7 @@ class PropertyAdmin(admin.ModelAdmin):
         'property_id', 'title', 'property_category',
         'market_status', 'price', 'owner',)    
     empty_value_display = '-empty-'
-    inlines = [PropertyImageInline, PropertyDetailsInline, ]
+    inlines = [PropertyImageInline, PropertyFloorPlanImageInline, PropertyDetailsInline, ]
     list_filter = ('created', 'market_status', 'property_category',)
     search_fields = ('property_id', 'owner', )
 

@@ -116,6 +116,54 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Property Floor Plan Details :</h5>
+                                    </div>
+                                    <div class="db-add-listing" id="form-3">                                        
+                                        <div class="row mb-30">                                        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Number of Bedrooms</label>
+                                                    {{ property_details_form.bedrooms }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Number of Rooms</label>
+                                                    {{ property_details_form.livingrooms }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Number of Bath</label>
+                                                    {{ property_details_form.bathrooms }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Number of Toilets</label>
+                                                    {{ property_details_form.toilets }}
+                                                </div>
+                                            </div> 
+                                            <div class="col-md-12 mb-5">
+                                                <div class="form-group">  
+                                                    <h5>Floor Plan Images:</h5>                                                  
+                                                    <div class="form-group">
+                                                        <div class="add-listing__input-file-box">
+                                                            {{ gallery_form.image }}
+                                                            <div class="add-listing__input-file-wrap">
+                                                                <i class="lnr lnr-cloud-upload"></i>
+                                                                <p>Click here to upload your images</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                            
+                                            </div>                                                                                   
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="db-add-list-wrap">
                                     <div class="act-title">

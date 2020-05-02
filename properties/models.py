@@ -218,6 +218,23 @@ class Gallery(models.Model):
         verbose_name_plural = "gallery"
 
 
+class FloorPlan(models.Model):
+    title = models.CharField(_("title: eg - first floor"), max_length=20)
+    size = models.PositiveSmallIntegerField(
+        _("size: (in square foot)"), blank=True, null=True)
+    rooms = models.PositiveSmallIntegerField(
+        _("room size: (in square foot)"), blank=True, null=True)
+    bathrooms = models.PositiveSmallIntegerField(
+        _("bathroom size: (in square foot)"), blank=True, null=True)
+    image = models.ImageField(
+        _("image"), upload_to=property_images_directory_path, blank=True)
+    property_obj = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name="floorplan")
+
+    class Meta:
+        verbose_name_plural = "Floor Plan"
+
+
 class PropertyDetails(models.Model):
     bedrooms = models.PositiveSmallIntegerField(blank=True, null=True)
     livingrooms = models.PositiveSmallIntegerField(blank=True, null=True)
