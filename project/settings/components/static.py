@@ -14,5 +14,5 @@ STATICFILES_DIRS = (
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', "mediafiles")
 
-if os.environ.get("ENVIRONMENT") != "local":
+if os.environ.get("ENVIRONMENT") == "staging" or "prod":
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
