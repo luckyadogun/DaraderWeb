@@ -97,10 +97,9 @@
                                             <ul class="listing-address">
                                                 <li>Address : <span>{{ object.property_obj.address }}</span></li>
                                                 <li>State : <span>{{ object.property_obj.state.name }}</span></li>
-                                                <li>Neighborhood : <span>{% if object.property_obj.lga == None %}{{ object.property_obj.state.name }}{% else %}{{ object.property_obj.area }}{% endif %}</span></li>
+                                                <li>LGA : <span>{{ object.property_obj.lga.name }}</span></li>
                                                 <li>Zip/Postal Code : <span>{{ object.property_obj.zipcode }}</span></li>
-                                                <li>Country : <span>{{ object.property_obj.country.name }}</span></li>
-                                                <li>City : <span>{{ object.property_obj.state.name }}</span></li>
+                                                <li>Country : <span>{{ object.property_obj.country.name }}</span></li>                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -152,7 +151,7 @@
                                                 <li>Property status : <span>{{ object.property_obj.property_category|title }}</span></li>
                                                 <li>Property Price : <span>{{ object.property_obj.price|floatformat|intcomma }}</span></li>
                                                 <li>Bedrooms: <span>{{ object.bedrooms }}</span></li>
-                                                <li>Bath: <span>{{ object.bathrooms }}</span></li>
+                                                <li>Bathrooms: <span>{{ object.bathrooms }}</span></li>
                                                 <li>Garages: <span>{{ object.parking_spaces }}</span></li>                                               
                                             </ul>
                                         </div>
@@ -196,14 +195,14 @@
                                                                     <li>Size : <span>{{ fp.size }} sft</span></li>
                                                                     <li>Rooms : <span>{{ fp.rooms }} sft</span></li>
                                                                     <li>Baths : <span>{{ fp.bathrooms }} sft</span></li>
-                                                                    <li>Price : <span>{{ object.property_obj.price|floatformat|intcomma }}</span></li>
+                                                                    <li>Price : <span>₦{{ object.property_obj.price|floatformat|intcomma }}</span></li>
                                                                 </ul>
                                                             </a>
                                                         </div>
                                                         <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
                                                             <div class="card-body">
-                                                                <a href="{{ fp.image.url }}" data-lightbox="single-1">
-                                                                    <img src="{{ fp.image.url }}" alt="{{ fp.title }}">
+                                                                <a href="{{ fp.floor_image.url }}" data-lightbox="single-1">
+                                                                    <img src="{{ fp.floor_image.url }}" alt="{{ fp.title }}">
                                                                 </a>
                                                             </div>
                                                         </div>

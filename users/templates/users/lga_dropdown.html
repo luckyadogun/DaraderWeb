@@ -1,6 +1,9 @@
 <select id="lga" class="listing-input hero__form-input  form-control custom-select">
-    <option value="">Select an option</option>
-    {% for lga in lgas %}
-        <option value="{{ lga.pk }}">{{ lga }}</option>
-    {% endfor %}                                                
+    {% if lgas %}
+        {% for lga in lgas %}
+            <option value="{{ lga.pk }}">{{ lga }}</option>
+        {% endfor %}    
+    {% else %}
+        <option value="">Select an option</option>  
+    {% endif %}                                                        
 </select>

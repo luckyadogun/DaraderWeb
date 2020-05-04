@@ -202,10 +202,15 @@ class Property(TimeStampedModel):
     class Meta:
         verbose_name_plural = "properties"
         get_latest_by = ["created"]
+        ordering = ["-created"]
 
 
 def property_images_directory_path(instance, filename):
     return f"property/{instance.property_obj.property_id}/images/{filename}"
+
+
+def property_floorplan_directory_path(instance, filename):
+    return f"property/{instance.property_obj.property_id}/floorplan/{filename}"
 
 
 class Gallery(models.Model):
@@ -219,15 +224,17 @@ class Gallery(models.Model):
 
 
 class FloorPlan(models.Model):
-    title = models.CharField(_("title: eg - first floor"), max_length=20)
+    title = models.CharField(
+        _("title: eg - first floor"), 
+        max_length=20, blank=True, null=True)
     size = models.PositiveSmallIntegerField(
         _("size: (in square foot)"), blank=True, null=True)
     rooms = models.PositiveSmallIntegerField(
         _("room size: (in square foot)"), blank=True, null=True)
     bathrooms = models.PositiveSmallIntegerField(
         _("bathroom size: (in square foot)"), blank=True, null=True)
-    image = models.ImageField(
-        _("image"), upload_to=property_images_directory_path, blank=True)
+    floor_image = models.ImageField(
+        _("image"), upload_to=property_floorplan_directory_path, blank=True)
     property_obj = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name="floorplan")
 

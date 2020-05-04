@@ -8,7 +8,7 @@ from .views import (
     booking_delete_view, booking_setup_view,
     update_property,  bookmark_delete_view,
     add_company_view, update_company_view,
-    ajax_load_cities)
+    ajax_load_lga)
 
 urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
@@ -18,7 +18,7 @@ urlpatterns = [
     path(
         'properties/manage/', MyPropertyView.as_view(),
         {"queryset": "manage"}, name='manage-properties'),
-    path('ajax-load-cities/', ajax_load_cities, name="load-cities"),
+    path('ajax-load-lga/', ajax_load_lga, name="ajax-load-lga"),
     path('add-property/', add_property, name="add-property"),    
     path(
         'ajax/properties/delete/',

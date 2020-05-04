@@ -2,7 +2,8 @@ from django import forms
 
 from properties.models import (
     Property, PropertyDetails, 
-    Gallery, Company, State, LGA)
+    Gallery, Company, State, LGA,
+    FloorPlan)
 
 from .models import User
 from .utils import validate_phone
@@ -189,9 +190,7 @@ class CompanyForm(forms.ModelForm):
         }
 
 
-class CompanyUpdateForm(CompanyForm):
-    # logo = forms.ImageField(required=True, widget=forms.ClearableFileInput(
-    #     attrs={'class': 'add-listing__input-file', 'type': 'file', 'name': 'file'}))
+class CompanyUpdateForm(CompanyForm):    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -207,7 +206,7 @@ class CompanyUpdateForm(CompanyForm):
 class PropertyForm(forms.ModelForm):
     lga = forms.ModelChoiceField(widget=forms.Select(
         attrs={'class': 'listing-input hero__form-input form-control custom-select'}), 
-        queryset=LGA.objects.none())
+        queryset=LGA.objects.none(), required=False)
 
     class Meta:
         model = Property
@@ -233,11 +232,7 @@ class PropertyForm(forms.ModelForm):
 
             'state': forms.Select(attrs={
                 'class': 'listing-input hero__form-input  form-control custom-select',
-                'name': 'state'}),
-
-            # 'lga': forms.Select(attrs={
-            #     'class': 'listing-input hero__form-input  form-control custom-select',
-            #     'name': 'lga'}), 
+                'name': 'state'}),            
 
             'zipcode': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
@@ -269,6 +264,36 @@ class GalleryForm(forms.ModelForm):
     class Meta:
         model = Gallery
         exclude = ('property_obj',)
+
+
+class FloorPlanForm(forms.ModelForm):
+    floor_image = forms.ImageField(required=False, widget=forms.ClearableFileInput(
+        attrs={
+            'multiple': False, 'class': 'add-listing__input-file',
+            'type': 'file', 'name': 'file', 'id': 'floorplan_file'}))
+
+    class Meta:
+        model = FloorPlan
+        exclude = ('property_obj',)
+        widgets = {
+
+            'title': forms.TextInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Enter floor title',
+                'required': 'true'}),
+
+            'size': forms.NumberInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Enter size of property'}),
+
+            'rooms': forms.NumberInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Enter size of rooms'}),
+
+            'bathrooms': forms.NumberInput(attrs={
+                'class': 'form-control filter-input',
+                'placeholder': 'Enter size of bathrooms'}),
+        }
 
 
 class PropertyDetailsForm(forms.ModelForm):
@@ -325,7 +350,7 @@ class PropertyUpdateForm(PropertyForm):
         self.fields['property_id'].widget.attrs['placeholder'] = self.instance.property_id
         self.fields['title'].widget.attrs['placeholder'] = self.instance.title
         self.fields['address'].widget.attrs['placeholder'] = self.instance.address
-        self.fields['area'].widget.attrs['placeholder'] = self.instance.area
+        self.fields['lga'].widget.attrs['placeholder'] = self.instance.lga
         self.fields['country'].widget.attrs['value'] = self.instance.country
         self.fields['state'].widget.attrs['value'] = self.instance.state
         self.fields['zipcode'].widget.attrs['placeholder'] = self.instance.zipcode
@@ -339,6 +364,16 @@ class GalleryUpdateForm(GalleryForm):
     def __init(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['image'].widget.attrs['required'] = False
+
+
+class FloorPlanUpdateForm(FloorPlanForm):
+    def __init(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['floor_image'].widget.attrs['required'] = False
+        self.fields['title'].widget.attrs['required'] = False
+        self.fields['size'].widget.attrs['placeholder'] = self.instance.size
+        self.fields['rooms'].widget.attrs['placeholder'] = self.instance.rooms
+        self.fields['bathrooms'].widget.attrs['placeholder'] = self.instance.bathrooms
 
 
 class DetailsUpdateForm(PropertyDetailsForm):

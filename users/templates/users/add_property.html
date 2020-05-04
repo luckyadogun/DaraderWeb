@@ -19,7 +19,7 @@
             <!-- Top header ends-->
             <!--Dashboard content starts-->
             <div class="dash-content">
-                <form enctype="multipart/form-data" id="formData" method="POST" action="{% url 'users:add-property' %}">
+                <form id="formData" method="POST">
                     {% csrf_token %}
                     <div class="container-fluid">
                         <div class="row">
@@ -125,26 +125,26 @@
                                         <div class="row mb-30">                                        
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Number of Bedrooms</label>
-                                                    {{ property_details_form.bedrooms }}
+                                                    <label>Title</label>
+                                                    {{ floorplan_form.title }}
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Number of Rooms</label>
-                                                    {{ property_details_form.livingrooms }}
+                                                    <label>Size of Property</label>
+                                                    {{ floorplan_form.size }}
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Number of Bath</label>
-                                                    {{ property_details_form.bathrooms }}
+                                                    <label>Size of Rooms</label>
+                                                    {{ floorplan_form.rooms }}
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Number of Toilets</label>
-                                                    {{ property_details_form.toilets }}
+                                                    <label>Size of Bathrooms</label>
+                                                    {{ floorplan_form.bathrooms }}
                                                 </div>
                                             </div> 
                                             <div class="col-md-12 mb-5">
@@ -152,7 +152,7 @@
                                                     <h5>Floor Plan Images:</h5>                                                  
                                                     <div class="form-group">
                                                         <div class="add-listing__input-file-box">
-                                                            {{ gallery_form.image }}
+                                                            {{ floorplan_form.floor_image }}
                                                             <div class="add-listing__input-file-wrap">
                                                                 <i class="lnr lnr-cloud-upload"></i>
                                                                 <p>Click here to upload your images</p>
@@ -261,20 +261,42 @@
     {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            var formData = $("form#formData");
-            $("#submit").click(function(e){                
+
+
+        $(document).ready(function(e){
+            $("#submit").click(function(e){   
+                e.preventDefault();    
+                var form = document.getElementById("formData");  
+                var lga = document.getElementById("lga");
+                var lgaID = lga.selectedOptions[0].value
+
+                var gallery = $("#img_file").get(0).files[0];
+                var floorplan = $("#floorplan_file").get(0).files[0];
+
+                var formData = new FormData(form);
+
+                formData.append('lgaID', lgaID);
+                formData.append('gallery', lgaID);
+                formData.append('floorplan', floorplan);
+
                 $.ajax({
                     type: "POST",
                     url: addPropertyURL,
-                    dataType: "JSON",                    
-                    data: formData.serialize(),
+                    dataType: "JSON",   
+                    processData: false,
+                    contentType: false,                 
+                    data: formData,
                     success: function(response){
-                        formData.reset();                        
+                        if(response['result'] == "Success"){
+                            form.reset();
+                            location.href = myPropertyURL;
+                        }else{
+                            alert(response['result']);
+                        }                  
                     },
-                    error: function(){
-                        formData.reset();
+                    error: function(){                                                
                         alert("Something went wrong!");
+                        form.reset();
                     }
                 })
             });
@@ -282,23 +304,21 @@
 
         $(document).ready(function(){
             $("#id_form1-state").on("change", function() {
-                var stateID = $("#id_form1-state")[0]['value'];                
+                var stateID = $("#id_form1-state")[0]['value']; 
+                var lgaID = $("#lga")[0]['value'];                                
 
-                if(stateID){
-                    var selectBox = document.getElementById("lga");
+                if(stateID){                   
                     $.ajax({
                         type: "GET",
-                        url: loadCitiesURL,
-                        dataType: "JSON",
+                        url: loadLGAURL,
+                        dataType: "text",
                         data: {
                             stateID: stateID,
                             csrfmiddlewaretoken: csrfToken
                         },
                         success: function(data){
-                            $.each(JSON.parse(data), function(index, option){                               
-                                selectBox[index] = new Option(option['fields']['name'], index, false, false)                                                                
-                            });
-                        }                                            
+                            $("#lga").html(data);                            
+                        },                                                                   
                     });
                 }
             });

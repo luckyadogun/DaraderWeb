@@ -1,6 +1,8 @@
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 
+from properties.models import Company
+
 
 def manager_required(function=None, redirect_field=REDIRECT_FIELD_NAME, login_url='properties:home'):
     '''
@@ -32,3 +34,8 @@ def staff_or_manager_required(function=None, redirect_field=REDIRECT_FIELD_NAME,
     if function:
         return actual_decorator(function)
     return actual_decorator
+
+
+def is_property_owner(user):
+    company = Company.objects.get(manager=user)
+    return bool(company.manager == user)

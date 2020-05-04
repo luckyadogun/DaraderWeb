@@ -19,7 +19,7 @@
             <!-- Top header ends-->
             <!--Dashboard content starts-->
             <div class="dash-content">
-                <form enctype="multipart/form-data" id="formData" method="POST" action="{% url 'users:update-property' property.id %}">
+                <form id="formData" method="POST" data-update-url="{% url 'users:update-property' property.id %}">
                     {% csrf_token %}
                     <div class="container-fluid">
                         <div class="row">
@@ -42,21 +42,23 @@
                                                     <label>Address</label>
                                                     {{ property_form.address }}
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>Neighborhood </label>
-                                                    {{ property_form.area }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                            </div>                                            
+                                            <div class="col-md-4" id="country">
                                                 <label>Select Country</label>
                                                 {{ property_form.country }}
                                             </div>
                                             <div class="col-md-4">
-                                                <label>Select State</label>
+                                                <label>Select State</label>                                                
                                                 {{ property_form.state }}
-                                            </div>                                            
+                                            </div> 
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Local Government </label>                                                                                                
+                                                    <select id="lga" class="listing-input hero__form-input  form-control custom-select">
+                                                        <option value="">Select an option</option>                                                                                                                                                                             
+                                                    </select>                                                    
+                                                </div>
+                                            </div>                                           
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Zip/Postal Code</label>
@@ -111,6 +113,54 @@
                                                     </div>
                                                 </div>                                            
                                             </div>                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Property Floor Plan Details :</h5>
+                                    </div>
+                                    <div class="db-add-listing" id="form-3">                                        
+                                        <div class="row mb-30">                                        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Title</label>
+                                                    {{ floorplan_form.title }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Size of Property</label>
+                                                    {{ floorplan_form.size }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Size of Rooms</label>
+                                                    {{ floorplan_form.rooms }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Size of Bathrooms</label>
+                                                    {{ floorplan_form.bathrooms }}
+                                                </div>
+                                            </div> 
+                                            <div class="col-md-12 mb-5">
+                                                <div class="form-group">  
+                                                    <h5>Floor Plan Images:</h5>                                                  
+                                                    <div class="form-group">
+                                                        <div class="add-listing__input-file-box">
+                                                            {{ floorplan_form.floor_image }}
+                                                            <div class="add-listing__input-file-wrap">
+                                                                <i class="lnr lnr-cloud-upload"></i>
+                                                                <p>Click here to upload your images</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                            
+                                            </div>                                                                                   
                                         </div>
                                     </div>
                                 </div>
@@ -211,23 +261,69 @@
     {% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            var formData = $("form#formData");
-            $("#submit").click(function(e){                
+
+
+        $(document).ready(function(e){
+            $("#submit").click(function(e){   
+                e.preventDefault();   
+                var updatePropertyURL = $("#formData").attr("data-update-url");
+
+                var form = document.getElementById("formData");  
+                var lga = document.getElementById("lga");
+                var lgaID = lga.selectedOptions[0].value
+
+                var gallery = $("#img_file").get(0).files[0];
+                var floorplan = $("#floorplan_file").get(0).files[0];
+
+                var formData = new FormData(form);
+
+                formData.append('lgaID', lgaID);
+                formData.append('gallery', lgaID);
+                formData.append('floorplan', floorplan);
+
                 $.ajax({
                     type: "POST",
-                    dataType: "JSON",                    
-                    data: formData.serialize(),
+                    url: updatePropertyURL,
+                    dataType: "JSON",   
+                    processData: false,
+                    contentType: false,                 
+                    data: formData,
                     success: function(response){
-                        formData.reset();
-                        console.log("worked!");
+                        if(response['result'] == "Success"){
+                            form.reset();
+                            location.href = myPropertyURL;
+                        }else{
+                            alert(response['result']);
+                        }                  
                     },
-                    error: function(){
-                        formData.reset();
-                        console.log("failed!");
+                    error: function(){                                                
+                        alert("Something went wrong!");
+                        form.reset();
                     }
                 })
             });
         });
+
+        $(document).ready(function(){
+            $("#id_form1-state").on("change", function() {
+                var stateID = $("#id_form1-state")[0]['value']; 
+                var lgaID = $("#lga")[0]['value'];                                
+
+                if(stateID){                   
+                    $.ajax({
+                        type: "GET",
+                        url: loadLGAURL,
+                        dataType: "text",
+                        data: {
+                            stateID: stateID,
+                            csrfmiddlewaretoken: csrfToken
+                        },
+                        success: function(data){
+                            $("#lga").html(data);                            
+                        },                                                                   
+                    });
+                }
+            });
+        });
     </script>
-    {% endblock %}
+{% endblock %}
