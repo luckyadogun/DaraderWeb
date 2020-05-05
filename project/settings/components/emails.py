@@ -1,7 +1,8 @@
+import os
 import requests
 
-MAILGUN_API_KEY = '3c985f1f6af27082b95048f05f3dfd2e-f135b0f1-11c096ef'
-MAILGUN_API_BASE_URL = 'https://api.mailgun.net/v3/mail.darader.com/messages'
+MAILGUN_API_KEY = os.getenv("MAILGUN_API_KEY")
+MAILGUN_API_BASE_URL = os.getenv("MAILGUN_API_BASE_URL")
 
 
 def send_email(recipient=None, subject=None, html_content=None, text=None):
