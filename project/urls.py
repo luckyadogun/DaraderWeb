@@ -13,5 +13,9 @@ urlpatterns = [
     path('secret-saucer/', admin.site.urls),
     path('', include(('properties.urls', 'properties'), namespace='properties')),
     path('my/', include(('users.urls', 'users'), namespace='users')),
+]
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
