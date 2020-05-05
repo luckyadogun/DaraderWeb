@@ -131,7 +131,9 @@
                                             </ul>
                                             <div class="property-author-wrap">
                                                 <a href="#" class="property-author">
-                                                    <img src="{{ property.owner.logo.url }}" alt="...">
+                                                    {% if property.owner.logo.url %}
+                                                        <img src="{{ property.owner.logo.url }}" alt="...">
+                                                    {% endif %}
                                                     <span>{{ property.owner }}</span>
                                                 </a>
                                                 <ul class="save-btn">                                                    
@@ -227,7 +229,9 @@
                                         </ul>
                                         <div class="property-author-wrap">
                                             <a href="#" class="property-author">
-                                                <img src="{{ property.owner.logo.url }}" alt="...">
+                                                {% if property.owner.logo.url %}
+                                                    <img src="{{ property.owner.logo.url }}" alt="...">
+                                                {% endif %}
                                                 <span>{{ property.owner }}</span>
                                             </a>
                                             <ul class="save-btn">                                                    
@@ -318,7 +322,9 @@
                                     </ul>
                                     <div class="property-author-wrap">
                                         <a href="#" class="property-author">
-                                            <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% if property.owner.logo.url %}
+                                                <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% endif %}
                                             <span>{{ property.owner }}</span>
                                         </a>
                                         {% for p in property.property_details.all %}
@@ -387,7 +393,9 @@
                                     </ul>
                                     <div class="property-author-wrap">
                                         <a href="#" class="property-author">
-                                            <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% if property.owner.logo.url %}
+                                                <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% endif %}
                                             <span>{{ property.owner }}</span>
                                         </a>
                                         <ul class="save-btn">                                            
