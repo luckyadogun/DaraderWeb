@@ -7,6 +7,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
+    # third-party
+    'storages',
+
     # local
     'users',
     'properties',
