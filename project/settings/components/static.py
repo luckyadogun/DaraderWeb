@@ -6,8 +6,8 @@ STATICFILES_DIRS = [
 ]
 
 if os.environ.get("ENVIRONMENT") != "local":
-    AWS_ACCESS_KEY_ID = os.environ.get(AWS_ACCESS_KEY_ID)
-    AWS_SECRET_ACCESS_KEY = os.environ.get(AWS_ACCESS_KEY_ID)
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = 'darader-assets'
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amamzonaws' % AWS_STORAGE_BUCKET_NAME
 
