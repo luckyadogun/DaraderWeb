@@ -1,4 +1,4 @@
-from staging import *
+from .staging import *
 
 
 ENVIRONMENT = "live"
