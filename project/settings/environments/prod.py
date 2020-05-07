@@ -1,5 +1,8 @@
-from .staging import *
+import os
+import dj_database_url
 
+DEBUG = True
+SECRET_KEY = os.environ.get('DJANGO_SECRET')
 
 ENVIRONMENT = "live"
 DEBUG = False
@@ -9,3 +12,9 @@ ALLOWED_HOSTS = [
     "infinite-mountain-88972.herokuapp.com",
     "darader.com",
     ]
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
+}
