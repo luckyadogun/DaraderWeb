@@ -1,5 +1,4 @@
 import os
-import dj_database_url
 
 DEBUG = True
 SECRET_KEY = os.environ.get('DJANGO_SECRET')
@@ -9,15 +8,23 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "darader.herokuapp.com",
-    "infinite-mountain-88972.herokuapp.com",
     "darader.com",
     ]
 
+DB_NAME = os.environ.get('DB_NAME')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "PORT": 5432,
+        "NAME": DB_NAME,
+        "HOST": "localhost",
+        "ATOMIC_REQUESTS": True,
+    }
 }
 
 SECURE_SSL_REDIRECT = False
