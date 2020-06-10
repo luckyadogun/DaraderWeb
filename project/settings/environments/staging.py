@@ -1,7 +1,7 @@
 import os
 
 DEBUG = True
-SECRET_KEY = os.environ.get('DJANGO_SECRET')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 ENVIRONMENT = "tests"
 
 ALLOWED_HOSTS = ["*"]
