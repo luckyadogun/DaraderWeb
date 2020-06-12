@@ -1,15 +1,15 @@
 import os
 import dj_database_url
 
-DEBUG = True
+DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 ENVIRONMENT = "live"
-DEBUG = False
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "darader.com",
+    "www.darader.com",
     ]
 
 DATABASES = {
