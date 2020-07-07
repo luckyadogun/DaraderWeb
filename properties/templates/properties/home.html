@@ -4,91 +4,99 @@
 
 {% block title %} Find amazing properties in Nigeria {% endblock title %}
 
-    {% block header %}
-        {% include "properties_components/header__v1.html" %}
-    {% endblock %}
+{% block header %}
+{% include "properties_components/header__v1.html" %}
+{% endblock %}
 
-    {% block content %}
-    <!--Hero section starts-->
-    <div class="hero-parallax bg-fixed" style="background-image: url('{% static 'assets/images/header/header_11.png' %}')">
-        <div class="overlay op-1"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="hero-slider-item">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-12 col-12">
-                                <div class="header-text v2">
-                                    <span>Find your dream home, fast and easy</span>
-                                    <h1>Searching for a Beautiful House to Rent or Buy?</h1>
-                                    <p>We are the first platform you should visit and the last you'll ever need when it comes to finding the best
-                                        properties at the best rate. You're only a few clicks away from getting your dream home. Get started below.</p>
-                                </div>
+{% block content %}
+<!--Hero section starts-->
+<div class="hero-parallax bg-fixed" style="background-image: url('{% static 'assets/images/header/header_11.png' %}')">
+    <div class="overlay op-1"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-slider-item">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-12">
+                            <div class="header-text v2">
+                                <span>Find your dream home, fast and easy</span>
+                                <h1>Searching for a Beautiful House to Rent or Buy?</h1>
+                                <p>We are the first platform you should visit and the last you'll ever need when it
+                                    comes to finding the best
+                                    properties at the best rate. You're only a few clicks away from getting your dream
+                                    home. Get started below.</p>
                             </div>
-                            <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-12">
-                                <div class="hero-slider-info">
-                                    <form class="hero__form v3 filter listing-filter" action="." method="POST">                                        
-                                        {% csrf_token %}
-                                        <h4>Find your dream home</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <div class="input-search">
-                                                    <input type="text" name="location" id="place-event" placeholder="Enter Property Location ...">
+                        </div>
+                        <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-12">
+                            <div class="hero-slider-info">
+                                <form class="hero__form v3 filter listing-filter" action="." method="POST">
+                                    {% csrf_token %}
+                                    <h4>Find your dream home</h4>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="input-search">
+                                                <input type="text" name="location" id="place-event"
+                                                    placeholder="Enter Property Location ...">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
+                                            <select class="hero__form-input  form-control custom-select"
+                                                name="property-category">
+                                                <option selected disabled>Property Category</option>
+                                                <option>For Rent</option>
+                                                <option>For Sale</option>
+                                                <option>For Lease</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
+                                            <select class="hero__form-input  form-control custom-select"
+                                                name="property-type">
+                                                <option selected disabled>Property Type</option>
+                                                <option>Flat</option>
+                                                <option>House</option>
+                                                <option>Land</option>
+                                                <option>Hotels</option>
+                                                <option>Commercial</option>
+                                                <option>Event Centre</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
+                                            <select class="hero__form-input  form-control custom-select"
+                                                name="bedrooms">
+                                                <option selected disabled>Bedrooms</option>
+                                                <option>4</option>
+                                                <option>3</option>
+                                                <option>2</option>
+                                                <option>1</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
+                                            <select class="hero__form-input  form-control custom-select"
+                                                name="bathrooms">
+                                                <option selected disabled>Bathrooms</option>
+                                                <option>4</option>
+                                                <option>3</option>
+                                                <option>2</option>
+                                                <option>1</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-12 col-md-8 col-sm-12">
+                                            <div class="filter-sub-area style1">
+                                                <div class="filter-title mb-10">
+                                                    <p>Budget ₦: <span><input type="text" id="amount_two"
+                                                                name="budget"></span></p>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="property-category">
-                                                    <option selected disabled>Property Category</option>
-                                                    <option>For Rent</option>
-                                                    <option>For Sale</option>
-                                                    <option>For Lease</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-12 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="property-type">                                                    
-                                                    <option selected disabled>Property Type</option>
-                                                    <option>Flat</option>
-                                                    <option>House</option>                                                    
-                                                    <option>Land</option>
-                                                    <option>Commercial</option>
-                                                    <option>Even Centre</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="bedrooms">
-                                                    <option selected disabled>Bedrooms</option>
-                                                    <option>4</option>
-                                                    <option>3</option>
-                                                    <option>2</option>
-                                                    <option>1</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-6 col-md-4 col-sm-6 mb-3">
-                                                <select class="hero__form-input  form-control custom-select" name="bathrooms">
-                                                    <option selected disabled>Bathrooms</option>
-                                                    <option>4</option>
-                                                    <option>3</option>
-                                                    <option>2</option>
-                                                    <option>1</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-12 col-md-8 col-sm-12">
-                                                <div class="filter-sub-area style1">
-                                                    <div class="filter-title mb-10">
-                                                        <p>Budget ₦: <span><input type="text" id="amount_two" name="budget"></span></p>
-                                                    </div>
-                                                    <div id="slider-range_two" class="price-range mb-20">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="search_btn">
-                                                    <input type="submit" value="Search Property">                                            
+                                                <div id="slider-range_two" class="price-range mb-20">
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="col-sm-12">
+                                            <div class="search_btn">
+                                                <input type="submit" value="Search Property">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -96,312 +104,53 @@
             </div>
         </div>
     </div>
-    <!--Hero section ends-->
+</div>
+<!--Hero section ends-->
 
-    <!--Trending properties for sale starts-->
-    <div class="trending-places pt-130 pb-130">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-title v1">
-                        <p>Find awesome rental propertie</p>
-                        <h2>Discover Rental Properties</h2>
-                    </div>
-                </div>
-            </div>
-                <div class="col-md-12">
-                    <div class="tab-content mt-30">
-                        <div class="tab-pane fade show active" id="all_property">
-                            <div class="row">
-                                {% for property in for_rent %}
-                                <div class="col-xl-4 col-md-6 col-sm-12">
-                                    <div class="single-property-box">                                        
-                                        <div class="property-item">
-                                            {% for img in property.gallery.all %}                                                                                                              
-                                            <a class="property-img" href="{{ property.get_absolute_url }}">
-                                                {% if forloop.first %}
-                                                    <img src="{{ img.image.url }}" alt="#">
-                                                {% endif %}
-                                            </a>
-                                            {% endfor %}
-                                            <ul class="feature_text">
-                                                {% if property.owner.is_featured %}
-                                                    <li class="feature_cb"><span> Featured</span></li>
-                                                {% endif %}
-                                                <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
-                                            </ul>
-                                            <div class="property-author-wrap">
-                                                <a href="#" class="property-author">
-                                                    {% if property.owner.logo.url %}
-                                                        <img src="{{ property.owner.logo.url }}" alt="...">
-                                                    {% endif %}
-                                                    <span>{{ property.owner }}</span>
-                                                </a>
-                                                <ul class="save-btn">                                                    
-                                                    <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i class="lnr lnr-heart" value="{{property.pk}}"></i></a></li> 
-                                                </ul>                                                
-                                            </div>                                                                                        
-                                        </div>                                        
-                                        <div class="property-title-box">
-                                            <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
-                                            <div class="property-location">
-                                                <i class="fa fa-map-marker-alt"></i>
-                                                <p>{{ property.address }}</p>
-                                            </div>
-                                            {% for p in property.property_details.all %}
-                                            <ul class="property-feature">
-                                                <li> <i class="fas fa-bed"></i>
-                                                    <span>{{ p.bedrooms }} Bedrooms</span>
-                                                </li>
-                                                <li> <i class="fas fa-bath"></i>
-                                                    <span>{{ p.bathrooms }} Bath</span>
-                                                </li>
-                                                <li> <i class="fas fa-arrows-alt"></i>
-                                                    <span>{{ p.total_area }} sq ft</span>
-                                                </li>
-                                                <li> <i class="fas fa-car"></i>
-                                                    <span>{{ p.parking_spaces }} Garage</span>
-                                                </li>
-                                            </ul>
-                                            {% endfor %}
-                                            <div class="trending-bottom">
-                                                <div class="trend-left float-left">
-                                                    <ul class="product-rating">
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                        <li><i class="fas fa-star-half-alt"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <a class="trend-right float-right">
-                                                    <div class="trend-open">
-                                                        <p><span class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}                          
-                            </div>                    
-                        </div>                
-                    </div>
-                </div>
-                <div class="col-md-12 text-center mt-1">
-                    <a href="{% url 'properties:rent' %}" class="btn v9">Browse More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Trending events ends-->
-    
-    <!--Trending properties for sale starts-->
-    <div class="trending-places pt-130 pb-130">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-title v1">
-                        <p>Find awesome properties for sale</p>
-                        <h2>Discover Properties for Sale</h2>
-                    </div>
-                </div>
-            </div>
+<!--Trending properties for sale starts-->
+<div class="trending-places pt-130 pb-130">
+    <div class="container">
+        <div class="row">
             <div class="col-md-12">
-                <div class="tab-content mt-30">
-                    <div class="tab-pane fade show active" id="all_property">
-                        <div class="row">
-                            {% for property in for_sale %}
-                            <div class="col-xl-4 col-md-6 col-sm-12">
-                                <div class="single-property-box">                                        
-                                    <div class="property-item">
-                                        {% for img in property.gallery.all %}                                                                                                              
-                                        <a class="property-img" href="{{ property.get_absolute_url }}">
-                                            {% if forloop.first %}
-                                                <img src="{{ img.image.url }}" alt="#">
-                                            {% endif %}
-                                        </a>
-                                        {% endfor %}
-                                        <ul class="feature_text">
-                                            {% if property.owner.is_featured %}
-                                                <li class="feature_cb"><span> Featured</span></li>
-                                            {% endif %}
-                                            <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
-                                        </ul>
-                                        <div class="property-author-wrap">
-                                            <a href="#" class="property-author">
-                                                {% if property.owner.logo.url %}
-                                                    <img src="{{ property.owner.logo.url }}" alt="...">
-                                                {% endif %}
-                                                <span>{{ property.owner }}</span>
-                                            </a>
-                                            <ul class="save-btn">                                                    
-                                                <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i class="lnr lnr-heart" value="{{property.pk}}"></i></a></li> 
-                                            </ul>                                                
-                                        </div>                                                                                        
-                                    </div>                                        
-                                    <div class="property-title-box">
-                                        <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
-                                        <div class="property-location">
-                                            <i class="fa fa-map-marker-alt"></i>
-                                            <p>{{ property.address }}</p>
-                                        </div>
-                                        {% for p in property.property_details.all %}
-                                        <ul class="property-feature">
-                                            <li> <i class="fas fa-bed"></i>
-                                                <span>{{ p.bedrooms }} Bedrooms</span>
-                                            </li>
-                                            <li> <i class="fas fa-bath"></i>
-                                                <span>{{ p.bathrooms }} Bath</span>
-                                            </li>
-                                            <li> <i class="fas fa-arrows-alt"></i>
-                                                <span>{{ p.total_area }} sq ft</span>
-                                            </li>
-                                            <li> <i class="fas fa-car"></i>
-                                                <span>{{ p.parking_spaces }} Garage</span>
-                                            </li>
-                                        </ul>
-                                        {% endfor %}
-                                        <div class="trending-bottom">
-                                            <div class="trend-left float-left">
-                                                <ul class="product-rating">
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star-half-alt"></i></li>
-                                                    <li><i class="fas fa-star-half-alt"></i></li>
-                                                </ul>
-                                            </div>
-                                            <a class="trend-right float-right">
-                                                <div class="trend-open">
-                                                    <p><span class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}                          
-                        </div>                    
-                    </div>                
-                </div>
-                <div class="col-md-12 text-center mt-1">
-                    <a href="{% url 'properties:sale' %}" class="btn v9">Browse More</a>
+                <div class="section-title v1">
+                    <p>Find awesome rental propertie</p>
+                    <h2>Discover Rental Properties</h2>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Trending events ends-->
-
-    <!--Featured Property starts-->
-    <div class="featured-property-section v2 bg-cb">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-3 col-lg-12">
-                    <div class="section-title v2">
-                        <p>Check out some of our</p>
-                        <h2>Featured Properties</h2>
-                    </div>
-                </div>
-                <div class="col-xl-9 col-lg-12">
-                    <div class="featured-property-wrap v2 swiper-container">
-                        <div class="swiper-wrapper">
-                            <!-- begin here -->
-                            {% for property in featured %}
-                            <div class="swiper-slide single-property-box">
+        <div class="col-md-12">
+            <div class="tab-content mt-30">
+                <div class="tab-pane fade show active" id="all_property">
+                    <div class="row">
+                        {% for property in for_rent %}
+                        <div class="col-xl-4 col-md-6 col-sm-12">
+                            <div class="single-property-box">
                                 <div class="property-item">
                                     {% for img in property.gallery.all %}
                                     <a class="property-img" href="{{ property.get_absolute_url }}">
                                         {% if forloop.first %}
-                                            <img src="{{ img.image.url }}" alt="#">
+                                        <img src="{{ img.image.url }}" alt="#">
                                         {% endif %}
                                     </a>
                                     {% endfor %}
                                     <ul class="feature_text">
-                                        <li class="feature_cb"><span>Featured</span></li>
-                                        <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
-                                    </ul>
-                                    <div class="property-author-wrap">
-                                        <a href="#" class="property-author">
-                                            {% if property.owner.logo.url %}
-                                                <img src="{{ property.owner.logo.url }}" alt="...">
-                                            {% endif %}
-                                            <span>{{ property.owner }}</span>
-                                        </a>
-                                        {% for p in property.property_details.all %}
-                                            <ul class="property-feature">
-                                                <li> <i class="fas fa-bed"></i>
-                                                    <span>{{ p.bedrooms }} Bedrooms</span>
-                                                </li>
-                                                <li> <i class="fas fa-bath"></i>
-                                                    <span>{{ p.bathrooms }} Bath</span>
-                                                </li>
-                                                <li> <i class="fas fa-arrows-alt"></i>
-                                                    <span>{{ p.total_area }} sq ft</span>
-                                                </li>
-                                                <li> <i class="fas fa-car"></i>
-                                                    <span>{{ p.parking_spaces }} Garage</span>
-                                                </li>
-                                            </ul>
-                                        {% endfor %}
-                                        <div class="featured-price">
-                                            <p><span>Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            <!-- end here -->
-                            
-                        <!--Slider Arrows-->
-                        <div class="slider-btn v2 featured_prev"><i class="lnr lnr-arrow-left"></i></div>
-                        <div class="slider-btn v2 featured_next"><i class="lnr lnr-arrow-right"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Featured Property ends-->
-
-
-    <!--Recent Props-->
-    <div class="trending-places py-130 mt-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-title v1">
-                        <p>Browse some of our</p>
-                        <h2>Recent Properties</h2>
-                    </div>
-                </div>
-                <div class="swiper-container trending-place-wrap">
-                    <div class="swiper-wrapper">
-                        {% for property in recent_properties %}
-                        <div class="swiper-slide">                            
-                            <div class="single-property-box">                                
-                                <div class="property-item">
-                                    {% for img in property.gallery.all %}
-                                    <a class="property-img" href="{{ property.get_absolute_url }}">
-                                        {% if forloop.first %}
-                                            <img src="{{ img.image.url }}" alt="#">
+                                        {% if property.owner.is_featured %}
+                                        <li class="feature_cb"><span> Featured</span></li>
                                         {% endif %}
-                                    {% endfor %}
-                                    </a>
-
-                                    <ul class="feature_text">
-                                        <li class="feature_cb"><span>New</span></li>
-                                        <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
+                                        <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span>
+                                        </li>
                                     </ul>
                                     <div class="property-author-wrap">
                                         <a href="#" class="property-author">
                                             {% if property.owner.logo.url %}
-                                                <img src="{{ property.owner.logo.url }}" alt="...">
+                                            <img src="{{ property.owner.logo.url }}" alt="...">
                                             {% endif %}
                                             <span>{{ property.owner }}</span>
                                         </a>
-                                        <ul class="save-btn">                                            
-                                            <li data-toggle="tooltip" data-placement="top" title=""><a href="#" id="bookmark-this" custom-data-value="{{ property.id }}"><i class="lnr lnr-heart" value=" {{property.pk}} "></i></a></li> 
-                                        </ul>                                        
+                                        <ul class="save-btn">
+                                            <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i
+                                                        class="lnr lnr-heart" value="{{property.pk}}"></i></a></li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="property-title-box">
@@ -438,15 +187,288 @@
                                         </div>
                                         <a class="trend-right float-right">
                                             <div class="trend-open">
-                                                <p><span class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
+                                                <p><span
+                                                        class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}
+                                                </p>
                                             </div>
                                         </a>
                                     </div>
                                 </div>
-                            </div>                            
-                        </div>   
-                        {% endfor %}                    
-                    </div>                   
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 text-center mt-1">
+            <a href="{% url 'properties:rent' %}" class="btn v9">Browse More</a>
+        </div>
+    </div>
+</div>
+</div>
+<!--Trending events ends-->
+
+<!--Trending properties for sale starts-->
+<div class="trending-places pt-130 pb-130">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title v1">
+                    <p>Find awesome properties for sale</p>
+                    <h2>Discover Properties for Sale</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="tab-content mt-30">
+                <div class="tab-pane fade show active" id="all_property">
+                    <div class="row">
+                        {% for property in for_sale %}
+                        <div class="col-xl-4 col-md-6 col-sm-12">
+                            <div class="single-property-box">
+                                <div class="property-item">
+                                    {% for img in property.gallery.all %}
+                                    <a class="property-img" href="{{ property.get_absolute_url }}">
+                                        {% if forloop.first %}
+                                        <img src="{{ img.image.url }}" alt="#">
+                                        {% endif %}
+                                    </a>
+                                    {% endfor %}
+                                    <ul class="feature_text">
+                                        {% if property.owner.is_featured %}
+                                        <li class="feature_cb"><span> Featured</span></li>
+                                        {% endif %}
+                                        <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="property-author-wrap">
+                                        <a href="#" class="property-author">
+                                            {% if property.owner.logo.url %}
+                                            <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% endif %}
+                                            <span>{{ property.owner }}</span>
+                                        </a>
+                                        <ul class="save-btn">
+                                            <li data-toggle="tooltip" data-placement="top" title=""><a href="#"><i
+                                                        class="lnr lnr-heart" value="{{property.pk}}"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="property-title-box">
+                                    <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
+                                    <div class="property-location">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <p>{{ property.address }}</p>
+                                    </div>
+                                    {% for p in property.property_details.all %}
+                                    <ul class="property-feature">
+                                        <li> <i class="fas fa-bed"></i>
+                                            <span>{{ p.bedrooms }} Bedrooms</span>
+                                        </li>
+                                        <li> <i class="fas fa-bath"></i>
+                                            <span>{{ p.bathrooms }} Bath</span>
+                                        </li>
+                                        <li> <i class="fas fa-arrows-alt"></i>
+                                            <span>{{ p.total_area }} sq ft</span>
+                                        </li>
+                                        <li> <i class="fas fa-car"></i>
+                                            <span>{{ p.parking_spaces }} Garage</span>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    <div class="trending-bottom">
+                                        <div class="trend-left float-left">
+                                            <ul class="product-rating">
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star-half-alt"></i></li>
+                                                <li><i class="fas fa-star-half-alt"></i></li>
+                                            </ul>
+                                        </div>
+                                        <a class="trend-right float-right">
+                                            <div class="trend-open">
+                                                <p><span
+                                                        class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-center mt-1">
+                <a href="{% url 'properties:sale' %}" class="btn v9">Browse More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Trending events ends-->
+
+<!--Featured Property starts-->
+<div class="featured-property-section v2 bg-cb">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-12">
+                <div class="section-title v2">
+                    <p>Check out some of our</p>
+                    <h2>Featured Properties</h2>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-12">
+                <div class="featured-property-wrap v2 swiper-container">
+                    <div class="swiper-wrapper">
+                        <!-- begin here -->
+                        {% for property in featured %}
+                        <div class="swiper-slide single-property-box">
+                            <div class="property-item">
+                                {% for img in property.gallery.all %}
+                                <a class="property-img" href="{{ property.get_absolute_url }}">
+                                    {% if forloop.first %}
+                                    <img src="{{ img.image.url }}" alt="#">
+                                    {% endif %}
+                                </a>
+                                {% endfor %}
+                                <ul class="feature_text">
+                                    <li class="feature_cb"><span>Featured</span></li>
+                                    <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span></li>
+                                </ul>
+                                <div class="property-author-wrap">
+                                    <a href="#" class="property-author">
+                                        {% if property.owner.logo.url %}
+                                        <img src="{{ property.owner.logo.url }}" alt="...">
+                                        {% endif %}
+                                        <span>{{ property.owner }}</span>
+                                    </a>
+                                    {% for p in property.property_details.all %}
+                                    <ul class="property-feature">
+                                        <li> <i class="fas fa-bed"></i>
+                                            <span>{{ p.bedrooms }} Bedrooms</span>
+                                        </li>
+                                        <li> <i class="fas fa-bath"></i>
+                                            <span>{{ p.bathrooms }} Bath</span>
+                                        </li>
+                                        <li> <i class="fas fa-arrows-alt"></i>
+                                            <span>{{ p.total_area }} sq ft</span>
+                                        </li>
+                                        <li> <i class="fas fa-car"></i>
+                                            <span>{{ p.parking_spaces }} Garage</span>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    <div class="featured-price">
+                                        <p><span>Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- end here -->
+
+                        <!--Slider Arrows-->
+                        <div class="slider-btn v2 featured_prev"><i class="lnr lnr-arrow-left"></i></div>
+                        <div class="slider-btn v2 featured_next"><i class="lnr lnr-arrow-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Featured Property ends-->
+
+
+    <!--Recent Props-->
+    <div class="trending-places py-130 mt-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title v1">
+                        <p>Browse some of our</p>
+                        <h2>Recent Properties</h2>
+                    </div>
+                </div>
+                <div class="swiper-container trending-place-wrap">
+                    <div class="swiper-wrapper">
+                        {% for property in recent_properties %}
+                        <div class="swiper-slide">
+                            <div class="single-property-box">
+                                <div class="property-item">
+                                    {% for img in property.gallery.all %}
+                                    <a class="property-img" href="{{ property.get_absolute_url }}">
+                                        {% if forloop.first %}
+                                        <img src="{{ img.image.url }}" alt="#">
+                                        {% endif %}
+                                        {% endfor %}
+                                    </a>
+
+                                    <ul class="feature_text">
+                                        <li class="feature_cb"><span>New</span></li>
+                                        <li class="feature_or"><span>FOR {{ property.property_category|upper }}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="property-author-wrap">
+                                        <a href="#" class="property-author">
+                                            {% if property.owner.logo.url %}
+                                            <img src="{{ property.owner.logo.url }}" alt="...">
+                                            {% endif %}
+                                            <span>{{ property.owner }}</span>
+                                        </a>
+                                        <ul class="save-btn">
+                                            <li data-toggle="tooltip" data-placement="top" title=""><a href="#"
+                                                    id="bookmark-this" custom-data-value="{{ property.id }}"><i
+                                                        class="lnr lnr-heart" value=" {{property.pk}} "></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="property-title-box">
+                                    <h4><a href="{{ property.get_absolute_url }}">{{ property.title }}</a></h4>
+                                    <div class="property-location">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <p>{{ property.address }}</p>
+                                    </div>
+                                    {% for p in property.property_details.all %}
+                                    <ul class="property-feature">
+                                        <li> <i class="fas fa-bed"></i>
+                                            <span>{{ p.bedrooms }} Bedrooms</span>
+                                        </li>
+                                        <li> <i class="fas fa-bath"></i>
+                                            <span>{{ p.bathrooms }} Bath</span>
+                                        </li>
+                                        <li> <i class="fas fa-arrows-alt"></i>
+                                            <span>{{ p.total_area }} sq ft</span>
+                                        </li>
+                                        <li> <i class="fas fa-car"></i>
+                                            <span>{{ p.parking_spaces }} Garage</span>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    <div class="trending-bottom">
+                                        <div class="trend-left float-left">
+                                            <ul class="product-rating">
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star-half-alt"></i></li>
+                                                <li><i class="fas fa-star-half-alt"></i></li>
+                                            </ul>
+                                        </div>
+                                        <a class="trend-right float-right">
+                                            <div class="trend-open">
+                                                <p><span
+                                                        class="per_sale">Price:</span>₦{{ property.price|floatformat|intcomma }}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="trending-pagination"></div>
             </div>
@@ -458,5 +480,5 @@
 
 
     {% block footer %}
-        {% include "properties_components/footer__v1.html" %}
+    {% include "properties_components/footer__v1.html" %}
     {% endblock %}
