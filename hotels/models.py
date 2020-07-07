@@ -33,7 +33,7 @@ class Hotel(models.Model):
     has_night_club = models.BooleanField(_("night club"), default=False)
     has_luggage_storage = models.BooleanField(_("luggage storage"), default=False)
     has_air_condititoning = models.BooleanField(_("air conditioning"), default=False)
-    has car_wash = models.BooleanField(_("car wash"), default=False)
+    has_car_wash = models.BooleanField(_("car wash"), default=False)
 
     def __str__(self):
         return self.name
