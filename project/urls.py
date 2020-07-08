@@ -13,6 +13,7 @@ urlpatterns = [
     path('secret-saucer/', admin.site.urls),
     path('', include(('properties.urls', 'properties'), namespace='properties')),
     path('my/', include(('users.urls', 'users'), namespace='users')),
+    path('hotel/', include(('hotels.urls', 'hotels'), namespace='hotels')),
 ]
 
 
