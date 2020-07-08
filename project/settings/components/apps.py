@@ -13,4 +13,5 @@ INSTALLED_APPS = [
     # local
     'users',
     'properties',
+    'hotels',
 ]
