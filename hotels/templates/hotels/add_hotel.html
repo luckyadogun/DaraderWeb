@@ -1,0 +1,301 @@
+{% extends "user_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock %}
+
+    <div class="page-wrapper">
+        <!--Sidebar Menu Starts-->
+        {% block sidebar %}
+            {% include "user_components/dashboard__sidebar.html" %}
+        {% endblock %}
+        <!--Sidebar Menu ends-->
+
+        {% block content %}
+        <!--Dashboard content Wrapper starts-->
+        <div class="dash-content-wrap">
+            <!-- Top header starts-->
+            {% include "user_components/dashboard__header.html" %}
+            <!-- Top header ends-->
+            <!--Dashboard content starts-->
+            <div class="dash-content">
+                <form id="formData" method="POST">
+                    {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>General Information :</h5>
+                                    </div>
+                                    <div class="db-add-listing">
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Hotel Name</label>
+                                                    {{ hotel_form.name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Hotel Type</label>
+                                                    {{ hotel_form.hotel_type }}
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-6" id="country">
+                                                <div class="form-group">
+                                                    <label>Average Room Price</label>
+                                                    {{ hotel_form.average_price }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Number of Rooms</label>                                                
+                                                    {{ hotel_form.number_of_rooms }}
+                                                </div>
+                                            </div> 
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="address">Address</label>
+                                                    {{ hotel_form.address }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="hotel_info">Description</label>
+                                                    {{ hotel_form.description }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Facilities</label>
+                                                        <div class="filter-checkbox">
+                                                            {{ hotel_form.has_restaurant }}
+                                                            <label for="check-a">Basketball court</label>
+
+                                                            {{ hotel_form.has_bar }}
+                                                            <label for="check-b">Bar</label>
+
+                                                            {{ hotel_form.has_wireless_internet }}
+                                                            <label for="check-c">Wireless Internet</label>
+
+                                                            {{ hotel_form.has_24_hrs_electricity }}
+                                                            <label for="check-d">24 Hours Electricity</label>
+
+                                                            {{ hotel_form.has_adequate_parking_space }}
+                                                            <label for="check-e">Adequate Parking Space</label>
+
+                                                            {{ hotel_form.has_swimming_pool }}
+                                                            <label for="check-f">Swimming Pool</label>
+
+                                                            {{ hotel_form.has_car_rental }}
+                                                            <label for="check-g">Car Rental</label>
+
+                                                            {{ hotel_form.has_double_bed }}
+                                                            <label for="check-h">Double Bed</label>
+
+                                                            {{ hotel_form.has_toiletries }}
+                                                            <label for="check-i">Toiletries</label>
+
+                                                            {{ hotel_form.has_concierge }}
+                                                            <label for="check-j">Concierge</label>
+
+                                                            {{ hotel_form.has_shower }}
+                                                            <label for="check-k">Shower</label>
+
+                                                            {{ hotel_form.has_room_service }}
+                                                            <label for="check-l">Room Service</label>
+
+                                                            {{ hotel_form.has_key_card_system }}
+                                                            <label for="check-m">Key Card System</label>
+
+                                                            {{ hotel_form.has_gym }}
+                                                            <label for="check-n">Gym</label>
+
+                                                            {{ hotel_form.has_airport_pickup }}
+                                                            <label for="check-o">Airport Pickup</label>
+
+                                                            {{ hotel_form.has_car_hire }}
+                                                            <label for="check-p">Car Hire</label>
+
+                                                            {{ hotel_form.has_laundry }}
+                                                            <label for="check-q">Laundry</label>
+
+                                                            {{ hotel_form.has_spa_treatment }}
+                                                            <label for="check-r">Spa Treatment</label>
+
+                                                            {{ hotel_form.has_night_club }}
+                                                            <label for="check-s">Night Club</label>
+
+                                                            {{ hotel_form.has_luggage_storage}}
+                                                            <label for="check-t">Luggage Storage</label>
+
+                                                            {{ hotel_form.has_air_conditioning }}
+                                                            <label for="check-u">Air Conditioning</label>
+
+                                                            {{ hotel_form.has_car_wash }}
+                                                            <label for="check-v">Car Wash</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Gallery :</h5>
+                                    </div>
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-5">
+                                                <div class="form-group">                                                    
+                                                    <div class="form-group">
+                                                        <div class="add-listing__input-file-box">
+                                                            {{ hotel_photos_form.photo }}
+                                                            <div class="add-listing__input-file-wrap">
+                                                                <i class="lnr lnr-cloud-upload"></i>
+                                                                <p>Click here to upload your images</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                            
+                                            </div>                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Room Details :</h5>
+                                    </div>
+                                    <div class="db-add-listing" id="form-3">                                        
+                                        <div class="row mb-30">                                        
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Room Name</label>
+                                                    {{ room_form.room_name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Room Price</label>
+                                                    {{ room_form.price }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Room Description</label>
+                                                    {{ room_form.information }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="db-add-list-wrap">
+                                    <div class="act-title">
+                                        <h5>Frequently Asked Questions :</h5>
+                                    </div>
+                                    <div class="db-add-listing" id="form-3">                                        
+
+                                            <div class="row mb-30">                                        
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Question</label>
+                                                        {{ faq_form.question }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Answer</label>
+                                                        {{ faq_form.answer }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="db-add-list-wrap">
+                                    <div class="db-add-listing">
+                                        <div class="row">
+                                            <div class="col-md-6 text-right sm-left">
+                                                <input class="btn v3" id="submit" type="submit" value="Submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--Dashboard content ends-->
+            <!--Dashboard footer starts-->
+            {% include "user_components/dashboard__footer.html" %}
+            <!--Dashboard footer ends-->
+        </div>
+        <!--Dashboard content Wrapper ends-->
+        {% endblock %}
+    </div>
+
+    {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(e){
+            $("#submit").click(function(e){   
+                e.preventDefault();    
+                var form = document.getElementById("formData"); 
+                console.log(form.value) 
+
+                var photo = $("#img_file").get(0).files[0];
+
+                var formData = new FormData(form);
+                formData.append('photo', photo);
+                alert(formData['name']))
+
+                $.ajax({
+                    type: "POST",
+                    url: addPropertyURL,
+                    dataType: "JSON",   
+                    processData: false,
+                    contentType: false,                 
+                    data: formData,
+                    success: function(response){
+                        if(response['result'] == "Success"){
+                            form.reset();
+                            location.href = myPropertyURL;
+                        }else{
+                            alert(response['result']);
+                        }                  
+                    },
+                    error: function(){                                                
+                        alert("Something went wrong!");
+                        form.reset();
+                    }
+                })
+            });
+        });
+
+        {% comment %} $(document).ready(function(){
+            $("#id_form1-state").on("change", function() {
+                var stateID = $("#id_form1-state")[0]['value']; 
+                var lgaID = $("#lga")[0]['value'];                                
+
+                if(stateID){                   
+                    $.ajax({
+                        type: "GET",
+                        url: loadLGAURL,
+                        dataType: "text",
+                        data: {
+                            stateID: stateID,
+                            csrfmiddlewaretoken: csrfToken
+                        },
+                        success: function(data){
+                            $("#lga").html(data);                            
+                        },                                                                   
+                    });
+                }
+            });
+        }); {% endcomment %}
+    </script>
+{% endblock %}
