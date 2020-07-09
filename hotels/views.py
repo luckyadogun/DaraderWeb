@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm
+
 from users.decorators import staff_or_manager_required
+from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm
 from .models import Hotel, HotelPhotos, Room, FAQ
-# Create your views here.
+
 
 @login_required
 @staff_or_manager_required
@@ -15,7 +16,9 @@ def add_hotel_view(request):
         hotel_photos_form = HotelPhotosForm(request.POST, request.FILES)
         room_form = RoomForm(request.POST)
         faq_form = FAQForm(request.POST)
-        forms = all([hotel_form.is_valid(), hotel_photos_form.is_valid(), room_form.is_valid(), faq_form.is_valid()])
+        forms = all(
+            [hotel_form.is_valid(), hotel_photos_form.is_valid(),
+                room_form.is_valid(), faq_form.is_valid()])
         if forms:
             hotel_instance = hotel_form.save(commit=False)
             hotel_instance.creator = request.user
@@ -25,16 +28,16 @@ def add_hotel_view(request):
                 uploaded_image = HotelPhotos(photo=image, hotel=hotel_instance)
                 uploaded_image.save()
             room = Room(
-                room_name = room_form.cleaned_data['room_name'],
-                price = room_form.cleaned_data['price'],
-                information = room_form.cleaned_data['information'],
-                hotel = hotel_instance
+                room_name=room_form.cleaned_data['room_name'],
+                price=room_form.cleaned_data['price'],
+                information=room_form.cleaned_data['information'],
+                hotel=hotel_instance
             )
             room.save()
             faq = FAQ(
-                question = faq_form.cleaned_data['question'],
-                answer = faq_form.cleaned_data['answer'],
-                hotel = hotel_instance
+                question=faq_form.cleaned_data['question'],
+                answer=faq_form.cleaned_data['answer'],
+                hotel=hotel_instance
             )
             faq.save()
             return JsonResponse({"result": "Success"})
