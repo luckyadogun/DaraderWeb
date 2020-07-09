@@ -72,6 +72,9 @@ class Room(models.Model):
     def __str__(self):
         return self.room_name
 
+    class Meta:
+        verbose_name_plural = "Rooms"
+
 
 class FAQ(models.Model):
     question = models.CharField(_("question"), max_length=200)
@@ -80,3 +83,6 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+    class Meta:
+        verbose_name_plural = "FAQs"
