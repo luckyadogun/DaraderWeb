@@ -42,6 +42,7 @@ def add_hotel_view(request):
         else:
             return JsonResponse({"result": "Failed"})
     else:
+        print("get")
         hotel_form = HotelForm
         hotel_photos_form = HotelPhotosForm
         room_form = RoomForm

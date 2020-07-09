@@ -49,7 +49,7 @@ class HotelForm(forms.ModelForm):
     
     class Meta:
         model = Hotel
-        exclude = ()
+        exclude = ('creator',)
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control filter-input',
