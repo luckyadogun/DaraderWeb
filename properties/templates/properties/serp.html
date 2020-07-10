@@ -243,7 +243,7 @@
                     <!--Sidebar starts-->
                     <div class="sidebar-right">
                         <div class="widget filter-widget">
-                            <form class="hero__form v2 filter">
+                            <form class="hero__form v2 filter" id="formData">
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3 ">
                                         <input class="hero__form-input  form-control custom-select" id="place-event" name="location" placeholder="Enter Property Location...">                                       
@@ -325,7 +325,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-12 col-lg-4 col-sm-6 col-12">
-                                        <button class="btn v8" type="submit" name="submit"> Search Property</button>
+                                        <button class="btn v8" id="submit" type="submit" name="submit"> Search Property</button>
                                     </div>
                                 </div>
                             </form>
@@ -404,4 +404,8 @@
         </div>
     </div>
     <!--Listing Filter ends-->
+
     {% endblock %}
+
+
+    

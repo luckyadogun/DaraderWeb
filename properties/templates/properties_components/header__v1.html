@@ -76,9 +76,12 @@
                                 {% if user.is_account_manager %}
                                 <div class="add-list float-right ml-3">
                                     <a class="btn v6" href="{% url 'users:add-property' %}"><i
-                                            class="lnr lnr-home"></i>Add Listing </a>
-                                    <a class="btn v6" href="{% url 'hotels:add-hotel' %}"><i class="lnr lnr-home"></i>Add Hotel </a>
+                                            class="lnr lnr-home"></i>Add Listing </a>                                    
                                 </div>
+                                {% elif user.is_staff %}
+                                    <div class="add-list float-right ml-3">
+                                        <a class="btn v6" href="{% url 'hotels:add-hotel' %}"><i class="lnr lnr-home"></i>Add Hotel </a>                                   
+                                    </div>                                    
                                 {% else %}
                                 <div class="add-list float-right ml-3">
                                     <a class="btn v2" href="{% url 'properties:logout' %}"><i
