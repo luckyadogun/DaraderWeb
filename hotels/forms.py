@@ -29,12 +29,12 @@ class RoomForm(forms.ModelForm):
             'information': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter the room description',
+                'rows': 3
             })
         }
 
 
 class FAQForm(forms.ModelForm):
-    
     class Meta:
         model = FAQ
         exclude = ('hotel',)
@@ -51,7 +51,6 @@ class FAQForm(forms.ModelForm):
 
 
 class HotelForm(forms.ModelForm):
-    
     class Meta:
         model = Hotel
         exclude = ('creator',)
@@ -120,5 +119,5 @@ class HotelForm(forms.ModelForm):
             'has_air_conditioning': forms.CheckboxInput(attrs={
                 'class': 'form-control filter-input', 'id': 'check-u'}),
             'has_car_wash': forms.CheckboxInput(attrs={
-                'class': 'form-control filter-input', 'id': 'check-v'})
+                'class': 'form-control filter-input', 'id': 'check-v'})            
         }
