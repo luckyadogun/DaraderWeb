@@ -205,23 +205,30 @@
                                 <div class="act-title">
                                     <h5>Frequently Asked Questions :</h5>
                                 </div>
-                                <div class="db-add-listing" id="form-3">
 
-                                    <div class="row mb-30">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Question</label>
-                                                {{ faq_form.question }}
+                                <div class="text-right sm-right">
+                                    <button class="btn v3" id="add-faq">Add Extra Question</button>
+                                </div>
+
+                                <div class="extra-faq">
+                                    <div class="db-add-listing" id="form-3">
+                                        <div class="row mb-30">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Question</label>
+                                                    {{ faq_form.question }}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Answer</label>
-                                                {{ faq_form.answer }}
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Answer</label>
+                                                    {{ faq_form.answer }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
                             <div class="db-add-list-wrap">
                                 <div class="db-add-listing">
@@ -281,13 +288,12 @@
             })
         });
 
+        // Add room
+
         $("#add-room").click(function(e){
             e.preventDefault();
             $(`
-                <div id="extra-item">
-                    <div class="text-right sm-right">
-                        <button class="btn v3" id="remove-room">Remove This Room</button>
-                    </div>
+                <div id="extra-item">                    
                     <div class="db-add-listing" id="form-3">
                         <div class="row mb-30">
                             <div class="col-md-4">
@@ -311,13 +317,35 @@
                         </div>
                     </div>
                 </div>
-                `).appendTo('.extra-listing')
+            `).appendTo('.extra-listing')
         });
 
-        $("#remove-room").click(function(e){
+        // Add FAQ
+
+        $("#add-faq").click(function(e){
             e.preventDefault();
-            // $("#remove-room").parent().parent().remove();
-            console.log("Hello")
+            $(`
+                <div id="extra-item">                    
+                    <div class="extra-faq">
+                        <div class="db-add-listing" id="form-3">
+                            <div class="row mb-30">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Question</label>
+                                        {{ faq_form.question }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Answer</label>
+                                        {{ faq_form.answer }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).appendTo('.extra-faq')
         });
     });
 </script>
