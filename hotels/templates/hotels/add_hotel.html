@@ -164,7 +164,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                             <div class="db-add-list-wrap">
                                 <div class="act-title">
@@ -173,7 +173,7 @@
 
                                 <div class="text-right sm-right">
                                     <button class="btn v3" id="add-room">Add Extra Room</button>
-                                </div>                                                        
+                                </div>
 
                                 <div class="extra-listing">
                                     <div class="db-add-listing" id="form-3">
@@ -228,7 +228,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="db-add-list-wrap">
                                 <div class="db-add-listing">
@@ -264,7 +264,9 @@
 
             var formData = new FormData(form);
 
-            formData.append('photo', photo);
+            // This line is not needed as the form data alredy included the photo
+            // When added it duplicates the photo
+            // formData.append('photo', photo);
 
             $.ajax({
                 type: "POST",
@@ -290,7 +292,7 @@
 
         // Add room
 
-        $("#add-room").click(function(e){
+        $("#add-room").click(function (e) {
             e.preventDefault();
             $(`
                 <div id="extra-item">                    
@@ -322,7 +324,7 @@
 
         // Add FAQ
 
-        $("#add-faq").click(function(e){
+        $("#add-faq").click(function (e) {
             e.preventDefault();
             $(`
                 <div id="extra-item">                    

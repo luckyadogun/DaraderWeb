@@ -23,23 +23,35 @@ def add_hotel_view(request):
             hotel_instance = hotel_form.save(commit=False)
             hotel_instance.creator = request.user
             hotel_instance.save()
-            uploaded_images = request.FILES.getlist('photo') or request.FILES.get('photo')
-            for image in uploaded_images:
-                uploaded_image = HotelPhotos(photo=image, hotel=hotel_instance)
-                uploaded_image.save()
-            room = Room(
-                room_name=room_form.cleaned_data['room_name'],
-                price=room_form.cleaned_data['price'],
-                information=room_form.cleaned_data['information'],
-                hotel=hotel_instance
-            )
-            room.save()
-            faq = FAQ(
-                question=faq_form.cleaned_data['question'],
-                answer=faq_form.cleaned_data['answer'],
-                hotel=hotel_instance
-            )
-            faq.save()
+            # We don't need the or the getlist will retrn a list even if it contains a single item
+            # uploaded_images = request.FILES.getlist('photo') or request.FILES.get('photo')
+            uploaded_images = request.FILES.getlist('photo')
+            # Since the form accept submission without images
+            # Make sure you don't loop when the image list is empty
+            if uploaded_images:
+                for image in uploaded_images:
+                    uploaded_image = HotelPhotos(photo=image, hotel=hotel_instance)
+                    uploaded_image.save()
+            room_names = request.POST.getlist('room_name')
+            prices = request.POST.getlist('price')
+            infos = request.POST.getlist('information')
+            for name, price, info in zip(room_names, prices, infos):
+                room = Room(
+                    room_name=name,
+                    price=price,
+                    information=info,
+                    hotel=hotel_instance
+                )
+                room.save()
+            questions = request.POST.getlist('question')
+            answers = request.POST.getlist('answer')
+            for question, answer in zip(questions, answers):
+                faq = FAQ(
+                    question=question,
+                    answer=answer,
+                    hotel=hotel_instance
+                )
+                faq.save()
             return JsonResponse({"result": "Success"})
 
         else:
