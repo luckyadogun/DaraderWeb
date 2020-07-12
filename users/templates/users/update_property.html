@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
 
-                                <div class="db-add-list-wrap">
+                                <div class="db-add-list-wrap" id="property-floor">
                                     <div class="act-title">
                                         <h5>Property Floor Plan Details :</h5>
                                     </div>
@@ -171,7 +171,7 @@
                                     </div>
                                     <div class="db-add-listing" id="form-3">                                        
 
-                                            <div class="row mb-30">                                        
+                                            <div class="row mb-30" id="property-details-data">                                        
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Number of Bedrooms</label>
@@ -324,6 +324,21 @@
                     });
                 }
             });
+        });
+
+        // Hide Extra form for land property update
+        $(document).ready(function(){            
+            if($("#id_form1-property_type").val() == "land"){
+                $("#property-floor").hide();
+                $("#property-details-data")[0].innerHTML = `
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Land Covered Area</label>
+                                {{ property_details_form.covered_area }}
+                            </div>
+                        </div>
+                `
+            }              
         });
     </script>
 {% endblock %}
