@@ -104,7 +104,9 @@ def add_property(request):
         gallery_form = GalleryForm(request.POST, request.FILES)
         floorplan_form = FloorPlanForm(request.POST, request.FILES)
         property_details_form = PropertyDetailsForm(
-            request.POST, prefix="form2")       
+            request.POST, prefix="form2")
+
+        print('PD:', property_details_form.errors)
 
         forms = all([
             property_form.is_valid(),

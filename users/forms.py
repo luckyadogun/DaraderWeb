@@ -297,7 +297,6 @@ class FloorPlanForm(forms.ModelForm):
 
 
 class PropertyDetailsForm(forms.ModelForm):
-
     class Meta:
         model = PropertyDetails
         exclude = ('property_obj',)
@@ -328,7 +327,7 @@ class PropertyDetailsForm(forms.ModelForm):
 
             'covered_area': forms.NumberInput(attrs={
                 'class': 'form-control filter-input',
-                'placeholder': '(Optional) Enter property occupied area'}),
+                'placeholder': 'Enter property occupied area - (Limit:32767)'}),
 
             'has_basketball_court': forms.CheckboxInput(attrs={
                 'class': 'form-control filter-input', 'id': 'check-a'}),

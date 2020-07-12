@@ -133,212 +133,261 @@
                                         </div>
 
                                     </div>
-                                    <!--Controls starts-->
-                                    <a class="carousel-control-prev" href="#carousel-thumb" role="button"
-                                        data-slide="prev">
-                                        <span class="lnr lnr-arrow-left" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carousel-thumb" role="button"
-                                        data-slide="next">
-                                        <span class="lnr lnr-arrow-right" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                    <!--Controls ends-->
-                                    <ol class="carousel-indicators  list-gallery-thumb">
-                                        {% for img_url in images %}
-                                        <li data-target="#carousel-thumb" data-slide-to="{{ forloop.counter0 }}"><img
-                                                class="img-fluid d-block w-100" src="{{ img_url }}" alt="..."></li>
-                                        {% endfor %}
-                                    </ol>
-                                </div>
-                                <!--/.Carousel Wrapper-->
-                            </div>
-                            <div id="details" class="list-details-section">
-                                <div class="mb-40">
-                                    <h4>Property Details</h4>
-                                    <ul class="property-info">
-                                        <li>Property ID : <span>{{ object.property_obj.property_id}}</span></li>
-                                        <li>Property Type : <span>{{ object.property_obj.property_type|title }}</span>
-                                        </li>
-                                        <li>Property status :
-                                            <span>{{ object.property_obj.property_category|title }}</span></li>
-                                        <li>Property Price :
-                                            <span>{{ object.property_obj.price|floatformat|intcomma }}</span></li>
-                                        <li>Bedrooms: <span>{{ object.bedrooms }}</span></li>
-                                        <li>Bathrooms: <span>{{ object.bathrooms }}</span></li>
-                                        <li>Garages: <span>{{ object.parking_spaces }}</span></li>
-                                    </ul>
-                                </div>
-                                <div class="mb-40">
-                                    <h4>Amenities</h4>
-                                    <ul class="listing-features">
-                                        {% if object.has_basketball_court %}
-                                        <li><i class="fas fa-basketball-ball"></i> basketball court</li>
+                                    <div id="details" class="list-details-section">
+                                        <div class="mb-40">
+                                            <h4>Property Details</h4>
+                                            <ul class="property-info">
+                                                <li>Property ID : <span>{{ object.property_obj.property_id}}</span></li>
+                                                <li>Property Type :
+                                                    <span>{{ object.property_obj.property_type|title }}</span></li>
+                                                <li>Property status :
+                                                    <span>{{ object.property_obj.property_category|title }}</span></li>
+                                                <li>Property Price :
+                                                    <span>{{ object.property_obj.price|floatformat|intcomma }}</span>
+                                                </li>
+                                                {% if object.property_obj.property_type != "land" %}
+                                                <li>Bedrooms: <span>{{ object.bedrooms }}</span></li>
+                                                <li>Bathrooms: <span>{{ object.bathrooms }}</span></li>
+                                                <li>Garages: <span>{{ object.parking_spaces }}</span></li>
+                                                {% else %}
+                                                <li>Covered Area: <span>{{ object.covered_area }}sqm</span></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                        {% if object.property_obj.property_type != "land" %}
+                                        <div class="mb-40">
+                                            <h4>Amenities</h4>
+                                            <ul class="listing-features">
+                                                {% if object.has_basketball_court %}
+                                                <li><i class="fas fa-basketball-ball"></i> basketball court</li>
+                                                {% endif %}
+
+                                                {% if object.parking_spaces %}
+                                                <li><i class="fas fa-car-side"></i> Free Parking on premises</li>
+                                                {% endif %}
+
+                                                {% if object.has_gym %}
+                                                <li><i class="fas fa-dumbbell"></i> Gym</li>
+                                                {% endif %}
+
+                                                {% if object.parking_spaces %}
+                                                <li><i class="fas fa-car-side"></i> Free Parking on premises</li>
+                                                {% endif %}
+
+                                                {% if object.has_swimming_pool %}
+                                                <li><i class="fas fa-swimmer"></i>Swimming Pool </li>
+                                                {% endif %}
+
+                                            </ul>
+                                        </div>
                                         {% endif %}
 
-                                        {% if object.parking_spaces %}
-                                        <li><i class="fas fa-car-side"></i> Free Parking on premises</li>
-                                        {% endif %}
+                                        {% if object.property_obj.property_type != "land" %}
+                                        {% if object.property_obj.floorplan.all %}
+                                        <div id="floor_plan" class="list-details-section">
+                                            <h4>Floor Plans</h4>
+                                            <div id="accordion10" role="tablist" class="pt-2">
+                                                {% for fp in object.property_obj.floorplan.all %}
 
-                                        {% if object.has_gym %}
-                                        <li><i class="fas fa-dumbbell"></i> Gym</li>
-                                        {% endif %}
+                                                <div class="card">
+                                                    <div class="card-header" role="tab" id="headingOne">
+                                                        <a role="button" data-toggle="collapse"
+                                                            data-parent="#accordion10" href="#collapseOne"
+                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            <p>{{ fp.title }}</p>
+                                                            <i class="fas fa-angle-down"></i>
+                                                            <ul class="floor-list">
+                                                                <li>Size : <span>{{ fp.size }} sft</span></li>
+                                                                <li>Rooms : <span>{{ fp.rooms }} sft</span></li>
+                                                                <li>Baths : <span>{{ fp.bathrooms }} sft</span></li>
+                                                                <li>Price :
+                                                                    <span>₦{{ object.property_obj.price|floatformat|intcomma }}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </a>
+                                                    </div>
+                                                    <div id="collapseOne" class="panel-collapse collapse show"
+                                                        role="tabpanel" aria-labelledby="headingOne">
+                                                        <div class="card-body">
+                                                            <a href="{{ fp.floor_image.url }}" data-lightbox="single-1">
+                                                                <img src="{{ fp.floor_image.url }}"
+                                                                    alt="{{ fp.title }}">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                        {% if object.is_wheelchair_friendly %}
-                                        <li><i class="fab fa-accessible-icon"></i> Wheelchair Friendly</li>
-                                        {% endif %}
-
-                                        {% if object.has_swimming_pool %}
-                                        <li><i class="fas fa-swimmer"></i>Swimming Pool </li>
-                                        {% endif %}
-
-                                    </ul>
-                                </div>
-                                {% if object.property_obj.floorplan.all %}
-                                <div id="floor_plan" class="list-details-section">
-                                    <h4>Floor Plans</h4>
-                                    <div id="accordion10" role="tablist" class="pt-2">
-                                        {% for fp in object.property_obj.floorplan.all %}
-
-                                        <div class="card">
-                                            <div class="card-header" role="tab" id="headingOne">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion10"
-                                                    href="#collapseOne" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                    <p>{{ fp.title }}</p>
-                                                    <i class="fas fa-angle-down"></i>
-                                                    <ul class="floor-list">
-                                                        <li>Size : <span>{{ fp.size }} sft</span></li>
-                                                        <li>Rooms : <span>{{ fp.rooms }} sft</span></li>
-                                                        <li>Baths : <span>{{ fp.bathrooms }} sft</span></li>
-                                                        <li>Price :
-                                                            <span>₦{{ object.property_obj.price|floatformat|intcomma }}</span>
-                                                        </li>
-                                                    </ul>
-                                                </a>
+                                                {% endfor %}
                                             </div>
-                                            <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel"
-                                                aria-labelledby="headingOne">
-                                                <div class="card-body">
-                                                    <a href="{{ fp.floor_image.url }}" data-lightbox="single-1">
-                                                        <img src="{{ fp.floor_image.url }}" alt="{{ fp.title }}">
+                                        </div>
+                                        {% endif %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div id="book_tour" class="list-details-section">
+                                        <h4 class="list-details-title">Schedule an inspection</h4>
+                                        <form class="tour-form" method="POST" action=".">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {{ bookingform.mobile_phone }}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {{ bookingform.comment }}
+                                                    {% if user.is_authenticated %}
+                                                    <input class="btn v3" type="submit" name="submit-contact"
+                                                        id="submit_contact" value="Submit">
+                                                    {% else %}
+                                                    <a href="#" data-toggle="modal" data-target="#user-login-popup">
+                                                        <button class="btn v3" type="button"
+                                                            id="submit_contact">Submit</button>
                                                     </a>
+                                                    {% endif %}
+
+                                                    <div class="card">
+                                                        <div class="card-header" role="tab" id="headingOne">
+                                                            <a role="button" data-toggle="collapse"
+                                                                data-parent="#accordion10" href="#collapseOne"
+                                                                aria-expanded="true" aria-controls="collapseOne">
+                                                                <p>{{ fp.title }}</p>
+                                                                <i class="fas fa-angle-down"></i>
+                                                                <ul class="floor-list">
+                                                                    <li>Size : <span>{{ fp.size }} sft</span></li>
+                                                                    <li>Rooms : <span>{{ fp.rooms }} sft</span></li>
+                                                                    <li>Baths : <span>{{ fp.bathrooms }} sft</span></li>
+                                                                    <li>Price :
+                                                                        <span>₦{{ object.property_obj.price|floatformat|intcomma }}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </a>
+                                                        </div>
+                                                        <div id="collapseOne" class="panel-collapse collapse show"
+                                                            role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="card-body">
+                                                                <a href="{{ fp.floor_image.url }}"
+                                                                    data-lightbox="single-1">
+                                                                    <img src="{{ fp.floor_image.url }}"
+                                                                        alt="{{ fp.title }}">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {% endfor %}
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div id="book_tour" class="list-details-section">
-                                <h4 class="list-details-title">Schedule an inspection</h4>
-                                <form class="tour-form" method="POST" action=".">
-                                    {% csrf_token %}
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            {{ bookingform.mobile_phone }}
-                                        </div>
-                                        <div class="col-md-12">
-                                            {{ bookingform.comment }}
-                                            {% if user.is_authenticated %}
-                                            <input class="btn v3" type="submit" name="submit-contact"
-                                                id="submit_contact" value="Submit">
-                                            {% else %}
-                                            <a href="#" data-toggle="modal" data-target="#user-login-popup">
-                                                <button class="btn v3" type="button" id="submit_contact">Submit</button>
-                                            </a>
                                             {% endif %}
-
-                                        </div>
-                                        {% if messages %}
-                                        <div class="col-md-4">
-                                            {% for message in messages %}
-                                            <p><span>{{message}}</span></p>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
                                     </div>
-                                </form>
+
+                                    <div id="book_tour" class="list-details-section">
+                                        <h4 class="list-details-title">Schedule an inspection</h4>
+                                        <form class="tour-form" method="POST" action=".">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {{ bookingform.mobile_phone }}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {{ bookingform.comment }}
+                                                    {% if user.is_authenticated %}
+                                                    <input class="btn v3" type="submit" name="submit-contact"
+                                                        id="submit_contact" value="Submit">
+                                                    {% else %}
+                                                    <a href="#" data-toggle="modal" data-target="#user-login-popup">
+                                                        <button class="btn v3" type="button"
+                                                            id="submit_contact">Submit</button>
+                                                    </a>
+                                                    {% endif %}
+
+                                                </div>
+                                                {% if messages %}
+                                                <div class="col-md-4">
+                                                    {% for message in messages %}
+                                                    <p><span>{{message}}</span></p>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-12">
-                    <div id="list-sidebar" class="listing-sidebar">
-                        <div class="widget">
-                            <h3 class="widget-title">Recently Added</h3>
-                            {% for recent in recent_properties %}
-                            <li class="row recent-list">
-                                <div class="col-lg-5 col-4">
-                                    <div class="entry-img">
-                                        {% for img in recent.gallery.all %}
-                                        {% if forloop.first %}
-                                        <img src="{{ img.image.url }}" alt="#">
-                                        <span>FOR {{ recent.property_category|upper }}</span>
-                                        {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="col-lg-7 col-8 no-pad-left">
-                                    <div class="entry-text">
-                                        <h4 class="entry-title"><a
-                                                href="{{ recent.get_absolute_url }}">{{ recent.title }}</a></h4>
-                                        <div class="property-location">
-                                            <i class="fa fa-map-marker-alt"></i>
-                                            <p>{{ recent.address|truncatewords:3 }}</p>
-                                        </div>
-                                        <div class="trend-open">
-                                            <p><span>Price:</span> ₦{{ recent.price|floatformat|intcomma }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </div>
-                        <div class="widget">
-                            <h3 class="widget-title">Featured Property</h3>
-                            <div class="swiper-container single-featured-list">
-                                <div class="swiper-wrapper">
-
-                                    {% for property in featured %}
-                                    <div class="swiper-slide single-property-box">
-                                        <div class="property-item">
-                                            {% for img in property.gallery.all %}
-                                            <a class="property-img" href="{{ property.get_absolute_url }}">
+                        <div class="col-xl-4 col-lg-12">
+                            <div id="list-sidebar" class="listing-sidebar">
+                                <div class="widget">
+                                    <h3 class="widget-title">Recently Added</h3>
+                                    {% for recent in recent_properties %}
+                                    <li class="row recent-list">
+                                        <div class="col-lg-5 col-4">
+                                            <div class="entry-img">
+                                                {% for img in recent.gallery.all %}
                                                 {% if forloop.first %}
                                                 <img src="{{ img.image.url }}" alt="#">
+                                                <span>FOR {{ recent.property_category|upper }}</span>
                                                 {% endif %}
-                                            </a>
-                                            {% endfor %}
-                                            <ul class="feature_text">
-                                                <li class="feature_cb"><span>Featured</span></li>
-                                                <li class="feature_or"><span>FOR
-                                                        {{ property.property_category|upper }}</span></li>
-                                            </ul>
-                                            <div class="property-author-wrap">
-                                                <h4><a href="#" class="property-author">
-                                                        {{ property.title }}
-                                                    </a>
-                                                </h4>
-                                                <div class="featured-price">
-                                                    <p><span>Price:</span>₦{{ property.price|floatformat|intcomma }}</p>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-8 no-pad-left">
+                                            <div class="entry-text">
+                                                <h4 class="entry-title"><a
+                                                        href="{{ recent.get_absolute_url }}">{{ recent.title }}</a></h4>
+                                                <div class="property-location">
+                                                    <i class="fa fa-map-marker-alt"></i>
+                                                    <p>{{ recent.address|truncatewords:3 }}</p>
+                                                </div>
+                                                <div class="trend-open">
+                                                    <p><span>Price:</span> ₦{{ recent.price|floatformat|intcomma }}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </li>
                                     {% endfor %}
+                                </div>
+                                <div class="widget">
+                                    <h3 class="widget-title">Featured Property</h3>
+                                    <div class="swiper-container single-featured-list">
+                                        <div class="swiper-wrapper">
 
+                                            {% for property in featured %}
+                                            <div class="swiper-slide single-property-box">
+                                                <div class="property-item">
+                                                    {% for img in property.gallery.all %}
+                                                    <a class="property-img" href="{{ property.get_absolute_url }}">
+                                                        {% if forloop.first %}
+                                                        <img src="{{ img.image.url }}" alt="#">
+                                                        {% endif %}
+                                                    </a>
+                                                    {% endfor %}
+                                                    <ul class="feature_text">
+                                                        <li class="feature_cb"><span>Featured</span></li>
+                                                        <li class="feature_or"><span>FOR
+                                                                {{ property.property_category|upper }}</span></li>
+                                                    </ul>
+                                                    <div class="property-author-wrap">
+                                                        <h4><a href="#" class="property-author">
+                                                                {{ property.title }}
+                                                            </a>
+                                                        </h4>
+                                                        <div class="featured-price">
+                                                            <p><span>Price:</span>₦{{ property.price|floatformat|intcomma }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+
+                                        </div>
+                                        <div class="slider-btn v3 single-featured-next"><i
+                                                class="lnr lnr-arrow-right"></i>
+                                        </div>
+                                        <div class="slider-btn v3 single-featured-prev"><i
+                                                class="lnr lnr-arrow-left"></i></div>
+                                    </div>
                                 </div>
-                                <div class="slider-btn v3 single-featured-next"><i class="lnr lnr-arrow-right"></i>
-                                </div>
-                                <div class="slider-btn v3 single-featured-prev"><i class="lnr lnr-arrow-left"></i></div>
-                            </div>
-                        </div>
-                        <!-- <div class="widget mortgage-widget">
+                                <!-- <div class="widget mortgage-widget">
                                     <h3 class="widget-title">Property Mortgage</h3>
                                     <form action="." method="POST" enctype="multipart/form-data">
                                         <div class="mortgage-group">
@@ -362,113 +411,116 @@
                                         </div>
                                     </form>
                                 </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Listing Details Info ends-->
-    <!--Similar Listing starts-->
-    <div class="similar-listing-wrap pb-70 mt-70">
-        <div class="container">
-            <div class="col-md-12 px-0">
-                <div class="similar-listing">
-                    <div class="section-title v2">
-                        <h2>Similar Listings</h2>
-                    </div>
-                    <div class="swiper-container similar-list-wrap">
-                        <div class="swiper-wrapper">
-                            {% for property in similar %}
-                            <div class="swiper-slide">
-                                <div class="single-property-box">
-                                    <div class="property-item">
-                                        {% for img in property.property_obj.gallery.all %}
-                                        <a class="property-img" href="{{ property.property_obj.get_absolute_url }}">
-                                            {% if forloop.first %}
-                                            <img src="{{ img.image.url }}" alt="#">
-                                            {% endif %}
-                                        </a>
-                                        {% endfor %}
-                                        <ul class="feature_text">
-                                            {% if property.property_obj.owner.is_featured %}
-                                            <li class="feature_cb"><span> Featured</span></li>
-                                            {% endif %}
-                                            <li class="feature_or"><span>FOR
-                                                    {{ property.property_obj.property_category|upper }}</span></li>
-                                        </ul>
-                                        <div class="property-author-wrap">
-                                            <a href="#" class="property-author">
-                                                {% if property.property_obj.owner.logo.url %}
-                                                <img src="{{ property.property_obj.owner.logo.url }}" alt="...">
-                                                {% endif %}
-
-                                                <span>{{ property.property_obj.owner }}</span>
-                                            </a>
-                                            <ul class="save-btn">
-                                                <li id="bookmark-this" value="{{property.pk}}" data-toggle="tooltip"
-                                                    data-placement="top" title="" data-original-title="Bookmark"><a
-                                                        href="#"><i class="lnr lnr-heart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="property-title-box">
-                                        <h4><a
-                                                href="{{ property.property_obj.get_absolute_url }}">{{ property.property_obj.title }}</a>
-                                        </h4>
-                                        <div class="property-location">
-                                            <i class="fa fa-map-marker-alt"></i>
-                                            <p>{{ property.property_obj.address }}</p>
-                                        </div>
-                                        <ul class="property-feature">
-                                            <li> <i class="fas fa-bed"></i>
-                                                <span>{{ property.bedrooms }} Bedrooms</span>
-                                            </li>
-                                            <li> <i class="fas fa-bath"></i>
-                                                <span>{{ property.bathrooms }} Bathrooms</span>
-                                            </li>
-                                            <li> <i class="fas fa-arrows-alt"></i>
-                                                <span>{{ property.total_area }} sq ft</span>
-                                            </li>
-                                            <li> <i class="fas fa-car"></i>
-                                                <span>{{ property.parking_spaces }} Garage</span>
-                                            </li>
-                                        </ul>
-                                        <div class="trending-bottom">
-                                            <div class="trend-left float-left">
-                                                <ul class="product-rating">
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star-half-alt"></i></li>
-                                                    <li><i class="fas fa-star-half-alt"></i></li>
-                                                </ul>
-                                            </div>
-                                            <a class="trend-right float-right">
-                                                <div class="trend-open">
-                                                    <p><span>Price:</span>₦{{ property.property_obj.price|floatformat|intcomma }}
-                                                    </p>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            {% endfor %}
-
                         </div>
                     </div>
-                    <div class="slider-btn v2 similar-next"><i class="lnr lnr-arrow-right"></i></div>
-                    <div class="slider-btn v2 similar-prev"><i class="lnr lnr-arrow-left"></i></div>
                 </div>
             </div>
+            <!--Listing Details Info ends-->
+            <!--Similar Listing starts-->
+            <div class="similar-listing-wrap pb-70 mt-70">
+                <div class="container">
+                    <div class="col-md-12 px-0">
+                        <div class="similar-listing">
+                            <div class="section-title v2">
+                                <h2>Similar Listings</h2>
+                            </div>
+                            <div class="swiper-container similar-list-wrap">
+                                <div class="swiper-wrapper">
+                                    {% for property in similar %}
+                                    <div class="swiper-slide">
+                                        <div class="single-property-box">
+                                            <div class="property-item">
+                                                {% for img in property.property_obj.gallery.all %}
+                                                <a class="property-img"
+                                                    href="{{ property.property_obj.get_absolute_url }}">
+                                                    {% if forloop.first %}
+                                                    <img src="{{ img.image.url }}" alt="#">
+                                                    {% endif %}
+                                                </a>
+                                                {% endfor %}
+                                                <ul class="feature_text">
+                                                    {% if property.property_obj.owner.is_featured %}
+                                                    <li class="feature_cb"><span> Featured</span></li>
+                                                    {% endif %}
+                                                    <li class="feature_or"><span>FOR
+                                                            {{ property.property_obj.property_category|upper }}</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="property-author-wrap">
+                                                    <a href="#" class="property-author">
+                                                        {% if property.property_obj.owner.logo.url %}
+                                                        <img src="{{ property.property_obj.owner.logo.url }}" alt="...">
+                                                        {% endif %}
+
+                                                        <span>{{ property.property_obj.owner }}</span>
+                                                    </a>
+                                                    <ul class="save-btn">
+                                                        <li id="bookmark-this" value="{{property.pk}}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Bookmark"><a href="#"><i
+                                                                    class="lnr lnr-heart"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="property-title-box">
+                                                <h4><a
+                                                        href="{{ property.property_obj.get_absolute_url }}">{{ property.property_obj.title }}</a>
+                                                </h4>
+                                                <div class="property-location">
+                                                    <i class="fa fa-map-marker-alt"></i>
+                                                    <p>{{ property.property_obj.address }}</p>
+                                                </div>
+                                                <ul class="property-feature">
+                                                    <li> <i class="fas fa-bed"></i>
+                                                        <span>{{ property.bedrooms }} Bedrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-bath"></i>
+                                                        <span>{{ property.bathrooms }} Bathrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-arrows-alt"></i>
+                                                        <span>{{ property.total_area }} sq ft</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-car"></i>
+                                                        <span>{{ property.parking_spaces }} Garage</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="trending-bottom">
+                                                    <div class="trend-left float-left">
+                                                        <ul class="product-rating">
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <a class="trend-right float-right">
+                                                        <div class="trend-open">
+                                                            <p><span>Price:</span>₦{{ property.property_obj.price|floatformat|intcomma }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                            <div class="slider-btn v2 similar-next"><i class="lnr lnr-arrow-right"></i></div>
+                            <div class="slider-btn v2 similar-prev"><i class="lnr lnr-arrow-left"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Similar Listing ends-->
         </div>
-    </div>
-    <!--Similar Listing ends-->
-</div>
 
-{% endblock %}
+        {% endblock %}
 
 
-{% block footer %}
-{% include "properties_components/footer__v1.html" %}
-{% endblock %}
+        {% block footer %}
+        {% include "properties_components/footer__v1.html" %}
+        {% endblock %}

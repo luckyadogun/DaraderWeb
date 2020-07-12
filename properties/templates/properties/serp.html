@@ -174,19 +174,26 @@
                                                         <i class="fa fa-map-marker-alt"></i>
                                                         <p>{{ property.property_obj.address }}</p>
                                                     </div>
+                                                    
                                                     <ul class="property-feature">
-                                                        <li> <i class="fas fa-bed"></i>
-                                                            <span>{{ property.bedrooms }} Bedrooms</span>
-                                                        </li>
-                                                        <li> <i class="fas fa-bath"></i>
-                                                            <span>{{ property.bathrooms }} Bathrooms</span>
-                                                        </li>
-                                                        <li> <i class="fas fa-arrows-alt"></i>
-                                                            <span>{{ property.total_area }} sq ft</span>
-                                                        </li>
-                                                        <li> <i class="fas fa-car"></i>
-                                                            <span>{{ property.parking_spaces }} Garage</span>
-                                                        </li>
+                                                        {% if property.property_obj.property_type == "land" %}                                                            
+                                                            <li> <i class="fas fa-arrows-alt"></i>
+                                                                <span>{{ property.covered_area }} sqm</span>
+                                                            </li>
+                                                        {% else %}
+                                                            <li> <i class="fas fa-bed"></i>
+                                                                <span>{{ property.bedrooms }} Bedrooms</span>
+                                                            </li>
+                                                            <li> <i class="fas fa-bath"></i>
+                                                                <span>{{ property.bathrooms }} Bathrooms</span>
+                                                            </li>
+                                                            <li> <i class="fas fa-arrows-alt"></i>
+                                                                <span>{{ property.total_area }} sq ft</span>
+                                                            </li>
+                                                            <li> <i class="fas fa-car"></i>
+                                                                <span>{{ property.parking_spaces }} Garage</span>
+                                                            </li>
+                                                        {% endif %}
                                                     </ul>
                                                     <div class="trending-bottom">
                                                         <div class="trend-left float-left">
