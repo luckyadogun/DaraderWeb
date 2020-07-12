@@ -12,7 +12,7 @@
 <div class="property-details-wrap bg-cb">
     <!--Listing Details Hero starts-->
     <div class="single-property-header v1 bg-h mt-60"
-        style="background-image: url('{{ object.property_obj.gallery.all.first.image.url }}');">
+        style="background-image: url('{{ object.hotelPhotos.all.first.photo.url }}');">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -20,21 +20,22 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-8 col-sm-12">
                                 <div class="single-listing-title float-left">
-                                    <h2>{{ object.property_obj.title }}<span class="btn v5">For
-                                            {{ object.property_obj.property_category|upper }}</span></h2>
-                                    <p><i class="fa fa-map-marker-alt"></i>{{ object.property_obj.address }}</p>
-                                    <a href="#" class="property-author">
+                                    <h2>{{ object.name }}<span class="btn v5">For
+                                            {{ object.hotel_type }}</span></h2>
+                                    <p><i class="fa fa-map-marker-alt"></i>{{ object.address }}</p>
+                                    <!-- <a href="#" class="property-author">
                                         {% if property.property_obj.owner.logo.url %}
                                         <img src="{{ property.property_obj.owner.logo.url }}" alt="...">
                                         {% endif %}
                                         <span>{{ object.property_obj.owner }}</span>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-4 col-sm-12">
                                 <div class="list-details-btn text-right sm-left">
                                     <div class="trend-open">
-                                        <p><span>Price: </span>₦{{ object.property_obj.price|floatformat|intcomma }}</p>
+                                        <p><span>Average Room Price:
+                                            </span>₦{{ object.average_price|floatformat|intcomma }}</p>
                                     </div>
                                     <div class="list-ratings">
                                         <span class="fas fa-star"></span>
@@ -44,8 +45,8 @@
                                         <span class="fas fa-star-half-alt"></span>
                                     </div>
 
-                                    <a href="tel:+{{ object.property_obj.owner.office_phone }}" class="btn v1">click to
-                                        call <i class="fa fa-phone"></i></a>
+                                    <!-- <a href="tel:+{{ object.property_obj.owner.office_phone }}" class="btn v1">click to
+                                        call <i class="fa fa-phone"></i></a> -->
 
                                     <!-- <ul class="list-btn">
                                                 <li class="share-btn">
@@ -83,30 +84,30 @@
                                 <li class="nav-item active"><a href="#description" class="active">Description</a></li>
                                 <li class="nav-item"><a href="#gallery">Gallery</a></li>
                                 <li class="nav-item"><a href="#details">Details</a></li>
-                                {% if object.property_obj.floorplan.all %}
-                                <li class="nav-item"><a href="#floor_plan">Floor plan</a></li>
-                                {% endif %}
-                                <li class="nav-item"><a href="#book_tour">Book a Tour</a></li>
+                                <li class="nav-item"><a href="#room">Room Types</a></li>
+                                <!-- {% if object.property_obj.floorplan.all %} -->
+                                <!-- <li class="nav-item"><a href="#rooms">Room Types</a></li> -->
+                                <!-- {% endif %} -->
+                                <li class="nav-item"><a href="#faq">FAQ</a></li>
                             </ul>
                         </div>
                         <!--Listing Details starts-->
                         <div class="list-details-wrap">
                             <div id="description" class="list-details-section">
-                                <h4>Property Brief</h4>
+                                <h4>Hotel Brief</h4>
                                 <div class="overview-content">
-                                    <p class="mb-10">{{ object.property_obj.description }}</p>
+                                    <p class="mb-10">{{ object.description }}</p>
                                 </div>
                                 <div class="mt-40">
                                     <h4 class="list-subtitle">Location</h4>
-                                    <a target="_blank"
-                                        href="http://maps.google.com/?q={{object.property_obj.address}},{{object.property_obj.state.name}},{{object.property_obj.country.name}}"
+                                    <a target="_blank" href="http://maps.google.com/?q={{object.address}}"
                                         class="location-map">View Map<i class="fa fa-map-marker-alt"></i></a>
                                     <ul class="listing-address">
-                                        <li>Address : <span>{{ object.property_obj.address }}</span></li>
-                                        <li>State : <span>{{ object.property_obj.state.name }}</span></li>
+                                        <li>Address : <span>{{ object.address }}</span></li>
+                                        <!-- <li>State : <span>{{ object.property_obj.state.name }}</span></li>
                                         <li>LGA : <span>{{ object.property_obj.lga.name }}</span></li>
                                         <li>Zip/Postal Code : <span>{{ object.property_obj.zipcode }}</span></li>
-                                        <li>Country : <span>{{ object.property_obj.country.name }}</span></li>
+                                        <li>Country : <span>{{ object.property_obj.country.name }}</span></li> -->
                                     </ul>
                                 </div>
                             </div>
@@ -156,87 +157,158 @@
                             </div>
                             <div id="details" class="list-details-section">
                                 <div class="mb-40">
-                                    <h4>Property Details</h4>
+                                    <h4>Hotel Details</h4>
                                     <ul class="property-info">
-                                        <li>Property ID : <span>{{ object.property_obj.property_id}}</span></li>
-                                        <li>Property Type : <span>{{ object.property_obj.property_type|title }}</span>
+                                        <li>Hotel Name : <span>{{ object.name}}</span></li>
+                                        <li>Hotel Type : <span>{{ object.hotel_type }}</span>
                                         </li>
-                                        <li>Property status :
-                                            <span>{{ object.property_obj.property_category|title }}</span></li>
-                                        <li>Property Price :
-                                            <span>{{ object.property_obj.price|floatformat|intcomma }}</span></li>
-                                        <li>Bedrooms: <span>{{ object.bedrooms }}</span></li>
+                                        <!-- <li>Property status :
+                                            <span>{{ object.property_obj.property_category|title }}</span></li> -->
+                                        <li>Average Room Price :
+                                            <span>{{ object.average_price|floatformat|intcomma }}</span></li>
+                                        <!-- <li>Bedrooms: <span>{{ object.bedrooms }}</span></li>
                                         <li>Bathrooms: <span>{{ object.bathrooms }}</span></li>
-                                        <li>Garages: <span>{{ object.parking_spaces }}</span></li>
+                                        <li>Garages: <span>{{ object.parking_spaces }}</span></li> -->
                                     </ul>
                                 </div>
                                 <div class="mb-40">
                                     <h4>Amenities</h4>
                                     <ul class="listing-features">
-                                        {% if object.has_basketball_court %}
-                                        <li><i class="fas fa-basketball-ball"></i> basketball court</li>
+                                        {% if object.has_restaurant %}
+                                        <li><i class="fas fa-basketball-ball"></i> Restaurant</li>
                                         {% endif %}
 
-                                        {% if object.parking_spaces %}
-                                        <li><i class="fas fa-car-side"></i> Free Parking on premises</li>
+                                        {% if object.has_bar %}
+                                        <li><i class="fas fa-basketball-ball"></i> Bar</li>
                                         {% endif %}
 
-                                        {% if object.has_gym %}
-                                        <li><i class="fas fa-dumbbell"></i> Gym</li>
+                                        {% if object.has_wireless_internet %}
+                                        <li><i class="fas fa-car-side"></i> Wireless Internet</li>
                                         {% endif %}
 
-                                        {% if object.is_wheelchair_friendly %}
-                                        <li><i class="fab fa-accessible-icon"></i> Wheelchair Friendly</li>
+                                        {% if object.has_24_hrs_electricity %}
+                                        <li><i class="fas fa-dumbbell"></i> 24 Hhrs Electricity</li>
+                                        {% endif %}
+
+                                        {% if object.has_adequate_parking_space %}
+                                        <li><i class="fas fa-dumbbell"></i> Adequate Parking Space</li>
                                         {% endif %}
 
                                         {% if object.has_swimming_pool %}
-                                        <li><i class="fas fa-swimmer"></i>Swimming Pool </li>
+                                        <li><i class="fas fa-swimmer"></i> Swimming Pool </li>
+                                        {% endif %}
+
+                                        {% if object.has_car_rental %}
+                                        <li><i class="fas fa-swimmer"></i> Car Rental </li>
+                                        {% endif %}
+
+                                        {% if object.has_double_bed %}
+                                        <li><i class="fas fa-swimmer"></i> Double Bed </li>
+                                        {% endif %}
+
+                                        {% if object.has_toiletries %}
+                                        <li><i class="fas fa-swimmer"></i> Toiletries </li>
+                                        {% endif %}
+
+                                        {% if object.has_concierge %}
+                                        <li><i class="fas fa-swimmer"></i> Concierge </li>
+                                        {% endif %}
+
+                                        {% if object.has_shower %}
+                                        <li><i class="fas fa-swimmer"></i> Shower </li>
+                                        {% endif %}
+
+                                        {% if object.has_room_service %}
+                                        <li><i class="fas fa-swimmer"></i> Room Service </li>
+                                        {% endif %}
+
+                                        {% if object.has_key_card_system %}
+                                        <li><i class="fas fa-swimmer"></i> Key Card System </li>
+                                        {% endif %}
+
+                                        {% if object.has_gym %}
+                                        <li><i class="fas fa-dumbbell"></i> Gym </li>
+                                        {% endif %}
+
+                                        {% if object.has_airport_pickup %}
+                                        <li><i class="fas fa-dumbbell"></i> Airport Pickup </li>
+                                        {% endif %}
+
+                                        {% if object.has_car_hire %}
+                                        <li><i class="fas fa-swimmer"></i> Car Hire </li>
+                                        {% endif %}
+
+                                        {% if object.has_laundry %}
+                                        <li><i class="fas fa-dumbbell"></i> Laundry</li>
+                                        {% endif %}
+
+                                        {% if object.has_spa_treatment %}
+                                        <li><i class="fas fa-dumbbell"></i> Spa Treatment</li>
+                                        {% endif %}
+
+                                        {% if object.has_night_club %}
+                                        <li><i class="fas fa-dumbbell"></i> Night Club</li>
+                                        {% endif %}
+
+                                        {% if object.has_luggage_storage %}
+                                        <li><i class="fas fa-swimmer"></i> Luggage System </li>
+                                        {% endif %}
+
+                                        {% if object.has_air_conditioning %}
+                                        <li><i class="fas fa-swimmer"></i> Air Conditioning</li>
+                                        {% endif %}
+
+                                        {% if object.has_car_wash %}
+                                        <li><i class="fas fa-swimmer"></i> Car Wash </li>
                                         {% endif %}
 
                                     </ul>
                                 </div>
-                                {% if object.property_obj.floorplan.all %}
-                                <div id="floor_plan" class="list-details-section">
-                                    <h4>Floor Plans</h4>
-                                    <div id="accordion10" role="tablist" class="pt-2">
-                                        {% for fp in object.property_obj.floorplan.all %}
-
-                                        <div class="card">
-                                            <div class="card-header" role="tab" id="headingOne">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion10"
-                                                    href="#collapseOne" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                    <p>{{ fp.title }}</p>
-                                                    <i class="fas fa-angle-down"></i>
-                                                    <ul class="floor-list">
-                                                        <li>Size : <span>{{ fp.size }} sft</span></li>
-                                                        <li>Rooms : <span>{{ fp.rooms }} sft</span></li>
-                                                        <li>Baths : <span>{{ fp.bathrooms }} sft</span></li>
-                                                        <li>Price :
-                                                            <span>₦{{ object.property_obj.price|floatformat|intcomma }}</span>
-                                                        </li>
-                                                    </ul>
-                                                </a>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel"
-                                                aria-labelledby="headingOne">
-                                                <div class="card-body">
-                                                    <a href="{{ fp.floor_image.url }}" data-lightbox="single-1">
-                                                        <img src="{{ fp.floor_image.url }}" alt="{{ fp.title }}">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                {% endif %}
                             </div>
 
-                            <div id="book_tour" class="list-details-section">
-                                <h4 class="list-details-title">Schedule an inspection</h4>
-                                <form class="tour-form" method="POST" action=".">
+                            <div id="room" class="list-details-section">
+                                <h4>Rooms</h4>
+                                <!-- <div id="accordion10" role="tablist" class="pt-2"> -->
+                                {% for room in object.room.all %}
+
+                                <div class="card">
+                                    <!-- <div class="card-header" role="tab" id="headingOne"> -->
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ room.room_name }}</h5>
+                                        <!-- <i class="fas fa-angle-down"></i> -->
+                                        <ul class="card-text">
+                                            <li>Price :
+                                                <span>₦{{ room.price|floatformat|intcomma }}</span>
+                                            </li>
+                                            <li>Information : <span>{{ room.information }} {{ room.hotel.id }}
+                                                    {{ room.id }}</span></li>
+                                        </ul>
+                                        <a><input class="btn btn-primary btn-book-room" hotel_id="{{ room.hotel.id }}"
+                                                room_id="{{ room.id }}" type="submit" value="Book Room"></a>
+                                        <!-- <a class="btn btn-primary btn-book-room" id="btn-book-room"
+                                            hotel_id="{{ room.hotel.id }}" room_id="{{ room.id }}">Book
+                                            Room</a> -->
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                                <!-- </div> -->
+                            </div>
+
+                            <div id="faq" class="list-details-section">
+                                <h4 class="list-details-title">Frequuently Asked Questions: </h4>
+                                {% for faq in object.faq.all %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="card-title">Question : {{ faq.question }}</p>
+                                        <p class="card-text">Answer: {{ faq.answer }}</p>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+
+
+                                <!-- <form class="tour-form" method="POST" action=".">
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="col-md-12">
@@ -262,7 +334,7 @@
                                         </div>
                                         {% endif %}
                                     </div>
-                                </form>
+                                </form> -->
                             </div>
                         </div>
                     </div>
@@ -271,14 +343,14 @@
                     <div id="list-sidebar" class="listing-sidebar">
                         <div class="widget">
                             <h3 class="widget-title">Recently Added</h3>
-                            {% for recent in recent_properties %}
+                            {% for recent in recent_hotels %}
                             <li class="row recent-list">
                                 <div class="col-lg-5 col-4">
                                     <div class="entry-img">
-                                        {% for img in recent.gallery.all %}
+                                        {% for img in recent.hotelPhotos.all %}
                                         {% if forloop.first %}
-                                        <img src="{{ img.image.url }}" alt="#">
-                                        <span>FOR {{ recent.property_category|upper }}</span>
+                                        <img src="{{ img.photo.url }}" alt="#">
+                                        <span>FOR {{ recent.hotel_type|upper }}</span>
                                         {% endif %}
                                         {% endfor %}
                                     </div>
@@ -286,20 +358,22 @@
                                 <div class="col-lg-7 col-8 no-pad-left">
                                     <div class="entry-text">
                                         <h4 class="entry-title"><a
-                                                href="{{ recent.get_absolute_url }}">{{ recent.title }}</a></h4>
+                                                href="{% url 'hotels:hotel-details' recent.pk %}">{{ recent.name }}</a>
+                                        </h4>
                                         <div class="property-location">
                                             <i class="fa fa-map-marker-alt"></i>
                                             <p>{{ recent.address|truncatewords:3 }}</p>
                                         </div>
                                         <div class="trend-open">
-                                            <p><span>Price:</span> ₦{{ recent.price|floatformat|intcomma }}</p>
+                                            <p><span>Average Room Price:</span>
+                                                ₦{{ recent.average_price|floatformat|intcomma }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </li>
                             {% endfor %}
                         </div>
-                        <div class="widget">
+                        <!-- <div class="widget">
                             <h3 class="widget-title">Featured Property</h3>
                             <div class="swiper-container single-featured-list">
                                 <div class="swiper-wrapper">
@@ -337,7 +411,7 @@
                                 </div>
                                 <div class="slider-btn v3 single-featured-prev"><i class="lnr lnr-arrow-left"></i></div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="widget mortgage-widget">
                                     <h3 class="widget-title">Property Mortgage</h3>
                                     <form action="." method="POST" enctype="multipart/form-data">
@@ -369,7 +443,7 @@
     </div>
     <!--Listing Details Info ends-->
     <!--Similar Listing starts-->
-    <div class="similar-listing-wrap pb-70 mt-70">
+    <!-- <div class="similar-listing-wrap pb-70 mt-70">
         <div class="container">
             <div class="col-md-12 px-0">
                 <div class="similar-listing">
@@ -462,13 +536,39 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!--Similar Listing ends-->
 </div>
 
 {% endblock %}
 
-
 {% block footer %}
 {% include "properties_components/footer__v1.html" %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function (e) {
+        $(".btn-book-room").click(function (e) {
+            var room_id = this.getAttribute('room_id')
+            var hotel_id = this.getAttribute('hotel_id')
+            $.ajax({
+                type: "GET",
+                url: `/hotel/${hotel_id}/room/${room_id}/`,
+                dataType: "JSON",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response['result'] == "Success") {
+                        alert("A booking request has been sent to the hotel. Kindly check your mail for confirmation.")
+                        location.href = "/my/dashboard/";
+                    } else {
+                        alert(response['result']);
+                    }
+                },
+                error: function () {
+                    alert("Something went wrong!");
+                }
+            })
+        })
+    });
+</script>
 {% endblock %}

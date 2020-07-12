@@ -1,7 +1,22 @@
 from django import forms
 
-from .models import Hotel, HotelPhotos, Room, FAQ
+from .models import Hotel, HotelPhotos, Room, FAQ, HotelBookingRequest
 
+class HotelBookingRequestForm(forms.ModelForm):
+
+    class Meta:
+        model = HotelBookingRequest
+        fields = ['comment', 'mobile_phone']
+        widgets = {
+            'comment': forms.Textarea(attrs={
+                'class': 'contact-form__textarea mb-25', 'cols': 10,
+                'placeholder': 'Enter your message',
+                'required': True}),
+            'mobile_phone': forms.TextInput(attrs={
+                'class': 'form-control filter-input', 
+                'placeholder': 'Enter your phone number',
+                'required': True})
+        }
 
 class HotelPhotosForm(forms.ModelForm):
     photo = forms.ImageField(required=False, widget=forms.ClearableFileInput(
