@@ -280,8 +280,7 @@
                                             <li>Price :
                                                 <span>₦{{ room.price|floatformat|intcomma }}</span>
                                             </li>
-                                            <li>Information : <span>{{ room.information }} {{ room.hotel.id }}
-                                                    {{ room.id }}</span></li>
+                                            <li>Information : <span>{{ room.information }}</span></li>
                                         </ul>
                                         <a><input class="btn btn-primary btn-book-room" hotel_id="{{ room.hotel.id }}"
                                                 room_id="{{ room.id }}" type="submit" value="Book Room"></a>
@@ -551,11 +550,16 @@
             var room_id = this.getAttribute('room_id')
             var hotel_id = this.getAttribute('hotel_id')
             $.ajax({
-                type: "GET",
-                url: `/hotel/${hotel_id}/room/${room_id}/`,
-                dataType: "JSON",
-                processData: false,
-                contentType: false,
+                type: "POST",
+                url: "{% url 'hotels:hotel-room-booking' %}",
+                dataType: "json",
+                // processData: false,
+                // contentType: false,
+                data: {
+                    room_id: room_id,
+                    hotel_id: hotel_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
                 success: function (response) {
                     if (response['result'] == "Success") {
                         alert("A booking request has been sent to the hotel. Kindly check your mail for confirmation.")

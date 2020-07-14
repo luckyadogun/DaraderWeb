@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
 from users.decorators import staff_or_manager_required
+from .helpers import hotel_email_booking_request, user_hotel_email_booking_request
 from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm
 from .models import Hotel, HotelPhotos, Room, FAQ, HotelBookingRequest, BookmarkedHotel
 
@@ -121,11 +122,21 @@ def hotel_details(request, pk):
     return render(request, 'hotels/single_hotel.html', context)
 
 @login_required
-def hotel_booking_view(request, room_id, hotel_id):
+def hotel_booking_view(request):
+    room_id = request.POST.get('room_id')
+    hotel_id = request.POST.get('hotel_id')
     try:
         room = Room.objects.get(pk=room_id)
         hotel = Hotel.objects.get(pk=hotel_id)
-        # Send the mail containing the room and hotel to the management
+        hotel_email = hotel.creator.email
+        hotel_name = hotel.name
+        room_name = room.room_name
+        user_name = request.user.username
+        user_email = request.user.email
+        # Send the mail containing the user, room and hotel to the management
+        hotel_email_booking_request(hotel_email, hotel_name, user_name, room_name, user_email)
+        # Send the mail containing the hotel and room to the user
+        user_hotel_email_booking_request(user_email, user_name, room_name, hotel_name)
         return JsonResponse({"result": "Success"})
     except Room.DoesNotExist:
         return JsonResponse({"result": "Failed"})
