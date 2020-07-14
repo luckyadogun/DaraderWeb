@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
 from users.decorators import staff_or_manager_required
-from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm
-from .models import Hotel, HotelPhotos, Room, FAQ
+from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm
+from .models import Hotel, HotelPhotos, Room, FAQ, HotelBookingRequest, BookmarkedHotel
 
 
 @login_required
@@ -57,7 +60,6 @@ def add_hotel_view(request):
         else:
             return JsonResponse({"result": "Failed"})
     else:
-        print("get")
         hotel_form = HotelForm
         hotel_photos_form = HotelPhotosForm
         room_form = RoomForm
@@ -68,3 +70,64 @@ def add_hotel_view(request):
     context['faq_form'] = faq_form
 
     return render(request, 'hotels/add_hotel.html', context)
+
+# @method_decorator([login_required], name='dispatch')
+# class MyHotelBookingsView(LoginRequiredMixin, ListView):
+#     template_name = "hotels/my_hotel_bookings.html"
+#     context_object_name = "hotel_bookings"
+#     paginate_by = 10
+
+#     def get_queryset(self):
+#         return HotelBookingRequest.objects.filter(
+#             client=self.request.user,
+#             status="booked")
+
+@login_required
+def hotel_details(request, pk):
+    context = {}
+
+    obj = Hotel.objects.get(id=pk)
+
+    if request.method == "POST":
+        hotel_bookingform = HotelBookingRequestForm(request.POST)
+
+        if hotel_bookingform.is_valid():
+            booking_obj = bookingform.save(commit=False)
+            booking_obj.company = obj.property_obj.owner
+            booking_obj.property_details = obj
+            booking_obj.client = request.user
+            booking_obj.status = "booked"
+            booking_obj.save()
+            email_booking_request(request, obj.property_obj.owner.manager)
+            messages.success(request, "Successfully Booked!")
+        else:
+            messages.error(request, hotel_bookingform.errors)
+
+    else:
+        hotel_bookingform = HotelBookingRequestForm()
+
+    context["object"] = obj
+    context["recent_hotels"] = Hotel.objects.order_by("created").reverse()[:3]
+    # context["featured"] = get_currently_featured()
+    context["images"] = [x.photo.url for x in obj.hotelPhotos.all()]
+    # context["similar"] = PropertyDetails.objects.filter(
+    #     Q(property_obj__title__icontains=obj.property_obj.title) |
+    #     Q(property_obj__property_type=obj.property_obj.property_type) |
+    #     Q(property_obj__lga=obj.property_obj.lga) |
+    #     Q(property_obj__owner=obj.property_obj.owner)
+    # )
+    context["hotel_bookingform"] = hotel_bookingform
+
+    return render(request, 'hotels/single_hotel.html', context)
+
+@login_required
+def hotel_booking_view(request, room_id, hotel_id):
+    try:
+        room = Room.objects.get(pk=room_id)
+        hotel = Hotel.objects.get(pk=hotel_id)
+        # Send the mail containing the room and hotel to the management
+        return JsonResponse({"result": "Success"})
+    except Room.DoesNotExist:
+        return JsonResponse({"result": "Failed"})
+    except Hotel.DoesNotExist:
+        return JsonResponse({"result": "Failed"})

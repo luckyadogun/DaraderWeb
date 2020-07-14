@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
-
+from users.utils import validate_phone
 from properties.models import TimeStampedModel
 from users.models import User
 
@@ -60,14 +60,14 @@ def hotel_photos_image_path(instance, filename):
 class HotelPhotos(models.Model):
     photo = models.ImageField(
         _("image"), upload_to=hotel_photos_image_path, blank=True)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotelPhotos")
 
 
 class Room(models.Model):
     room_name = models.CharField(_("room name"), max_length=200)
     price = models.DecimalField(_("price"), max_digits=10, decimal_places=2)
     information = models.TextField(_("room information"))
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="room")
 
     def __str__(self):
         return self.room_name
@@ -79,10 +79,35 @@ class Room(models.Model):
 class FAQ(models.Model):
     question = models.CharField(_("question"), max_length=200)
     answer = models.CharField(_("answer"), max_length=200)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="faq")
 
     def __str__(self):
         return self.question
 
     class Meta:
         verbose_name_plural = "FAQs"
+
+class HotelBookingRequest(TimeStampedModel):
+    BOOKED = "booked"
+    UNBOOKED = "unbooked"
+
+    BOOKING_STATUS = (
+        (BOOKED, BOOKED),
+        (UNBOOKED, UNBOOKED),
+    )
+
+    comment = models.TextField(blank=True, null=True)
+    status = models.CharField(
+        max_length=20, null=True, default=UNBOOKED, choices=BOOKING_STATUS)
+    client = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    room = models.ForeignKey(
+        Room, on_delete=models.CASCADE)
+    mobile_phone = models.CharField(
+        validators=[validate_phone], max_length=17, null=True, blank=True)
+
+
+class BookmarkedHotel(TimeStampedModel):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(
+        Hotel, on_delete=models.CASCADE)
