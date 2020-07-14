@@ -291,11 +291,16 @@
         });
 
         // Add room
-
         $("#add-room").click(function (e) {
-            e.preventDefault();
-            $(`
-                <div id="extra-item">                    
+            e.preventDefault();            
+            $("input").prop("required", false)
+            $("textarea").prop("required", false);
+            
+            $(`                
+                <div id="extra-item">     
+                    <div class="text-right sm-right">
+                        <button style="background:red" class="btn v3" id="remove-room">Remove</button>
+                    </div>               
                     <div class="db-add-listing" id="form-3">
                         <div class="row mb-30">
                             <div class="col-md-4">
@@ -319,16 +324,28 @@
                         </div>
                     </div>
                 </div>
-            `).appendTo('.extra-listing')
-        });
+            `).appendTo('.extra-listing');
+            
+            $("#remove-room").click(function(e){
+                e.preventDefault();                                
+                $(this).parent().parent().remove();
+            })
+        });        
 
         // Add FAQ
 
         $("#add-faq").click(function (e) {
             e.preventDefault();
+
+            $("input").prop("required", false)
+            $("textarea").prop("required", false);
+            
             $(`
                 <div id="extra-item">                    
                     <div class="extra-faq">
+                        <div class="text-right sm-right">
+                            <button style="background:red" class="btn v3" id="remove-faq">Remove</button>
+                        </div> 
                         <div class="db-add-listing" id="form-3">
                             <div class="row mb-30">
                                 <div class="col-md-6">
@@ -347,7 +364,12 @@
                         </div>
                     </div>
                 </div>
-            `).appendTo('.extra-faq')
+            `).appendTo('.extra-faq');
+
+            $("#remove-faq").click(function(e){
+                e.preventDefault();                                
+                $(this).parent().parent().remove();
+            })
         });
     });
 </script>
