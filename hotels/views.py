@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 from users.decorators import staff_or_manager_required
 from .helpers import hotel_email_booking_request, user_hotel_email_booking_request
-from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm
+from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm, HotelUpdateForm, RoomUpdateForm, HotelPhotosUpdateForm, FAQUpdateForm
 from .models import Hotel, HotelPhotos, Room, FAQ, HotelBookingRequest, BookmarkedHotel
 
 
@@ -121,6 +121,16 @@ def hotel_details(request, pk):
 
     return render(request, 'hotels/single_hotel.html', context)
 
+@method_decorator([staff_or_manager_required], name='dispatch')
+class MyHotelView(LoginRequiredMixin, ListView):
+    template_name = "hotels/my_hotels.html"
+    context_object_name = "hotels"
+    paginate_by = 5
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return Hotel.objects.filter(creator=self.request.user)
+
 @login_required
 def hotel_booking_view(request):
     room_id = request.POST.get('room_id')
@@ -142,3 +152,78 @@ def hotel_booking_view(request):
         return JsonResponse({"result": "Failed"})
     except Hotel.DoesNotExist:
         return JsonResponse({"result": "Failed"})
+
+@login_required
+@staff_or_manager_required
+def hotel_delete_view(request):
+    print("here")
+    print(request.POST.get("hotelID"))
+    if request.is_ajax and request.method == "POST":
+        hotel_id = request.POST.get("hotelID")
+        hotel_obj = get_object_or_404(Hotel, pk=hotel_id)
+
+        if hotel_obj.creator == request.user:
+            hotel_obj.delete()
+            return JsonResponse({"result": "Success!"})
+        return JsonResponse({"result": "Unauthorized Access!"})
+    raise Http404("Page Doesn't Exist!")
+
+@login_required
+@staff_or_manager_required
+def update_hotel(request, pk=None):
+    context = {}
+
+    hotel_obj = get_object_or_404(Hotel, id=pk)
+    room_obj = get_object_or_404(
+        Room, hotel=hotel_obj)
+    faq_obj = get_object_or_404(FAQ, hotel=hotel_obj)
+
+    if not hotel_obj.creator == request.user:
+        raise Http404("Unauthorized access!")
+
+    if request.is_ajax and request.method == "POST":
+
+        hotel_form = HotelUpdateForm(
+            request.POST, instance=hotel_obj, prefix="form1")
+        hotelPhotos_form = HotelPhotosUpdateForm(request.POST, request.FILES)
+        room_form = RoomUpdateForm(
+            request.POST, request.FILES, instance=room_obj)
+        faq_form = FAQUpdateForm(
+            request.POST, instance=faq_form, prefix="form2")
+
+        forms = all([
+                hotel_form.is_valid(),
+                hotelPhotos_form.is_valid(),
+                room_form.is_valid(),
+                faq_form.is_valid()])
+
+        if forms:
+            print("here")
+            # property_obj = property_form.save()
+            # property_details_form.save()
+            # floorplan_form.save()
+
+            # uploaded_images = request.FILES.getlist('image')            
+
+            # for img in uploaded_images:
+            #     gallery = Gallery(
+            #         property_obj=property_obj,
+            #         image=img)
+            #     gallery.save()         
+
+            return JsonResponse({"result": "Success"})
+    else:
+        property_form = PropertyUpdateForm(
+            instance=property_obj, prefix="form1")
+        gallery_form = GalleryUpdateForm()
+        floorplan_form = FloorPlanUpdateForm(instance=floor_plan)
+        property_details_form = DetailsUpdateForm(
+            instance=prop_details, prefix="form2")
+
+    context["property_form"] = property_form
+    context["gallery_form"] = gallery_form
+    context["floorplan_form"] = floorplan_form
+    context["property_details_form"] = property_details_form
+    context["property"] = property_obj
+
+    return render(request, 'users/update_property.html', context)

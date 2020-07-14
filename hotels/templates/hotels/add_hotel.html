@@ -292,10 +292,10 @@
 
         // Add room
         $("#add-room").click(function (e) {
-            e.preventDefault();            
+            e.preventDefault();
             $("input").prop("required", false)
             $("textarea").prop("required", false);
-            
+
             $(`                
                 <div id="extra-item">     
                     <div class="text-right sm-right">
@@ -325,12 +325,12 @@
                     </div>
                 </div>
             `).appendTo('.extra-listing');
-            
-            $("#remove-room").click(function(e){
-                e.preventDefault();                                
+
+            $("#remove-room").click(function (e) {
+                e.preventDefault();
                 $(this).parent().parent().remove();
             })
-        });        
+        });
 
         // Add FAQ
 
@@ -339,7 +339,7 @@
 
             $("input").prop("required", false)
             $("textarea").prop("required", false);
-            
+
             $(`
                 <div id="extra-item">                    
                     <div class="extra-faq">
@@ -366,8 +366,8 @@
                 </div>
             `).appendTo('.extra-faq');
 
-            $("#remove-faq").click(function(e){
-                e.preventDefault();                                
+            $("#remove-faq").click(function (e) {
+                e.preventDefault();
                 $(this).parent().parent().remove();
             })
         });
