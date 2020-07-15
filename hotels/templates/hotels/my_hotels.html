@@ -64,8 +64,8 @@
                                         <!-- <div class="views">Views : <span>178</span></div> -->
                                     </div>
                                     <div class="listing-button">
-                                        <!-- <a href="{% url 'hotels:update-hotel' hotel.id %}" class="btn v3"><i
-                                                class="ion-edit"></i> Edit</a> -->
+                                        <a href="{% url 'hotels:update-hotel' hotel.pk %}" class="btn v3"><i
+                                                class="ion-edit"></i> Edit</a>
                                         <a href="#" class="btn v4"
                                             onclick="deleteHotel('{{ hotel.name }}', '{{ hotel.id }}');"><i
                                                 class="ion-android-delete"></i> Delete</a>
