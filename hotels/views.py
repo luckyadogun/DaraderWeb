@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 from users.decorators import staff_or_manager_required
 from .helpers import hotel_email_booking_request, user_hotel_email_booking_request
-from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm, HotelUpdateForm, RoomUpdateForm, HotelPhotosUpdateForm, FAQUpdateForm
+from .forms import HotelForm, RoomForm, HotelPhotosForm, FAQForm, HotelBookingRequestForm, HotelUpdateForm, HotelPhotosUpdateForm
 from .models import Hotel, HotelPhotos, Room, FAQ, HotelBookingRequest, BookmarkedHotel
 
 
@@ -156,8 +156,6 @@ def hotel_booking_view(request):
 @login_required
 @staff_or_manager_required
 def hotel_delete_view(request):
-    print("here")
-    print(request.POST.get("hotelID"))
     if request.is_ajax and request.method == "POST":
         hotel_id = request.POST.get("hotelID")
         hotel_obj = get_object_or_404(Hotel, pk=hotel_id)
@@ -174,56 +172,60 @@ def update_hotel(request, pk=None):
     context = {}
 
     hotel_obj = get_object_or_404(Hotel, id=pk)
-    room_obj = get_object_or_404(
-        Room, hotel=hotel_obj)
-    faq_obj = get_object_or_404(FAQ, hotel=hotel_obj)
 
     if not hotel_obj.creator == request.user:
         raise Http404("Unauthorized access!")
 
     if request.is_ajax and request.method == "POST":
 
-        hotel_form = HotelUpdateForm(
-            request.POST, instance=hotel_obj, prefix="form1")
-        hotelPhotos_form = HotelPhotosUpdateForm(request.POST, request.FILES)
-        room_form = RoomUpdateForm(
-            request.POST, request.FILES, instance=room_obj)
-        faq_form = FAQUpdateForm(
-            request.POST, instance=faq_form, prefix="form2")
-
+        hotel_form = HotelUpdateForm(request.POST, instance=hotel_obj)
+        hotel_photos_form = HotelPhotosUpdateForm(request.POST, request.FILES)
         forms = all([
                 hotel_form.is_valid(),
-                hotelPhotos_form.is_valid(),
-                room_form.is_valid(),
-                faq_form.is_valid()])
-
+                hotel_photos_form.is_valid()])
         if forms:
-            print("here")
-            # property_obj = property_form.save()
-            # property_details_form.save()
-            # floorplan_form.save()
-
-            # uploaded_images = request.FILES.getlist('image')            
-
-            # for img in uploaded_images:
-            #     gallery = Gallery(
-            #         property_obj=property_obj,
-            #         image=img)
-            #     gallery.save()         
-
+            hotel_instance = hotel_form.save()
+            uploaded_images = request.FILES.getlist('photo')
+            if uploaded_images:
+                for image in uploaded_images:
+                    uploaded_image = HotelPhotos(photo=image, hotel=hotel_instance)
+                    uploaded_image.save()
+            faq_ids = request.POST.getlist('faq_id')
+            questions = request.POST.getlist('question')
+            answers = request.POST.getlist('answer')
+            room_ids = request.POST.getlist('room_id')
+            room_names = request.POST.getlist('room_name')
+            prices = request.POST.getlist('price')
+            infos = request.POST.getlist('information')
+            for room_id, room_name, room_price, room_info in zip(room_ids, room_names, prices, infos):
+                # If the room has an id, then update its details
+                if room_id:
+                    room_instance = Room.objects.get(id=room_id)
+                    room_instance.room_name = room_name
+                    room_instance.price = room_price
+                    room_instance.information = room_info
+                    room_instance.save()
+                # If it doesn't have an id, create a new room as it doesn't exist
+                else:
+                    room_instance = Room(room_name=room_name, price=room_price, information=room_info, hotel=hotel_instance)
+                    room_instance.save()
+            for faq_id, question, answer in zip(faq_ids, questions, answers):
+                # If the faq has an id, update the room details
+                if faq_id:
+                    faq_instance = FAQ.objects.get(id=faq_id)
+                    faq_instance.question = question
+                    faq_instance.answer = answer
+                    faq_instance.save()
+                # If the faq doesn't have an id, create a new room
+                else:
+                    faq_instance = FAQ(question=question, answer=answer, hotel=hotel_instance)
+                    faq_instance.save()            
             return JsonResponse({"result": "Success"})
     else:
-        property_form = PropertyUpdateForm(
-            instance=property_obj, prefix="form1")
-        gallery_form = GalleryUpdateForm()
-        floorplan_form = FloorPlanUpdateForm(instance=floor_plan)
-        property_details_form = DetailsUpdateForm(
-            instance=prop_details, prefix="form2")
+        hotel_form = HotelUpdateForm(instance=hotel_obj)
+        hotel_photos_form = HotelPhotosUpdateForm()
+    context["hotel_form"] = hotel_form
+    context["hotel_photos_form"] = hotel_photos_form
+    context["hotel"] = hotel_obj
 
-    context["property_form"] = property_form
-    context["gallery_form"] = gallery_form
-    context["floorplan_form"] = floorplan_form
-    context["property_details_form"] = property_details_form
-    context["property"] = property_obj
-
-    return render(request, 'users/update_property.html', context)
+    return render(request, 'hotels/update_hotel.html', context)

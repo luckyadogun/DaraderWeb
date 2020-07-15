@@ -140,9 +140,9 @@ class HotelForm(forms.ModelForm):
 class HotelUpdateForm(HotelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['placeholder'] = self.instance.title
+        self.fields['name'].widget.attrs['placeholder'] = self.instance.name
         self.fields['address'].widget.attrs['placeholder'] = self.instance.address
-        self.fields['number_of_rooms'].widgets.attrs['value'] = self.instance.number_of_rooms
+        # self.fields['number_of_rooms'].widgets.attrs['placeholder'] = self.instance.number_of_rooms
         self.fields['hotel_type'].widget.attrs['value'] = self.instance.hotel_type
         self.fields['average_price'].widget.attrs['placeholder'] = self.instance.average_price
         self.fields['description'].widget.attrs['placeholder'] = self.instance.description
@@ -152,18 +152,3 @@ class HotelPhotosUpdateForm(HotelPhotosForm):
     def __init(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['photo'].widget.attrs['required'] = False
-
-
-class RoomUpdateForm(RoomForm):
-    def __init(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['room_name'].widget.attrs['placeholder'] = self.instance.room_name
-        self.fields['price'].widget.attrs['placeholder'] = self.instance.price
-        self.fields['information'].widget.attrs['placeholder'] = self.instance.information
-
-
-class FAQUpdateForm(FAQForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['question'].widget.attrs['placeholder'] = self.instance.question
-        self.fields['answer'].widget.attrs['placeholder'] = self.instance.answer
