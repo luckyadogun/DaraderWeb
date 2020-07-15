@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 from users.decorators import staff_or_manager_required
 from .helpers import hotel_email_booking_request, user_hotel_email_booking_request
@@ -27,8 +27,7 @@ def add_hotel_view(request):
             hotel_instance = hotel_form.save(commit=False)
             hotel_instance.creator = request.user
             hotel_instance.save()
-            # We don't need the or the getlist will retrn a list even if it contains a single item
-            # uploaded_images = request.FILES.getlist('photo') or request.FILES.get('photo')
+            
             uploaded_images = request.FILES.getlist('photo')
             # Since the form accept submission without images
             # Make sure you don't loop when the image list is empty
@@ -72,16 +71,6 @@ def add_hotel_view(request):
 
     return render(request, 'hotels/add_hotel.html', context)
 
-# @method_decorator([login_required], name='dispatch')
-# class MyHotelBookingsView(LoginRequiredMixin, ListView):
-#     template_name = "hotels/my_hotel_bookings.html"
-#     context_object_name = "hotel_bookings"
-#     paginate_by = 10
-
-#     def get_queryset(self):
-#         return HotelBookingRequest.objects.filter(
-#             client=self.request.user,
-#             status="booked")
 
 @login_required
 def hotel_details(request, pk):
@@ -109,14 +98,7 @@ def hotel_details(request, pk):
 
     context["object"] = obj
     context["recent_hotels"] = Hotel.objects.order_by("created").reverse()[:3]
-    # context["featured"] = get_currently_featured()
-    context["images"] = [x.photo.url for x in obj.hotelPhotos.all()]
-    # context["similar"] = PropertyDetails.objects.filter(
-    #     Q(property_obj__title__icontains=obj.property_obj.title) |
-    #     Q(property_obj__property_type=obj.property_obj.property_type) |
-    #     Q(property_obj__lga=obj.property_obj.lga) |
-    #     Q(property_obj__owner=obj.property_obj.owner)
-    # )
+    context["images"] = [x.photo.url for x in obj.hotelPhotos.all()]    
     context["hotel_bookingform"] = hotel_bookingform
 
     return render(request, 'hotels/single_hotel.html', context)
@@ -142,10 +124,8 @@ def hotel_booking_view(request):
         hotel_name = hotel.name
         room_name = room.room_name
         user_name = request.user.username
-        user_email = request.user.email
-        # Send the mail containing the user, room and hotel to the management
-        hotel_email_booking_request(hotel_email, hotel_name, user_name, room_name, user_email)
-        # Send the mail containing the hotel and room to the user
+        user_email = request.user.email        
+        hotel_email_booking_request(hotel_email, hotel_name, user_name, room_name, user_email)        
         user_hotel_email_booking_request(user_email, user_name, room_name, hotel_name)
         return JsonResponse({"result": "Success"})
     except Room.DoesNotExist:
