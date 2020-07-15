@@ -8,6 +8,8 @@ from users.models import User
 class Hotel(TimeStampedModel):
     HOTEL_TYPE_CHOICES = (
         ("Hotel", "Hotel"),
+        ("Motel", "Motel"),
+        ("Inn", "Inn")
     )
 
     name = models.CharField(_("name"), max_length=200, unique=True)
