@@ -36,7 +36,7 @@
                                     <div class="most-viewed-img">
                                         {% for img in hotel.hotelPhotos.all %}
                                         {% if forloop.first %}
-                                        <a href="{{ property.get_absolute_url }}" target="_blank">
+                                        <a href="{% url 'hotels:hotel-details' hotel.name %}" target="_blank">
                                             <img src="{{ img.photo.url }}" alt="{{hotel.name}}">
                                         </a>
                                         {% endif %}
@@ -47,7 +47,7 @@
                                         </ul>
                                     </div>
                                     <div class="most-viewed-detail">
-                                        <h3><a href="{% url 'hotels:hotel-details' hotel.pk %}"
+                                        <h3><a href="{% url 'hotels:hotel-details' hotel.name %}"
                                                 target="_blank">{{ hotel.name }}</a></h3>
                                         <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ hotel.address }}
                                         </p>
@@ -64,7 +64,7 @@
                                         <!-- <div class="views">Views : <span>178</span></div> -->
                                     </div>
                                     <div class="listing-button">
-                                        <a href="{% url 'hotels:update-hotel' hotel.pk %}" class="btn v3"><i
+                                        <a href="{% url 'hotels:update-hotel' hotel.name %}" class="btn v3"><i
                                                 class="ion-edit"></i> Edit</a>
                                         <a href="#" class="btn v4"
                                             onclick="deleteHotel('{{ hotel.name }}', '{{ hotel.id }}');"><i

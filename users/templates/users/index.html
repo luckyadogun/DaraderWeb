@@ -156,7 +156,7 @@
                                         </ul> -->
                                     </div>
                                     <div class="most-viewed-detail">
-                                        <h3><a href="{% url 'hotels:hotel-details' recent.pk %}"
+                                        <h3><a href="{% url 'hotels:hotel-details' recent.name %}"
                                                 target="_blank">{{ recent.name|truncatewords:5 }}</a></h3>
                                         <p class="list-address"><i
                                                 class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>

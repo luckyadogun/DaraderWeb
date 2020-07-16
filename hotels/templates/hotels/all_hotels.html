@@ -1,0 +1,449 @@
+{% extends "property_base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% load total_properties %}
+
+{% block title %} Find amazing properties in Nigeria {% endblock title %}
+
+{% block header %}
+{% include "properties_components/header__v1.html" %}
+{% endblock %}
+
+{% block content %}
+<!--Breadcrumb section starts-->
+<div class="breadcrumb-section bg-h" style="background-image: url('{% static 'assets/images/header/header_11.png' %}')">
+    <div class="overlay op-5"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <div class="breadcrumb-menu">
+                    <h2>Hotel Listing</h2>
+                    <span><a href="{% url 'properties:home' %}">Home</a></span>
+                    <span>Hotel Listing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Breadcrumb section ends-->
+
+<!--Listing Filter starts-->
+<div class="filter-wrapper style1 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 order-xl-12 order-xl-2 order-2 py-100">
+                <div class="sidebar-content-left">
+                    <div class="row pb-30 align-items-center">
+                        <div class="col-lg-3 col-sm-5 col-5">
+                            <div class="item-view-mode res-box">
+                                <!-- item-filter-list Menu starts -->
+                                <ul class="nav item-filter-list" role="tablist">
+                                    <li><a data-toggle="tab" href="#grid-view"><i class="fas fa-th"></i></a></li>
+                                    <li><a class="active" data-toggle="tab" href="#list-view"><i
+                                                class="fas fa-list"></i></a></li>
+                                </ul>
+                                <!-- item-filter-list Menu ends -->
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-4 col-sm-7 col-7">
+                                <select class="listing-input hero__form-input  form-control custom-select">
+                                    <option>Sort by Newest</option>
+                                    <option>Sort by Oldest</option>
+                                    <option>Sort by Featured</option>
+                                    <option>Sort by Price(Low to High)</option>
+                                    <option>Sort by Price(Low to High)</option>
+                                </select>
+                            </div> -->
+                        <!-- <div class="col-lg-5 col-sm-12">
+                                <div class="item-element res-box  text-right sm-left">
+                                    <p>Showing <span>1-15 of 69</span> Listings</p>
+                                </div>
+                            </div> -->
+                    </div>
+
+                    <div class="item-wrapper pt-20    ">
+                        <div class="tab-content" id="myTabContent">
+                            <!-- Working one -->
+                            <div class="tab-pane fade property-grid" id="grid-view">
+                                <div class="row">
+                                    {% for hotel in hotels %}
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="single-property-box">
+                                            <div class="property-item">
+                                                {% for img in hotel.hotelPhotos.all %}
+                                                <a class="property-img"
+                                                    href="{% url 'hotels:hotel-details' hotel.name %}">
+                                                    {% if forloop.first %}
+                                                    <img src="{{ img.photo.url }}" alt="#">
+                                                    {% endif %}
+                                                </a>
+                                                {% endfor %}
+                                                <ul class="feature_text">
+                                                    <!-- {% if property.property_obj.owner.is_featured %}
+                                                    <li class="feature_cb"><span> Featured</span></li>
+                                                    {% endif %} -->
+                                                    <li class="feature_or"><span>FOR
+                                                            {{ hotel.hotel_type|upper }}</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="property-author-wrap">
+                                                    <a href="#" class="property-author">
+                                                        <!-- {% if property.property_obj.owner.logo.url %}
+                                                        <img src="{{ property.property_obj.owner.logo.url }}" alt="...">
+                                                        {% endif %} -->
+                                                        <span>{{ hotel.creator }}</span>
+                                                    </a>
+                                                    <!-- <ul class="save-btn">
+                                                        <li id="bookmark-this" value="{{property.pk}}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Bookmark"><a href="#"><i
+                                                                    class="lnr lnr-heart"></i></a></li>
+                                                    </ul> -->
+                                                </div>
+                                            </div>
+                                            <div class="property-title-box">
+                                                <h4><a
+                                                        href="{% url 'hotels:hotel-details' hotel.name %}">{{ hotel.name }}</a>
+                                                </h4>
+                                                <div class="property-location">
+                                                    <i class="fa fa-map-marker-alt"></i>
+                                                    <p>{{ hotel.address }}</p>
+                                                </div>
+                                                <!-- <ul class="property-feature">
+                                                    <li> <i class="fas fa-bed"></i>
+                                                        <span>{{ property.bedrooms }} Bedrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-bath"></i>
+                                                        <span>{{ property.bathrooms }} Bathrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-arrows-alt"></i>
+                                                        <span>{{ property.total_area }} sq ft</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-car"></i>
+                                                        <span>{{ property.parking_spaces }} Garage</span>
+                                                    </li>
+                                                </ul> -->
+                                                <div class="trending-bottom">
+                                                    <div class="trend-left float-left">
+                                                        <ul class="product-rating">
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <a class="trend-right float-right">
+                                                        <div class="trend-open">
+                                                            <p><span
+                                                                    class="per_sale">Price:</span>₦{{ hotel.average_price|floatformat|intcomma }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- working one ends -->
+
+                            <div class="tab-pane  show active  fade  property-list" id="list-view">
+                                {% for hotel in hotels %}
+                                <div class="single-property-box">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="property-item">
+                                                <a class="property-img"
+                                                    href="{% url 'hotels:hotel-details' hotel.name %}">
+                                                    <img src="{{ hotel.hotelPhotos.first.photo.url }}" alt="#">
+                                                </a>
+                                                <ul class="feature_text">
+                                                    <!-- {% if property.property_obj.owner.is_featured %}
+                                                    <li class="feature_cb"><span> Featured</span></li>
+                                                    {% endif %} -->
+                                                    <li class="feature_or"><span>FOR
+                                                            {{ hotel.hotel_type|upper }}</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="property-author-wrap">
+                                                    <a href="#" class="property-author">
+                                                        <!-- {% if property.property_obj.owner.logo.url %}
+                                                        <img src="{{ property.property_obj.owner.logo.url }}" alt="...">
+                                                        {% endif %} -->
+                                                        <span>{{ hotel.creator }}</span>
+                                                    </a>
+                                                    <!-- <ul class="save-btn">
+                                                        <li id="bookmark-this" value="{{property.pk}}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Bookmark"><a href="#"><i
+                                                                    class="lnr lnr-heart"></i></a></li>
+                                                    </ul> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="property-title-box">
+                                                <h4><a
+                                                        href="{% url 'hotels:hotel-details' hotel.name %}">{{ hotel.name }}</a>
+                                                </h4>
+                                                <div class="property-location">
+                                                    <i class="fa fa-map-marker-alt"></i>
+                                                    <p>{{ hotel.address }}</p>
+                                                </div>
+
+                                                <!-- <ul class="property-feature">
+                                                    {% if property.property_obj.property_type == "land" %}
+                                                    <li> <i class="fas fa-arrows-alt"></i>
+                                                        <span>{{ property.covered_area }} sqm</span>
+                                                    </li>
+                                                    {% else %}
+                                                    <li> <i class="fas fa-bed"></i>
+                                                        <span>{{ property.bedrooms }} Bedrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-bath"></i>
+                                                        <span>{{ property.bathrooms }} Bathrooms</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-arrows-alt"></i>
+                                                        <span>{{ property.total_area }} sq ft</span>
+                                                    </li>
+                                                    <li> <i class="fas fa-car"></i>
+                                                        <span>{{ property.parking_spaces }} Garage</span>
+                                                    </li>
+                                                    {% endif %}
+                                                </ul> -->
+                                                <div class="trending-bottom">
+                                                    <div class="trend-left float-left">
+                                                        <ul class="product-rating">
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                            <li><i class="fas fa-star-half-alt"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <a class="trend-right float-right">
+                                                        <div class="trend-open">
+                                                            <p><span>Price:</span>₦{{ hotel.average_price|floatformat|intcomma }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!--pagination starts-->
+                            {% if is_paginated %}
+                            <div class="post-nav nav-res pt-50  ">
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-2  col-xs-12 ">
+                                        <div class="page-num text-center">
+                                            <ul>
+                                                {% for i in paginator.page_range %}
+                                                {% if page_obj.number == i %}
+                                                <li class="active"><a
+                                                        href="?{{ qs }}&page={{ page_obj.page_number }}">{{ i }}</a>
+                                                </li>
+                                                {% else %}
+                                                <li><a href="?{{ qs }}&page={{ i }}">{{ i }}</a></li>
+                                                {% endif %}
+                                                {% endfor %}
+
+                                                {% if page_obj.has_next %}
+                                                <li><a href="?{{ qs }}&page={{ page_obj.next_page_number }}"><i
+                                                            class="lnr lnr-chevron-right"></i></a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <!--pagination ends-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 order-xl-12 order-xl-1 order-1">
+                <!--Sidebar starts-->
+                <div class="sidebar-right">
+                    <div class="widget filter-widget">
+                        <form class="hero__form v2 filter" id="formData">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3 ">
+                                    <input class="hero__form-input  form-control custom-select" id="place-event"
+                                        name="location" placeholder="Enter Property Location...">
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3">
+                                    <select class="hero__form-input  form-control custom-select"
+                                        name="property-category">
+                                        <option selected disabled>Property Category</option>
+                                        <option value="rent">For Rent</option>
+                                        <option value="sale">For Sale</option>
+                                        <option value="lease">For Lease</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3">
+                                    <select class="hero__form-input  form-control custom-select" name="property-type">
+                                        <option selected disabled>Property Type</option>
+                                        <option value="flat">Flat</option>
+                                        <option value="house">House</option>
+                                        <option value="land">Land</option>
+                                        <option value="commercial">Commercial</option>
+                                        <option value="event centre">Even Centre</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3">
+                                    <select class="hero__form-input  form-control custom-select" name="bedrooms">
+                                        <option selected disabled>Bedrooms</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3">
+                                    <select class="hero__form-input  form-control custom-select" name="bathrooms">
+                                        <option selected disabled>Bathrooms</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12 mb-3">
+                                    <div class="explore__form-checkbox-list">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="filter-sub-area style1">
+                                                    <div class="filter-title mb-20">
+                                                        <p>Price : <br><span><input type="text" id="amount_two"
+                                                                    name="budget"></span></p>
+                                                    </div>
+                                                    <div id="slider-range_two" class="price-range mb-30">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="filter-checkbox mb-3">
+                                                    <p>Sort By Features</p>
+                                                    <ul>
+                                                        <li>
+                                                            <input id="check-a" type="checkbox" name="basketball"
+                                                                value="true">
+                                                            <label for="check-a">Basketball Court</label>
+                                                        </li>
+                                                        <li>
+                                                            <input id="check-b" type="checkbox" name="swimming-pool"
+                                                                value="true">
+                                                            <label for="check-b">Swimming Pool</label>
+                                                        </li>
+                                                        <li>
+                                                            <input id="check-c" type="checkbox" name="gym" value="true">
+                                                            <label for="check-c">Gym</label>
+                                                        </li>
+                                                        <li>
+                                                            <input id="check-d" type="checkbox" name="wheelchair"
+                                                                value="true">
+                                                            <label for="check-d">Wheelchair Friendly</label>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-4 col-sm-6 col-12">
+                                    <button class="btn v8" id="submit" type="submit" name="submit"> Search
+                                        Property</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="widget mortgage-widget">
+                            <h3 class="widget-title">Property Mortgage</h3>
+                            <form action="#" method="GET" enctype="multipart/form-data">
+                                <div class="mortgage-group">
+                                    <span class="mortgage-icon">$</span>
+                                    <input class="mortgage-field" type="text" name="amount-one" id="amount-one" placeholder="Total Amount">
+                                </div>
+                                <div class="mortgage-group">
+                                    <span class="mortgage-icon">$</span>
+                                    <input class="mortgage-field" type="text" name="amount-two" id="amount-two" placeholder="Down Payment">
+                                </div>
+                                <div class="mortgage-group">
+                                    <span class="mortgage-icon">$</span>
+                                    <input class="mortgage-field" type="text" name="amount-three" id="amount-three" placeholder="Loan Terms(Years)">
+                                </div>
+                                <div class="mortgage-group">
+                                    <span class="mortgage-icon">%</span>
+                                    <input class="mortgage-field" type="text" name="amount-four" id="amount-four" placeholder="Total Amount">
+                                </div>
+                                <div class="mortgage-btn">
+                                    <button type="submit" data-toggle="modal" data-target="#mortgage_result">Calculate</button>
+                                </div>
+                            </form>
+                        </div> -->
+
+                    <div class="widget categories">
+                        <h3 class="widget-title">Property Type</h3>
+                        <ul class="icon">
+                            <li><a href="{% url 'properties:all' %}">All</a><span>({% total_properties %})</span></li>
+                            <li><a href="{% url 'properties:flats' %}">Flats</a><span>({{total_flats}})</span></li>
+                            <li><a href="{% url 'properties:houses' %}">Houses</a> <span>({{total_houses}})</span></li>
+                            <li><a href="{% url 'properties:lands' %}">Land</a><span>({{total_lands}})</span></li>
+                            <li><a href="{% url 'properties:commercial_spaces' %}">Commercial
+                                    Spaces</a><span>({{total_commercials}})</span></li>
+                            <li><a href="{% url 'properties:event_centres' %}">Event
+                                    Centres</a><span>({{total_event_centres}})</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="widget recent">
+                        <h3 class="widget-title">Recently Added</h3>
+
+                        {% for recent in recent_hotels %}
+                        <li class="row recent-list">
+                            <div class="col-lg-5 col-4">
+                                <div class="entry-img">
+                                    {% for img in recent.hotelPhotos.all %}
+                                    {% if forloop.first %}
+                                    <img src="{{ img.photo.url }}" alt="#">
+                                    <span>FOR {{ recent.hotel_type|upper }}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-8 no-pad-left">
+                                <div class="entry-text">
+                                    <h4 class="entry-title"><a
+                                            href="{% url 'hotels:hotel-details' recent.name %}">{{ recent.name }}</a>
+                                    </h4>
+                                    <div class="property-location">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <p>{{ recent.address|truncatewords:3 }}</p>
+                                    </div>
+                                    <div class="trend-open">
+                                        <p><span>Price:</span> ₦{{ recent.average_price|floatformat|intcomma }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!--Sidebar ends-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--Listing Filter ends-->
+
+{% endblock %}

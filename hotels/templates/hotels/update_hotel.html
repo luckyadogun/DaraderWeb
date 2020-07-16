@@ -19,7 +19,7 @@
         <!-- Top header ends-->
         <!--Dashboard content starts-->
         <div class="dash-content">
-            <form id="formData" method="POST" data-update-url="{% url 'hotels:update-hotel' hotel.pk %}">
+            <form id="formData" method="POST" data-update-url="{% url 'hotels:update-hotel' hotel.name %}">
                 {% csrf_token %}
                 <div class="container-fluid">
                     <div class="row">
