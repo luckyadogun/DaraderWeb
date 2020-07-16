@@ -12,7 +12,7 @@ urlpatterns = [
     path('ajax/signup/', signup_view, name="signup"),
     path('ajax/login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-    path('', HomePageView.as_view(), name="home"),
+    path('', HomePageView.as_view(), name="home"),    
     path(
         'search/', SearchResultView.as_view(), 
         {"queryset": "search"}, name="search"),

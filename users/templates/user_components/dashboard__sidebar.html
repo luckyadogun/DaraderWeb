@@ -1,69 +1,90 @@
-{% load static %} 
+{% load static %}
 
-    <aside class="menu-sidebar js-right-sidebar d-block">
-        <div class="logo">
-            <a href="{% url 'users:dashboard' %}">
-                <img src="{% static 'assets/images/logo-blue.png' %}" alt="SarchHolm" />
-            </a>
-        </div>
-        <div class="menu-sidebar__content js-scrollbar2">
-            <nav class="navbar-sidebar2">
-                <ul class="list-unstyled navbar__list">
-                    <li>
-                        <a {% if 'my/dashboard' in request.path %}class="active"{% endif %} href="{% url 'users:dashboard' %}">
-                            <i class="ion-ios-gear-outline"></i>Dashboard
-                        </a>
-                    </li> 
-                    {% if user.is_admin or user.is_staff %}  
-                        <li>
-                            <a {% if 'my/properties/manage' in request.path %}class="active"{% endif %} href="{% url 'users:manage-properties' %}">
-                                <i class="ion-social-buffer-outline"></i>Manage Properties
-                            </a>
-                        </li>
-                    {% endif %}
-                        
-                    <li>
-                        <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:bookmarked' %}">
+<aside class="menu-sidebar js-right-sidebar d-block">
+    <div class="logo">
+        <a href="{% url 'users:dashboard' %}">
+            <img src="{% static 'assets/images/logo-blue.png' %}" alt="SarchHolm" />
+        </a>
+    </div>
+    <div class="menu-sidebar__content js-scrollbar2">
+        <nav class="navbar-sidebar2">
+            <ul class="list-unstyled navbar__list">
+                <li>
+                    <a {% if 'my/dashboard' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:dashboard' %}">
+                        <i class="ion-ios-gear-outline"></i>Dashboard
+                    </a>
+                </li>
+                {% if user.is_admin or user.is_staff %}
+                <li>
+                    <a {% if 'my/properties/manage' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:manage-properties' %}">
+                        <i class="ion-social-buffer-outline"></i>Manage Properties
+                    </a>
+                </li>
+                <li>
+                    <a {% if 'hotels/my-hotels' in request.path %}class="active" {% endif %}
+                        href="{% url 'hotels:my-hotels' %}">
+                        <i class="ion-social-buffer-outline"></i>My Hotels
+                    </a>
+                </li>
+                <li>
+                    <a {% if 'hotels/add-hotel' in request.path %}class="active" {% endif %}
+                        href="{% url 'hotels:add-hotel' %}">
+                        <i class="ion-ios-plus-outline"></i>Add Hotel
+                    </a>
+                </li>
+                {% endif %}
+
+                <li>
+                    <a {% if 'my/bookings' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:bookmarked' %}">
                         <i class="ion-ios-heart-outline"></i>Bookmarks</a>
-                    </li>
-                    {% if user.is_account_manager %}
-                        <li>
-                            <a {% if 'my/properties' in request.path %}class="active"{% endif %} href="{% url 'users:my-properties' %}">
-                                <i class="ion-social-buffer-outline"></i>My Properties
-                            </a>
-                        </li>
-                        {% if user.company.exists %}
-                        <li>
-                            <a {% if 'my/company/update' in request.path %}class="active"{% endif %} href="{% url 'users:update-company' %}">
-                                <i class="ion-ios-plus-outline"></i>Update Company
-                            </a>
-                        </li>
-                        <li>
-                            <a {% if 'my/add-property' in request.path %}class="active"{% endif %} href="{% url 'users:add-property' %}">
-                                <i class="ion-ios-plus-outline"></i>Add Property</a>
-                        </li>  
-                        {% else %}
-                        <li>
-                            <a {% if 'my/company/add' in request.path %}class="active"{% endif %} href="{% url 'users:add-company' %}">
-                                <i class="ion-ios-plus-outline"></i>Setup Company
-                            </a>
-                        </li> 
-                        {% endif %}                  
-                        <li>
-                            <a {% if 'my/bookings' in request.path %}class="active"{% endif %} href="{% url 'users:my-bookings' %}">
-                                <i class="ion-ios-copy-outline"></i>Booking Request</a>
-                        </li>   
-                                                                                                           
-                    {% endif %}
-                    <li>
-                        <a {% if 'my/account' in request.path %}class="active"{% endif %} href="{% url 'users:account' %}">
-                            <i class="ion-ios-person-outline"></i>My profile</a>
-                    </li>                    
-                    <li>
-                        <a {% if '/logout' in request.path %}class="active"{% endif %} href="{% url 'properties:logout' %}">
-                            <i class="ion-ios-upload-outline"></i>Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
+                </li>
+                {% if user.is_account_manager %}
+                <li>
+                    <a {% if 'my/properties' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:my-properties' %}">
+                        <i class="ion-social-buffer-outline"></i>My Properties
+                    </a>
+                </li>
+                {% if user.company.exists %}
+                <li>
+                    <a {% if 'my/company/update' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:update-company' %}">
+                        <i class="ion-ios-plus-outline"></i>Update Company
+                    </a>
+                </li>
+                <li>
+                    <a {% if 'my/add-property' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:add-property' %}">
+                        <i class="ion-ios-plus-outline"></i>Add Property</a>
+                </li>
+                {% else %}
+                <li>
+                    <a {% if 'my/company/add' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:add-company' %}">
+                        <i class="ion-ios-plus-outline"></i>Setup Company
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    <a {% if 'my/bookings' in request.path %}class="active" {% endif %}
+                        href="{% url 'users:my-bookings' %}">
+                        <i class="ion-ios-copy-outline"></i>Booking Request</a>
+                </li>
+
+                {% endif %}
+                <li>
+                    <a {% if 'my/account' in request.path %}class="active" {% endif %} href="{% url 'users:account' %}">
+                        <i class="ion-ios-person-outline"></i>My profile</a>
+                </li>
+                <li>
+                    <a {% if '/logout' in request.path %}class="active" {% endif %}
+                        href="{% url 'properties:logout' %}">
+                        <i class="ion-ios-upload-outline"></i>Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

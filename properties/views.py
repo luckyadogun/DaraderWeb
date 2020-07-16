@@ -1,7 +1,6 @@
 from django.db.models import Q
 from django.urls import reverse
 from django.contrib import messages
-from django.utils.crypto import get_random_string
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.http import Http404, HttpResponseRedirect, JsonResponse

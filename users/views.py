@@ -37,6 +37,8 @@ from properties.models import (
     BookmarkedProperty, LGA,
     PropertyDetails, FloorPlan)
 
+from hotels.models import Hotel
+
 
 @method_decorator([login_required], name='dispatch')
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -45,6 +47,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context["recent_properties"] = Property.objects.order_by("created")[:3]
+        context["recent_hotels"] = Hotel.objects.order_by("created").reverse()[:3]
 
         return context
 
@@ -101,7 +104,9 @@ def add_property(request):
         gallery_form = GalleryForm(request.POST, request.FILES)
         floorplan_form = FloorPlanForm(request.POST, request.FILES)
         property_details_form = PropertyDetailsForm(
-            request.POST, prefix="form2")       
+            request.POST, prefix="form2")
+
+        print('PD:', property_details_form.errors)
 
         forms = all([
             property_form.is_valid(),

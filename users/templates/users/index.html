@@ -9,132 +9,179 @@
 
 {% block title %} Find amazing properties in Nigeria {% endblock %}
 
-    <div class="page-wrapper">
-        {% block sidebar %}
-            {% include "user_components/dashboard__sidebar.html" %}
-        {% endblock %}
+<div class="page-wrapper">
+    {% block sidebar %}
+    {% include "user_components/dashboard__sidebar.html" %}
+    {% endblock %}
 
-        {% block content %}
-        <!--Dashboard content Wrapper starts-->
-        <div class="dash-content-wrap">
-            <!-- Top header starts-->
-            {% include "user_components/dashboard__header.html" %}
-            <!-- Top header ends-->
-            
-            <!-- Dashboard Statistics starts-->
-            <div class="statistic-wrap mt-60">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--red">
-                                {% if user.is_account_manager %}
-                                    <h2 class="counter-value">{% total_properties user %}</h2>
-                                {% else %}
-                                    <h2 class="counter-value">{% total_properties %}</h2>
-                                {% endif %}
-                                <span class="desc">Total Properties</span>
-                                <div class="icon">
-                                    <img src="{% static 'assets/images//dashboard/home.png' %}" alt="...">
-                                </div>
+    {% block content %}
+    <!--Dashboard content Wrapper starts-->
+    <div class="dash-content-wrap">
+        <!-- Top header starts-->
+        {% include "user_components/dashboard__header.html" %}
+        <!-- Top header ends-->
+
+        <!-- Dashboard Statistics starts-->
+        <div class="statistic-wrap mt-60">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="statistic__item item--red">
+                            {% if user.is_account_manager %}
+                            <h2 class="counter-value">{% total_properties user %}</h2>
+                            {% else %}
+                            <h2 class="counter-value">{% total_properties %}</h2>
+                            {% endif %}
+                            <span class="desc">Total Properties</span>
+                            <div class="icon">
+                                <img src="{% static 'assets/images//dashboard/home.png' %}" alt="...">
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--blue"> 
-                                {% if user.is_account_manager %}  
-                                    <h2 class="counter-value">{% total_for_sale user %}</h2>
-                                {% else %}                                                        
-                                    <h2 class="counter-value">{% total_for_sale %}</h2>
-                                {% endif %}
-                                    <span class="desc">Total Properties For Sale</span>
-                                <div class="icon">
-                                    <img src="{% static 'assets/images//dashboard/review.png' %}" alt="...">
-                                </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="statistic__item item--blue">
+                            {% if user.is_account_manager %}
+                            <h2 class="counter-value">{% total_for_sale user %}</h2>
+                            {% else %}
+                            <h2 class="counter-value">{% total_for_sale %}</h2>
+                            {% endif %}
+                            <span class="desc">Total Properties For Sale</span>
+                            <div class="icon">
+                                <img src="{% static 'assets/images//dashboard/review.png' %}" alt="...">
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--orange">
-                                {% if user.is_account_manager %}
-                                    <h2 class="counter-value">{% total_for_rent user %}</h2>
-                                {% else %}
-                                    <h2 class="counter-value">{% total_for_rent %}</h2>
-                                {% endif %}
-                                    <span class="desc">Total Properties For Rent</span>
-                                <div class="icon">
-                                    <img src="{% static 'assets/images//dashboard/bar-chart.png' %}" alt="...">
-                                </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="statistic__item item--orange">
+                            {% if user.is_account_manager %}
+                            <h2 class="counter-value">{% total_for_rent user %}</h2>
+                            {% else %}
+                            <h2 class="counter-value">{% total_for_rent %}</h2>
+                            {% endif %}
+                            <span class="desc">Total Properties For Rent</span>
+                            <div class="icon">
+                                <img src="{% static 'assets/images//dashboard/bar-chart.png' %}" alt="...">
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="statistic__item item--green">
-                                <h2 class="counter-value">{% total_bookmarks user %}</h2>
-                                <span class="desc">Total Bookmarked</span>
-                                <div class="icon">
-                                    <img src="{% static 'assets/images//dashboard/like.png' %}" alt="...">
-                                </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="statistic__item item--green">
+                            <h2 class="counter-value">{% total_bookmarks user %}</h2>
+                            <span class="desc">Total Bookmarked</span>
+                            <div class="icon">
+                                <img src="{% static 'assets/images//dashboard/like.png' %}" alt="...">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Dashboard Statistics ends-->
-            <!--Dashboard content starts-->
-            <div class="dash-content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-12">
-                            <div class="act-title">
-                                <h5>Nigeria Property Market Statistics</h5>
-                            </div>
-                            <div class="page_view_chart">
-                                <canvas id="buyers"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-12">
-                            <div class="popular-listing">
-                                <div class="act-title">
-                                    <h5>Popular Properties</h5>
-                                </div>
-                                <div class="viewd-item-wrap">
-                                    {% for recent in recent_properties %}
-                                        <div class="most-viewed-item">
-                                            <div class="most-viewed-img">
-                                                {% for img in recent.gallery.all %}
-                                                    {% if forloop.first %}                                                    
-                                                        <a href="{{ property.get_absolute_url }}" target="_blank">
-                                                            <img src="{{ img.image.url }}" alt="{{recent.title}}">
-                                                        </a>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                <ul class="feature_text v2">
-                                                    <li class="feature_or"> <span>FOR {{ recent.property_category|upper }}</span></li>
-                                                </ul>
-                                            </div>
-                                            <div class="most-viewed-detail">
-                                                <h3><a href="{{ recent.get_absolute_url }}" target="_blank">{{ recent.title|truncatewords:5 }}</a></h3>
-                                                <p class="list-address"><i class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
-                                                <div class="ratings">
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star-half"></i>
-                                                </div>
-                                                <!-- <div class="views">Views : <span>178</span></div> -->
-                                            </div>
-                                        </div> 
-                                    {% endfor %}                                   
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Dashboard content ends-->
-            <!--Dashboard footer starts-->
-            {% include "user_components/dashboard__footer.html" %}
-            <!--Dashboard footer ends-->
         </div>
-        {% endblock %}
-        <!--Dashboard content Wrapper ends-->
+        <!-- Dashboard Statistics ends-->
+        <!--Dashboard content starts-->
+        <div class="dash-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- GRAPH -->
+                    <!-- <div class="col-xl-6 col-lg-12"> -->
+                    <div class="col-xl-4 col-lg-12">
+                        <div class="act-title">
+                            <h5>Nigeria Property Market Statistics</h5>
+                        </div>
+                        <div class="page_view_chart">
+                            <canvas id="buyers"></canvas>
+                        </div>
+                    </div>
+                    <!-- POPULAR PROPERTIES -->
+                    <!-- <div class="col-xl-6 col-lg-12"> -->
+                    <div class="col-xl-4 col-lg-12">
+                        <div class="popular-listing">
+                            <div class="act-title">
+                                <h5>Popular Properties</h5>
+                            </div>
+                            <div class="viewd-item-wrap">
+                                {% for recent in recent_properties %}
+                                <div class="most-viewed-item">
+                                    <div class="most-viewed-img">
+                                        {% for img in recent.gallery.all %}
+                                        {% if forloop.first %}
+                                        <a href="{{ property.get_absolute_url }}" target="_blank">
+                                            <img src="{{ img.image.url }}" alt="{{recent.title}}">
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <ul class="feature_text v2">
+                                            <li class="feature_or"> <span>FOR
+                                                    {{ recent.property_category|upper }}</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="most-viewed-detail">
+                                        <h3><a href="{{ recent.get_absolute_url }}"
+                                                target="_blank">{{ recent.title|truncatewords:5 }}</a></h3>
+                                        <p class="list-address"><i
+                                                class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
+                                        <div class="ratings">
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star-half"></i>
+                                        </div>
+                                        <!-- <div class="views">Views : <span>178</span></div> -->
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- POPULAR HOTELS -->
+                    <div class="col-xl-4 col-lg-12">
+                        <div class="popular-listing">
+                            <div class="act-title">
+                                <h5>Popular Hotels</h5>
+                            </div>
+                            <div class="viewd-item-wrap">
+                                {% for recent in recent_hotels %}
+                                <div class="most-viewed-item">
+                                    <div class="most-viewed-img">
+                                        {% for img in recent.hotelPhotos.all %}
+                                        {% if forloop.first %}
+                                        <a href="{% url 'hotels:hotel-details' recent.pk %}" target="_blank">
+                                            <img src="{{ img.photo.url }}" alt="{{recent.title}}">
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <!-- <ul class="feature_text v2">
+                                            <li class="feature_or"> <span>FOR
+                                                    {{ recent.property_category|upper }}</span></li>
+                                        </ul> -->
+                                    </div>
+                                    <div class="most-viewed-detail">
+                                        <h3><a href="{% url 'hotels:hotel-details' recent.name %}"
+                                                target="_blank">{{ recent.name|truncatewords:5 }}</a></h3>
+                                        <p class="list-address"><i
+                                                class="fas fa-map-marker-alt"></i>{{ recent.address }}</p>
+                                        <div class="ratings">
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star"></i>
+                                            <i class="ion-ios-star-half"></i>
+                                        </div>
+                                        <!-- <div class="views">Views : <span>178</span></div> -->
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Dashboard content ends-->
+        <!--Dashboard footer starts-->
+        {% include "user_components/dashboard__footer.html" %}
+        <!--Dashboard footer ends-->
     </div>
-    
+    {% endblock %}
+    <!--Dashboard content Wrapper ends-->
+</div>

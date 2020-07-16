@@ -1,6 +1,6 @@
 {
     "python.pythonPath": "/home/lucky/.local/share/virtualenvs/Michael_UBA_Rental_WEB-B425bsET/bin/python",
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
     "python.linting.enabled": true
 }

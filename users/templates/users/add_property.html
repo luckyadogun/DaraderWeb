@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
 
-                                <div class="db-add-list-wrap">
+                                <div class="db-add-list-wrap" id="property-floor">
                                     <div class="act-title">
                                         <h5>Property Floor Plan Details :</h5>
                                     </div>
@@ -171,7 +171,7 @@
                                     </div>
                                     <div class="db-add-listing" id="form-3">                                        
 
-                                            <div class="row mb-30">                                        
+                                            <div class="row mb-30" id="property-details-data">                                        
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Number of Bedrooms</label>
@@ -214,7 +214,7 @@
                                                         {{ property_details_form.covered_area }}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-12" id="amenities">
                                                     <div class="form-group">
                                                         <label>Amenities</label>
                                                         <div class="filter-checkbox">
@@ -265,19 +265,18 @@
 
         $(document).ready(function(e){
             $("#submit").click(function(e){   
-                e.preventDefault();    
+                e.preventDefault();  
                 var form = document.getElementById("formData");  
                 var lga = document.getElementById("lga");
                 var lgaID = lga.selectedOptions[0].value
 
                 var gallery = $("#img_file").get(0).files[0];
                 var floorplan = $("#floorplan_file").get(0).files[0];
-
                 var formData = new FormData(form);
 
                 formData.append('lgaID', lgaID);
                 formData.append('gallery', lgaID);
-                formData.append('floorplan', floorplan);
+                formData.append('floorplan', floorplan);    
 
                 $.ajax({
                     type: "POST",
@@ -302,6 +301,7 @@
             });
         });
 
+        // Load Local Government Areas
         $(document).ready(function(){
             $("#id_form1-state").on("change", function() {
                 var stateID = $("#id_form1-state")[0]['value']; 
@@ -322,6 +322,25 @@
                     });
                 }
             });
+        });
+
+        // Hide Extra form for land property type
+        $(document).ready(function(){
+            $("#id_form1-property_type").on("change", function() {
+                if($(this).val() == "land"){
+                    $("#property-floor").hide();
+                    $("#property-details-data")[0].innerHTML = `
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Land Covered Area</label>
+                                    {{ property_details_form.covered_area }}
+                                </div>
+                            </div>
+                    `
+                } else {
+                    location.reload();
+                }               
+            })
         });
     </script>
 {% endblock %}
