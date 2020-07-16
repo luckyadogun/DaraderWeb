@@ -72,7 +72,6 @@ def add_hotel_view(request):
     return render(request, 'hotels/add_hotel.html', context)
 
 
-# @login_required
 def hotel_details(request, name):
     context = {}
 
@@ -224,86 +223,3 @@ class AllHotelView(ListView):
         context["recent_hotels"] = Hotel.objects.order_by("created").reverse()[:3]
         return context
 
-# class SearchResultView(ListView):
-
-#     template_name = "properties/serp.html"
-#     context_object_name = "properties"
-#     paginate_by = 5
-
-#     def get_queryset(self):
-
-#         search_title = self.request.GET.get("location", "")
-#         property_type = self.request.GET.get("property-type", "")
-#         property_category = self.request.GET.get("property-category", "")
-#         bedrooms = self.request.GET.get("bedrooms", 1)
-#         bathrooms = self.request.GET.get("bathrooms", 1)
-#         budget = self.request.GET.get("budget", "200000 - 300000").split("-")
-#         basketball = self.request.GET.get("basketball")
-#         swimming_pool = self.request.GET.get("swimming-pool")
-#         gym = self.request.GET.get("gym")
-#         wheelchair = self.request.GET.get("wheelchair")
-
-#         submit_action = self.request.GET.get("submit")
-
-#         new_query = PropertyDetails.objects.filter(
-#             Q(property_obj__title__icontains=search_title) |
-#             Q(property_obj__property_type=property_type) |
-#             Q(property_obj__property_category=property_category) |
-#             Q(bedrooms=int(bedrooms)) | Q(bathrooms=int(bathrooms)) |
-#             Q(property_obj__price__range=(int(budget[0]), int(budget[1]))) |
-#             Q(has_basketball_court=bool(basketball)) |
-#             Q(has_swimming_pool=bool(swimming_pool)) | Q(has_gym=bool(gym)) |
-#             Q(is_wheelchair_friendly=bool(wheelchair))
-#             )
-
-#         category_param = ["rent", "sale", "lease", ]
-
-#         type_param = [
-#             "flat", "land",
-#             "house", "commercial",
-#             "event centre", ]
-
-#         if self.kwargs["queryset"] == "search":
-#             if submit_action:
-#                 return new_query
-#             else:
-#                 try:
-#                     return [PropertyDetails.objects.get(pk=qs) for qs in self.request.session["query"]]
-#                 except KeyError:
-#                     return ""
-
-#         if self.kwargs["queryset"] in category_param:
-#             if submit_action:
-#                 return new_query
-#             else:
-#                 return PropertyDetails.objects.filter(
-#                     property_obj__property_category=self.kwargs["queryset"])
-
-#         if self.kwargs["queryset"] in type_param:
-#             if submit_action:
-#                 return new_query
-#             else:
-#                 return PropertyDetails.objects.filter(
-#                     property_obj__property_type=self.kwargs["queryset"])
-
-#         if self.kwargs["queryset"] == "all":
-#             if submit_action:
-#                 return new_query
-#             else:
-#                 return PropertyDetails.objects.all()
-
-#     def get_context_data(self, *args, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["qs"] = self.request.META["QUERY_STRING"]
-#         context["recent_properties"] = Property.objects.order_by("created")[:5]
-#         context["total_flats"] = Property.objects.filter(
-#                                     property_type="flat").count()
-#         context["total_houses"] = Property.objects.filter(
-#                                     property_type="house").count()
-#         context["total_lands"] = Property.objects.filter(
-#                                     property_type="land").count()
-#         context["total_commercials"] = Property.objects.filter(
-#                                     property_type="commercial").count()
-#         context["total_event_centres"] = Property.objects.filter(
-#                                     property_type="event centre").count()
-#         return context
