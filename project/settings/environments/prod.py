@@ -2,7 +2,7 @@ import os
 import dj_database_url
 
 DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET')
 
 ENVIRONMENT = "live"
 ALLOWED_HOSTS = [
