@@ -210,15 +210,10 @@
                                                         </div>
                                                     </div>
 
-<<<<<<< HEAD
-                                                </div>
-                                            </div>                                            
-=======
                                                 {% endfor %}
                                             </div>
                                         </div> 
                                         {% endif %}                                      
->>>>>>> 8598f69c4e84ec03b413e50388652666e7e64b10
                                     </div>
                                     
                                     <div id="book_tour" class="list-details-section">
@@ -284,13 +279,10 @@
                                         </li>
                                     {% endfor %}                                     
                                 </div>
-                            </li>
-                            {% endfor %}
-                        </div>
-                        <div class="widget">
-                            <h3 class="widget-title">Featured Property</h3>
-                            <div class="swiper-container single-featured-list">
-                                <div class="swiper-wrapper">
+                                <div class="widget">
+                                    <h3 class="widget-title">Featured Property</h3>
+                                    <div class="swiper-container single-featured-list">
+                                        <div class="swiper-wrapper">
 
                                             {% for property in featured %}
                                             <div class="swiper-slide single-property-box">
@@ -323,15 +315,8 @@
                                         <div class="slider-btn v3 single-featured-next"><i class="lnr lnr-arrow-right"></i></div>
                                         <div class="slider-btn v3 single-featured-prev"><i class="lnr lnr-arrow-left"></i></div>
                                     </div>
-                                    {% endfor %}
-
                                 </div>
-                                <div class="slider-btn v3 single-featured-next"><i class="lnr lnr-arrow-right"></i>
-                                </div>
-                                <div class="slider-btn v3 single-featured-prev"><i class="lnr lnr-arrow-left"></i></div>
-                            </div>
-                        </div>
-                        <!-- <div class="widget mortgage-widget">
+                                <!-- <div class="widget mortgage-widget">
                                     <h3 class="widget-title">Property Mortgage</h3>
                                     <form action="." method="POST" enctype="multipart/form-data">
                                         <div class="mortgage-group">
@@ -355,6 +340,8 @@
                                         </div>
                                     </form>
                                 </div> -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -436,30 +423,22 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <a class="trend-right float-right">
-                                                <div class="trend-open">
-                                                    <p><span>Price:</span>₦{{ property.property_obj.price|floatformat|intcomma }}
-                                                    </p>
-                                                </div>
-                                            </a>
                                         </div>
                                     </div>
+                                    {% endfor %}
+
                                 </div>
                             </div>
-                            {% endfor %}
-
+                            <div class="slider-btn v2 similar-next"><i class="lnr lnr-arrow-right"></i></div>
+                            <div class="slider-btn v2 similar-prev"><i class="lnr lnr-arrow-left"></i></div>
                         </div>
                     </div>
-                    <div class="slider-btn v2 similar-next"><i class="lnr lnr-arrow-right"></i></div>
-                    <div class="slider-btn v2 similar-prev"><i class="lnr lnr-arrow-left"></i></div>
                 </div>
             </div>
+            <!--Similar Listing ends-->
         </div>
-    </div>
-    <!--Similar Listing ends-->
-</div>
 
-{% endblock %}
+        {% endblock %}
 
 
         {% block footer %}
