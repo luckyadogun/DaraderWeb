@@ -37,22 +37,23 @@
 This API documentation guides developers on the expected structure needed to **add new** functionalities and *consume* existing resources for this application.
 
 #### Objects:
-- Property
-- Users
-- Country
-- State
-- LGA
-- Company
-- Gallery
-- FloorPlan
-- PropertyDetails
-- BookingRequest
-- BookmarkedProperty
-
-- Hotels
-- HotelPhotos
-- Room
-- FAQ
+```
+Property
+Users
+Country
+State
+LGA
+Company
+Gallery
+FloorPlan
+PropertyDetails
+BookingRequest
+BookmarkedProperty
+Hotels
+HotelPhotos
+Room
+FAQ
+```
 
 #### Response Codes
 
