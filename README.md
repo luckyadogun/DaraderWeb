@@ -30,3 +30,66 @@
 - `python manage.py migrate`
 - should you experience a PostgresDB bug do:
    https://github.com/Radu-Raicea/Dockerized-Flask/wiki/%5BDocker%5D-Remove-all-Docker-volumes-to-delete-the-database
+
+
+##API
+
+### Objects:
+- Property
+- Users
+- Country
+- State
+- LGA
+- Company
+- Gallery
+- FloorPlan
+- PropertyDetails
+- BookingRequest
+- BookmarkedProperty
+
+- Hotels
+- HotelPhotos
+- Room
+- FAQ
+
+### URIs:
+#### Property:
+- POST /property
+- GET /property
+- GET /property/{id}
+- PUT /property/{id}
+- DELETE /property/{id}
+- PATCH /property/{id}
+//TODO:
+// Add custom actions if need be
+
+#### Users:
+- POST /user
+- GET /user
+- GET /user/{id}
+- PUT /user/{id}
+- DELETE /user/{id}
+- PATCH /user/{id}
+//TODO:
+// Add custom actions if need be
+
+#### Property:
+- POST /property
+- GET /property
+- GET /property/{id}
+- PUT /property/{id}
+- DELETE /property/{id}
+- PATCH /property/{id}
+//TODO:
+// Add custom actions if need be
+
+#### Country:
+- POST /country
+- GET /country
+- GET /country/{id}
+- PUT /country/{id}
+- DELETE /country/{id}
+- PATCH /country/{id}
+//TODO:
+// Add custom actions if need be
+
