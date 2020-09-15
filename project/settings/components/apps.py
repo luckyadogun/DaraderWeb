@@ -9,9 +9,11 @@ INSTALLED_APPS = [
 
     # third-party
     'storages',
+    'rest_framework',
 
     # local
     'users',
     'properties',
     'hotels',
+    'api',
 ]

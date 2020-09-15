@@ -30,3 +30,150 @@
 - `python manage.py migrate`
 - should you experience a PostgresDB bug do:
    https://github.com/Radu-Raicea/Dockerized-Flask/wiki/%5BDocker%5D-Remove-all-Docker-volumes-to-delete-the-database
+
+
+# API Documentation Darader
+
+This API documentation guides developers on the expected structure needed to **add new** functionalities and *consume* existing resources for this application.
+
+#### Objects:
+```
+Property
+Users
+Country
+State
+LGA
+Company
+Gallery
+FloorPlan
+PropertyDetails
+BookingRequest
+BookmarkedProperty
+Hotels
+HotelPhotos
+Room
+FAQ
+```
+
+#### Response Codes
+
+###### Response Codes
+
+```markdown
+200: Success
+400: Bad request
+401: Unauthorized
+404: Cannot be found
+405: Method not allowed
+422: Unprocessable Entity 
+50X: Server Error
+```
+
+##### Error Codes Details
+
+```
+100: Bad Request
+110: Unauthorized
+120: User Authenticaion Invalid
+130: Parameter Error
+140: Item Missing
+150: Conflict
+160: Server Error
+```
+
+##### Example Error Message
+
+```
+http code 402
+{
+    "code": 120,
+    "message": "invalid crendetials",
+    "resolve": "The username or password is not correct."
+}
+```
+
+
+
+#### Functionalities
+
+## Login
+
+**You send:** Your login credentials. 
+
+**You get:** An `API-Token` with which you can make further actions.
+
+**Request:**
+
+```
+POST: /login 
+{
+    "username": "foo",
+    "password": "1234567" 
+}
+```
+
+**Successful Response:**
+
+```
+STATUS: 200 OK
+{
+   "apitoken": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "expirationDate": "2018-02-13T15:31:55.559Z"
+}
+```
+
+**Failed Response:**
+
+```
+STATUS: 401 Unauthorized
+{
+    "code": 120,
+    "message": "invalid crendetials",
+    "resolve": "The username or password is not correct."
+}
+```
+
+## Register
+
+**You send:** Registration credentials. 
+
+**You get:** A resolve message indicating success
+
+**Request:**
+
+```
+POST: /register
+{
+    "username": "foo",
+    "email": "jonhdoe@email.com",
+    "password": "1234567" 
+    "tos": true
+}
+```
+
+**Successful Response:**
+
+```
+HTTP/1.1 200 OK
+Server: My RESTful API
+Content-Type: application/json
+Content-Length: xy
+
+{
+   "code": 200
+   "message": "Successful"
+   "resolve": "Account Successfully created"
+}
+```
+
+**Failed Response:**
+
+```
+STATUS: 401 Unauthorized
+
+{
+    "code": 120,
+    "message": "invalid crendetials",
+    "resolve": "The username or password is not correct."
+}
+```

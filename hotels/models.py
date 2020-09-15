@@ -110,6 +110,6 @@ class HotelBookingRequest(TimeStampedModel):
 
 
 class BookmarkedHotel(TimeStampedModel):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarkedHotel')
     hotel = models.ForeignKey(
-        Hotel, on_delete=models.CASCADE)
+        Hotel, on_delete=models.CASCADE, related_name='bookmarkedHotel')
