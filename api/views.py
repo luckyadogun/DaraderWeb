@@ -29,7 +29,7 @@ class RegisterView(APIView):
         if serializer.is_valid():
             if User.objects.filter(email=email).exists():
                 return Response({
-                    "code": 150,
+                    "code": 110,
                     "message": "user already exist",
                     "resolve": "Proceed to login"
                     }, status=status.HTTP_401_UNAUTHORIZED)
@@ -41,7 +41,7 @@ class RegisterView(APIView):
                 # User.is_active is defaultly set to false and need email confirmation to activate
                 email_activate_acct(request, user)
                 return Response({
-                    "code": 200,
+                    "code": 201,
                     "message": "Successful",
                     "resolve": "User Successfully created"
                     }, status=status.HTTP_201_CREATED)
@@ -62,13 +62,14 @@ class LoginView(APIView):
                     login(request, user)
                     refresh = RefreshToken.for_user(user)
                     return Response({
+                        'code': 200,
                         'refresh': str(refresh),
                         'access': str(refresh.access_token),
                         'user': request.user.email
                         }, status=status.HTTP_200_OK)
                 else:
                     return Response({
-                        "code": 0,
+                        "code": 110,
                         "message": "inactive user",
                         "resolve": "proceed to activate your account"
                     }, status=status.HTTP_401_UNAUTHORIZED)
@@ -76,7 +77,7 @@ class LoginView(APIView):
                     return Response({
                         "code": 120,
                         "message": "invalid crendetials",
-                        "resolve": "The email or password is not correct."
+                        "resolve": "There's no account matching this email and password"
                     }, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -86,8 +87,6 @@ class UserView(APIView):
     serializer_class = UserSerializer
 
     def get(self, request):
-        # auth_header = request.META['HTTP_AUTHORIZATION']
-        # token = auth_header.split(' ')[1]
         user = request.user
         serializer = self.serializer_class(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -180,3 +179,5 @@ class BookmarkHotelView(APIView):
                 }, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# API Key - AIzaSyAZSua0PExmEuuFm3eGuKBrvHS1F_QjRNI
