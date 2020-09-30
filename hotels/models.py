@@ -28,7 +28,7 @@ class Hotel(TimeStampedModel):
         null=True, default='')
     state = models.ForeignKey(
         State, on_delete=models.SET_NULL,
-        null=True, related_name='hotel_state')
+        null=True, default='', related_name='hotel_state')
     has_restaurant = models.BooleanField(_("restaurant"), default=False)
     has_bar = models.BooleanField(_("bar"), default=False)
     has_wireless_internet = models.BooleanField(

@@ -54,9 +54,9 @@ class HotelPhotosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HotelSerializer(serializers.ModelSerializer):
-    state = StateSerializer(read_only=True)
-    country = CountrySerializer(read_only=True)
-    lga = LGASerializer(read_only=True)
+    # state = StateSerializer(read_only=True)
+    # country = CountrySerializer(read_only=True)
+    # lga = LGASerializer(read_only=True)
     room = RoomSerializer(read_only=True, many=True)
     hotelPhotos = HotelPhotosSerializer(read_only=True, many=True)
     faq = FAQSerializer(read_only=True, many=True)
@@ -64,21 +64,21 @@ class HotelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hotel
         fields = '__all__'
-    def get_location(self, obj):
-        geolocator = Nominatim(user_agent="sademolaadedeji@gmail.com")
-        try:
-            position = geolocator.geocode(obj.address)
-            return (position.latitude, position.longitude)
-        except AttributeError:
-            try:
-                position = geolocator.geocode(f"${obj.lga.name}, ${obj.state.name}, ${obj.country.name}")
-                return (position.latitude, position.longitude)
-            except:
-                return 404
-        # except GeocoderUnavailable:
-        #     print("Geocoder unavailable")
-        except:
-            return 404
+    # def get_location(self, obj):
+    #     geolocator = Nominatim(user_agent="sademolaadedeji@gmail.com")
+    #     try:
+    #         position = geolocator.geocode(obj.address)
+    #         return (position.latitude, position.longitude)
+    #     except AttributeError:
+    #         try:
+    #             position = geolocator.geocode(f"${obj.lga.name}, ${obj.state.name}, ${obj.country.name}")
+    #             return (position.latitude, position.longitude)
+    #         except:
+    #             return 404
+    #     # except GeocoderUnavailable:
+    #     #     print("Geocoder unavailable")
+    #     except:
+    #         return 404
 
 # Proprty serializer related
 class GallerySerializer(serializers.ModelSerializer):
