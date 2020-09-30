@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from users.utils import validate_phone
-from properties.models import TimeStampedModel
+from properties.models import TimeStampedModel, Country, LGA, State
 from users.models import User
 
 
@@ -20,6 +20,15 @@ class Hotel(TimeStampedModel):
         choices=HOTEL_TYPE_CHOICES, blank=True)
     number_of_rooms = models.IntegerField(_("number of rooms"))
     description = models.TextField(_("description"))
+    lga = models.ForeignKey(
+        LGA, on_delete=models.SET_NULL,
+        null=True, default='', related_name='hotel_lga')
+    country = models.ForeignKey(
+        Country, on_delete=models.SET_NULL,
+        null=True, default='')
+    state = models.ForeignKey(
+        State, on_delete=models.SET_NULL,
+        null=True, related_name='hotel_state')
     has_restaurant = models.BooleanField(_("restaurant"), default=False)
     has_bar = models.BooleanField(_("bar"), default=False)
     has_wireless_internet = models.BooleanField(

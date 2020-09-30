@@ -3,6 +3,7 @@ from hotels.models import Hotel, Room, HotelPhotos, FAQ, BookmarkedHotel
 from properties.models import Property, Gallery, FloorPlan, PropertyDetails, BookmarkedProperty, Country, State, LGA, Company
 from users.models import User
 from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderUnavailable
 from requests.exceptions import ConnectionError
 
 # User info
@@ -53,6 +54,9 @@ class HotelPhotosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HotelSerializer(serializers.ModelSerializer):
+    state = StateSerializer(read_only=True)
+    country = CountrySerializer(read_only=True)
+    lga = LGASerializer(read_only=True)
     room = RoomSerializer(read_only=True, many=True)
     hotelPhotos = HotelPhotosSerializer(read_only=True, many=True)
     faq = FAQSerializer(read_only=True, many=True)
@@ -61,13 +65,20 @@ class HotelSerializer(serializers.ModelSerializer):
         model = Hotel
         fields = '__all__'
     def get_location(self, obj):
-        print(obj.address)
         geolocator = Nominatim(user_agent="sademolaadedeji@gmail.com")
         try:
             position = geolocator.geocode(obj.address)
             return (position.latitude, position.longitude)
+        except AttributeError:
+            try:
+                position = geolocator.geocode(f"${obj.lga.name}, ${obj.state.name}, ${obj.country.name}")
+                return (position.latitude, position.longitude)
+            except:
+                return 404
+        # except GeocoderUnavailable:
+        #     print("Geocoder unavailable")
         except:
-            return "Unable to get data"
+            return 404
 
 # Proprty serializer related
 class GallerySerializer(serializers.ModelSerializer):
@@ -103,8 +114,16 @@ class PropertySerializer(serializers.ModelSerializer):
         try:
             position = geolocator.geocode(obj.address)
             return (position.latitude, position.longitude)
+        except AttributeError:
+            try:
+                position = geolocator.geocode(f"${obj.lga.name}, ${obj.state.name}, ${obj.country.name}")
+                return (position.latitude, position.longitude)
+            except:
+                return 404
+        # except GeocoderUnavailable:
+        #         return "unstable network"
         except:
-            return "Unable to get data"
+            return 404
 
 class IdSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)

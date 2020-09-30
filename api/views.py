@@ -16,7 +16,7 @@ from .serializers import AuthSerializer, HotelSerializer, PropertySerializer, Us
 from users.models import User
 from hotels.models import Hotel, BookmarkedHotel
 from properties.models import Property, BookmarkedProperty
-from properties.helpers import email_activate_acct
+from properties.helpers import email_activate_acct, get_currently_featured
 # Create your views here.
 
 class RegisterView(APIView):
@@ -106,6 +106,11 @@ class HotelView(ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('name', 'address', 'hotel_type', "room__room_name")
 
+class FeaturedPropertyView(ListAPIView):
+    queryset = get_currently_featured()
+    permission_classes = [IsAuthenticated]
+    serializer_class = PropertySerializer
+
 class BookmarkPropertyView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = BookmarkedPropertySerializer
@@ -179,5 +184,3 @@ class BookmarkHotelView(APIView):
                 }, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# API Key - AIzaSyAZSua0PExmEuuFm3eGuKBrvHS1F_QjRNI
