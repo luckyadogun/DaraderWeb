@@ -18,7 +18,7 @@ docutils==0.15.2
 entrypoints==0.3
 flake8==3.7.9
 geographiclib==1.50
-geopy==2.0.0 #added this.
+geopy==2.0.0 #added this
 gunicorn==19.9.0
 idna==2.9
 importlib-metadata==1.7.0
