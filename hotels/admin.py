@@ -20,7 +20,7 @@ class HotelAdmin(admin.ModelAdmin):
     'has_bar','has_wireless_internet','has_24_hrs_electricity','has_adequate_parking_space','has_swimming_pool',
     'has_car_rental','has_double_bed','has_toiletries','has_concierge','has_shower','has_room_service',
     'has_key_card_system','has_gym','has_airport_pickup','has_car_hire','has_laundry','has_spa_treatment',
-    'has_night_club', 'has_luggage_storage','has_air_conditioning','has_car_wash')
+    'has_night_club', 'has_luggage_storage','has_air_conditioning','has_car_wash', 'state', 'lga', 'country',)
     inlines = [HotelImageInline, RoomInline, FaqInline]
     list_filter = ('number_of_rooms',)
     search_fields = ('name',)
