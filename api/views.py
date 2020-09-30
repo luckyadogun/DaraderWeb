@@ -93,7 +93,7 @@ class UserView(APIView):
 
 class PropertyView(ListAPIView):
     queryset = Property.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     serializer_class = PropertySerializer
     filter_backends = (SearchFilter, OrderingFilter)
     # 'state__name', 'country__name', 'owner__name', 'market_status', 'price', 'description'
@@ -101,14 +101,14 @@ class PropertyView(ListAPIView):
 
 class HotelView(ListAPIView):
     queryset = Hotel.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     serializer_class = HotelSerializer
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('name', 'address', 'hotel_type', "room__room_name")
 
 class FeaturedPropertyView(ListAPIView):
     queryset = get_currently_featured()
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     serializer_class = PropertySerializer
 
 class BookmarkPropertyView(APIView):
