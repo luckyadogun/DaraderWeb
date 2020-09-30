@@ -60,7 +60,7 @@ class HotelSerializer(serializers.ModelSerializer):
     room = RoomSerializer(read_only=True, many=True)
     hotelPhotos = HotelPhotosSerializer(read_only=True, many=True)
     faq = FAQSerializer(read_only=True, many=True)
-    location = serializers.SerializerMethodField()
+    # location = serializers.SerializerMethodField()
     class Meta:
         model = Hotel
         fields = '__all__'
