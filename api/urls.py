@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
 
-from .views import RegisterView, LoginView, PropertyView, HotelView, UserView, BookmarkHotelView, BookmarkPropertyView, FeaturedPropertyView
+from .views import RegisterView, LoginView, PropertyView, HotelView, UserView, BookmarkHotelView, BookmarkPropertyView, FeaturedPropertyView, UpdateUserView
 
 urlpatterns = [
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('bookmark/hotel/', BookmarkHotelView.as_view(), name='bookmark-hotel'),
     path('bookmark/property/', BookmarkPropertyView.as_view(), name='bookmark-property'),
     path('featured/property/', FeaturedPropertyView.as_view(), name='featured-property'),
+    path('update/me/', UpdateUserView.as_view(), name='update-user'),
 ]
