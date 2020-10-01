@@ -2,6 +2,7 @@ from rest_framework import serializers
 from hotels.models import Hotel, Room, HotelPhotos, FAQ, BookmarkedHotel
 from properties.models import Property, Gallery, FloorPlan, PropertyDetails, BookmarkedProperty, Country, State, LGA, Company
 from users.models import User
+from users.utils import validate_phone
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderUnavailable
 from requests.exceptions import ConnectionError
@@ -11,6 +12,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ('password','groups','user_permissions',)
+
+# User update
+class UpdateUserSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    firstName = serializers.CharField(required=True)
+    lastName = serializers.CharField(required=True)
+    phoneNumber = serializers.CharField(required=True, validators=[validate_phone])
 
 # Login and Register
 class AuthSerializer(serializers.Serializer):
