@@ -12,7 +12,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 
-from .serializers import AuthSerializer, HotelSerializer, PropertySerializer, UserSerializer, IdSerializer, BookmarkedPropertySerializer, BookmarkedHotelSerializer
+from .serializers import AuthSerializer, HotelSerializer, PropertySerializer, UserSerializer, IdSerializer, BookmarkedPropertySerializer, BookmarkedHotelSerializer, UpdateUserSerializer
 from users.models import User
 from hotels.models import Hotel, BookmarkedHotel
 from properties.models import Property, BookmarkedProperty
@@ -90,6 +90,38 @@ class UserView(APIView):
         user = request.user
         serializer = self.serializer_class(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UpdateUserView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UpdateUserSerializer
+
+    def patch(self, request):
+        user = request.user
+        email = request.data.get('email')
+        firstName = request.data.get('firstName')
+        lastName = request.data.get('lastName')
+        phoneNumber = request.data.get('phoneNumber')
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            if User.objects.exclude(id=user.id).filter(email=email).exists():
+                return Response({
+                    'code': 110,
+                    'message': 'user with that mail already exist',
+                    'resolve': 'Enter a valid email'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                user.first_name = firstName
+                user.last_name = lastName
+                user.email = email
+                user.mobile_phone = phoneNumber
+                user.save()
+                return Response({
+                    'code': 200,
+                    'message': 'Successful',
+                    'resolve': 'Account updated successfully'
+                }, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PropertyView(ListAPIView):
     queryset = Property.objects.all()
