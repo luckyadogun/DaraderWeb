@@ -136,17 +136,21 @@ class PropertySerializer(serializers.ModelSerializer):
 class IdSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
 
-class BookmarkedPropertySerializer(serializers.ModelSerializer):
-    property_obj = PropertySerializer(read_only=True)
-    # owner = UserSerializer(read_only=True)
-    class Meta:
-        model = BookmarkedProperty
-        fields = '__all__'
+class BookRoomSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+    room_id = serializers.IntegerField(required=True)
 
-class BookmarkedHotelSerializer(serializers.ModelSerializer):
-    hotel = HotelSerializer(read_only=True)
-    # owner = UserSerializer(read_only=True)
-    class Meta:
-        model = BookmarkedHotel
-        fields = '__all__'
+# class BookmarkedPropertySerializer(serializers.ModelSerializer):
+#     property_obj = PropertySerializer(read_only=True)
+#     # owner = UserSerializer(read_only=True)
+#     class Meta:
+#         model = BookmarkedProperty
+#         fields = '__all__'
+
+# class BookmarkedHotelSerializer(serializers.ModelSerializer):
+#     hotel = HotelSerializer(read_only=True)
+#     # owner = UserSerializer(read_only=True)
+#     class Meta:
+#         model = BookmarkedHotel
+#         fields = '__all__'
     

@@ -12,11 +12,12 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 
-from .serializers import AuthSerializer, HotelSerializer, PropertySerializer, UserSerializer, IdSerializer, BookmarkedPropertySerializer, BookmarkedHotelSerializer, UpdateUserSerializer
+from .serializers import AuthSerializer, HotelSerializer, PropertySerializer, UserSerializer, IdSerializer, UpdateUserSerializer, BookRoomSerializer
 from users.models import User
-from hotels.models import Hotel, BookmarkedHotel
+from hotels.models import Hotel, BookmarkedHotel, Room
 from properties.models import Property, BookmarkedProperty
 from properties.helpers import email_activate_acct, get_currently_featured
+from hotels.helpers import hotel_email_booking_request, user_hotel_email_booking_request
 # Create your views here.
 
 class RegisterView(APIView):
@@ -145,11 +146,11 @@ class FeaturedPropertyView(ListAPIView):
 
 class BookmarkPropertyView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = BookmarkedPropertySerializer
     
     def get(self, request):
-        bookmarked_properties = BookmarkedProperty.objects.filter(owner=request.user)
-        serializer = self.serializer_class(bookmarked_properties, many=True)
+        # bookmarked_properties = BookmarkedProperty.objects.filter(owner=request.user)
+        bookmarked_properties = Property.objects.filter(bookmarked__owner=request.user)
+        serializer = PropertySerializer(bookmarked_properties, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -182,16 +183,17 @@ class BookmarkPropertyView(APIView):
 
 class BookmarkHotelView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = BookmarkedHotelSerializer
     
     def get(self, request):
-        bookmarked_hotels = BookmarkedHotel.objects.filter(owner=request.user)
-        serializer = self.serializer_class(bookmarked_hotels, many=True)
+        # bookmarked_hotels = BookmarkedHotel.objects.filter(owner=request.user)
+        bookmarked_hotels = Hotel.objects.filter(bookmarkedHotel__owner=request.user)
+        serializer = HotelSerializer(bookmarked_hotels, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         id = request.data.get('id')
-        serializer = IdSerializer(data = request.data)
+        room_id = request.data.get('room_id')
+        serializer = BookRoomSerializer(data = request.data)
         if serializer.is_valid():
             try:
                 hotel_instance = Hotel.objects.get(id=id)
@@ -203,11 +205,26 @@ class BookmarkHotelView(APIView):
                         "resolve": "already in your hotel bookmarked"
                     }, status=status.HTTP_208_ALREADY_REPORTED)
                 except BookmarkedHotel.DoesNotExist:
-                    BookmarkedHotel.objects.create(owner=request.user, hotel=hotel_instance)
-                    return Response({
-                        "code": 120,
-                        "message": "hotel bookmarked successfully"
-                    }, status=status.HTTP_201_CREATED)
+                    try:   
+                        room_instance = Room.objects.get(hotel=hotel_instance, pk=room_id)
+                        hotel_email = hotel_instance.creator.email
+                        hotel_name = hotel_instance.name
+                        room_name = room_instance.room_name
+                        user_name = request.user.username
+                        user_email = request.user.email
+                        BookmarkedHotel.objects.create(owner=request.user, hotel=hotel_instance)     
+                        hotel_email_booking_request(hotel_email, hotel_name, user_name, room_name, user_email)        
+                        user_hotel_email_booking_request(user_email, user_name, room_name, hotel_name)
+                        return Response({
+                            "code": 120,
+                            "message": "room booking request sent successfully"
+                        }, status=status.HTTP_201_CREATED)
+                    except Room.DoesNotExist:
+                        return Response({
+                        "code": 121,
+                        "message": "room does not exist",
+                        "resolve": "Incorrect room id"
+                    }, status=status.HTTP_404_NOT_FOUND)
             except Hotel.DoesNotExist:
                 return Response({
                     "code": 120,
