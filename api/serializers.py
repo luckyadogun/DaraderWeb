@@ -138,7 +138,7 @@ class IdSerializer(serializers.Serializer):
 
 class BookRoomSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
-    room_id = serializers.IntegerField(required=True)
+    roomName = serializers.CharField(required=True)
 
 # class BookmarkedPropertySerializer(serializers.ModelSerializer):
 #     property_obj = PropertySerializer(read_only=True)
