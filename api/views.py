@@ -192,7 +192,7 @@ class BookmarkHotelView(APIView):
 
     def post(self, request):
         id = request.data.get('id')
-        room_id = request.data.get('room_id')
+        room_name = request.data.get('roomName')
         serializer = BookRoomSerializer(data = request.data)
         if serializer.is_valid():
             try:
@@ -206,7 +206,7 @@ class BookmarkHotelView(APIView):
                     }, status=status.HTTP_208_ALREADY_REPORTED)
                 except BookmarkedHotel.DoesNotExist:
                     try:   
-                        room_instance = Room.objects.get(hotel=hotel_instance, pk=room_id)
+                        room_instance = Room.objects.get(hotel=hotel_instance, room_name=room_name)
                         hotel_email = hotel_instance.creator.email
                         hotel_name = hotel_instance.name
                         room_name = room_instance.room_name
