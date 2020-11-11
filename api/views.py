@@ -181,6 +181,38 @@ class BookmarkPropertyView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UnBookmarkPropertyView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        id = request.data.get('id')
+        serializer = IdSerializer(data = request.data)
+        if serializer.is_valid():
+            try:
+                property_instance = Property.objects.get(id=id)
+                try:
+                    bookmark_property = BookmarkedProperty.objects.get(owner=request.user, property_obj=property_instance)
+                    bookmark_property.delete()
+                    return Response({
+                        "code": 120,
+                        "message": "property unbookmarked successfully"
+                    }, status=status.HTTP_200_OK)
+                except BookmarkedProperty.DoesNotExist:
+                    # BookmarkedProperty.objects.create(owner=request.user, property_obj=property_instance)
+                    return Response({
+                        "code": 120,
+                        "message": "property is not bookmarked"
+                    }, status=status.HTTP_204_NO_CONTENT)
+            except Property.DoesNotExist:
+                return Response({
+                    "code": 120,
+                    "message": "property does not exist",
+                    "resolve": "Incorrect property id"
+                }, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class BookmarkHotelView(APIView):
     permission_classes = [IsAuthenticated]
     
