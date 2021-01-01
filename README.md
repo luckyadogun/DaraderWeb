@@ -1,4 +1,4 @@
-# Michael_UBA_Rental_WEB
+# Darader Web/API
 
 ### Project setup
 1. Create a virtual environment
